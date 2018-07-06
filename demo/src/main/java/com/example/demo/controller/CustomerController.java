@@ -13,8 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -47,4 +49,22 @@ public class CustomerController {
     public ResponseEntity<MessageInfo> removeCustomerInfo(@Valid @RequestBody(required = true) Reason reason) {
         return ResponseEntity.ok(customerService.removeCustomerInfo(reason.getCustId(), reason.getReason()));
     }
+
+    /**
+     * 赠送客户金豆
+     */
+    @RequestMapping(value = "/marketing/customer/update/beans", method = RequestMethod.POST)
+    public ResponseEntity<MessageInfo> updateCustGoldBeans(@Valid @NotNull @RequestParam("id") Integer custId,
+                                                           @Valid @NotNull @RequestParam("num") Integer goldBeansNum) {
+        return ResponseEntity.ok(customerService.donateGoldBeans(custId, goldBeansNum));
+    }
+
+    /**
+     * 客户信息报备
+     */
+    @RequestMapping(value = "/marketing/customer/save", method = RequestMethod.POST)
+    public ResponseEntity<MessageInfo> saveCustomerInfo(@Valid @RequestBody(required = true) CustomerInfo customerInfo) {
+        return ResponseEntity.ok(customerService.saveCustomerInfo(customerInfo));
+    }
+
 }

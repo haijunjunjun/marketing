@@ -46,4 +46,13 @@ public class CustomerServiceTest {
         MessageInfo messageInfo = customerService.removeCustomerInfo(custId, reason);
         log.info("messageInfo is :" + messageInfo);
     }
+
+    @Test
+    public void saveCustomerInfo() {
+        CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setUserId(6);
+        customerInfo.setCompanyName("test");
+        MessageInfo messageInfo = customerService.saveCustomerInfo(customerInfo);
+        log.info("messageInfo is :" + messageInfo);
+    }
 }
