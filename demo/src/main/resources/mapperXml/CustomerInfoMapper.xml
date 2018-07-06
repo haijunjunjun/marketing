@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="company_name" jdbcType="VARCHAR" property="companyName" />
     <result column="company_type" jdbcType="VARCHAR" property="companyType" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -21,8 +21,9 @@
     <result column="is_compact" jdbcType="INTEGER" property="isCompact" />
     <result column="is_compact_check" jdbcType="INTEGER" property="isCompactCheck" />
     <result column="is_money" jdbcType="INTEGER" property="isMoney" />
+    <result column="compact_img" jdbcType="VARCHAR" property="compactImg" />
     <result column="mark" jdbcType="VARCHAR" property="mark" />
     <result column="price" jdbcType="DECIMAL" property="price" />
-    <result column="compact_img" jdbcType="LONGVARBINARY" property="compactImg" />
+    <result column="abandon_reason" jdbcType="VARCHAR" property="abandonReason" />
   </resultMap>
 </mapper>

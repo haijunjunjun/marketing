@@ -17,7 +17,7 @@ public class CustomerInfo {
      * 用户id
      */
     @Column(name = "user_id")
-    private String userId;
+    private Integer userId;
 
     /**
      * 公司名称
@@ -103,6 +103,12 @@ public class CustomerInfo {
     private Integer isMoney;
 
     /**
+     * 合同图片
+     */
+    @Column(name = "compact_img")
+    private String compactImg;
+
+    /**
      * 备注
      */
     private String mark;
@@ -113,10 +119,10 @@ public class CustomerInfo {
     private BigDecimal price;
 
     /**
-     * 合同图片
+     * 放弃原因
      */
-    @Column(name = "compact_img")
-    private byte[] compactImg;
+    @Column(name = "abandon_reason")
+    private String abandonReason;
 
     /**
      * 获取客户id
@@ -141,7 +147,7 @@ public class CustomerInfo {
      *
      * @return user_id - 用户id
      */
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
@@ -150,8 +156,8 @@ public class CustomerInfo {
      *
      * @param userId 用户id
      */
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     /**
@@ -407,6 +413,24 @@ public class CustomerInfo {
     }
 
     /**
+     * 获取合同图片
+     *
+     * @return compact_img - 合同图片
+     */
+    public String getCompactImg() {
+        return compactImg;
+    }
+
+    /**
+     * 设置合同图片
+     *
+     * @param compactImg 合同图片
+     */
+    public void setCompactImg(String compactImg) {
+        this.compactImg = compactImg == null ? null : compactImg.trim();
+    }
+
+    /**
      * 获取备注
      *
      * @return mark - 备注
@@ -443,20 +467,20 @@ public class CustomerInfo {
     }
 
     /**
-     * 获取合同图片
+     * 获取放弃原因
      *
-     * @return compact_img - 合同图片
+     * @return abandon_reason - 放弃原因
      */
-    public byte[] getCompactImg() {
-        return compactImg;
+    public String getAbandonReason() {
+        return abandonReason;
     }
 
     /**
-     * 设置合同图片
+     * 设置放弃原因
      *
-     * @param compactImg 合同图片
+     * @param abandonReason 放弃原因
      */
-    public void setCompactImg(byte[] compactImg) {
-        this.compactImg = compactImg;
+    public void setAbandonReason(String abandonReason) {
+        this.abandonReason = abandonReason == null ? null : abandonReason.trim();
     }
 }
