@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dal.mapper.IncentInstMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.dal.model.IncentInst">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="inst_id" jdbcType="VARCHAR" property="instId" />
+    <result column="inst_name" jdbcType="VARCHAR" property="instName" />
+    <result column="inst_content" jdbcType="VARCHAR" property="instContent" />
+  </resultMap>
+</mapper>

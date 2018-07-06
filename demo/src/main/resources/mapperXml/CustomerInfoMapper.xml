@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dal.mapper.CustomerInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.dal.model.CustomerInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_type" jdbcType="VARCHAR" property="companyType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="cust_name" jdbcType="VARCHAR" property="custName" />
+    <result column="cust_phone" jdbcType="VARCHAR" property="custPhone" />
+    <result column="company_addr" jdbcType="VARCHAR" property="companyAddr" />
+    <result column="repo_time" jdbcType="TIMESTAMP" property="repoTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="is_phone" jdbcType="INTEGER" property="isPhone" />
+    <result column="is_visit" jdbcType="INTEGER" property="isVisit" />
+    <result column="is_gold_beans" jdbcType="INTEGER" property="isGoldBeans" />
+    <result column="is_compact" jdbcType="INTEGER" property="isCompact" />
+    <result column="is_compact_check" jdbcType="INTEGER" property="isCompactCheck" />
+    <result column="is_money" jdbcType="INTEGER" property="isMoney" />
+    <result column="mark" jdbcType="VARCHAR" property="mark" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="compact_img" jdbcType="LONGVARBINARY" property="compactImg" />
+  </resultMap>
+</mapper>
