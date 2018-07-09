@@ -31,15 +31,16 @@ public class CustomerService {
         this.custGoldBeansMapper = custGoldBeansMapper;
     }
 
-    public MessageInfo<List<CustomerInfo>> getCunstomerInfo(@CurrentUser UserInfo userInfo) {
+    public MessageInfo<List<CustomerInfo>> getCunstomerInfo(Integer userId,Integer status) {
         MessageInfo<List<CustomerInfo>> customerInfoMessageInfo = new MessageInfo<>();
-        if (Objects.isNull(userInfo)) {
-            log.info("当前用户已下线!");
-            customerInfoMessageInfo.setContent("您已下线，请重新登录!");
+        if (Objects.isNull(userId) || Objects.isNull(status)) {
+            log.info("参数信息有误！");
+            customerInfoMessageInfo.setContent("参数信息有误！");
             return customerInfoMessageInfo;
         }
         CustomerInfo customerInfo = new CustomerInfo();
-        customerInfo.setUserId(userInfo.getId());
+        customerInfo.setUserId(userId);
+        customerInfo.setStatus(status);
         List<CustomerInfo> customerInfoList = customerInfoMapper.select(customerInfo);
         if (Objects.isNull(customerInfoList)) {
             log.info("客户信息异常，请检查数据库信息！");

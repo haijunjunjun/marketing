@@ -6,7 +6,9 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="cust_id" jdbcType="VARCHAR" property="custId" />
     <result column="performance" jdbcType="INTEGER" property="performance" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 </mapper>

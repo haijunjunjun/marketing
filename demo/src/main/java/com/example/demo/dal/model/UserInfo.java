@@ -63,6 +63,12 @@ public class UserInfo {
     private Integer manageId;
 
     /**
+     * 头像路径
+     */
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    /**
      * 获取用户id
      *
      * @return id - 用户id
@@ -240,5 +246,23 @@ public class UserInfo {
      */
     public void setManageId(Integer manageId) {
         this.manageId = manageId;
+    }
+
+    /**
+     * 获取头像路径
+     *
+     * @return image_url - 头像路径
+     */
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    /**
+     * 设置头像路径
+     *
+     * @param imageUrl 头像路径
+     */
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl == null ? null : imageUrl.trim();
     }
 }

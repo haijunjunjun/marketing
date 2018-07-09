@@ -15,5 +15,6 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="manage_id" jdbcType="INTEGER" property="manageId" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
   </resultMap>
 </mapper>

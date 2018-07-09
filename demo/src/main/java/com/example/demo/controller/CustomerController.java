@@ -30,8 +30,9 @@ public class CustomerController {
      * 获取客户信息
      */
     @RequestMapping(value = "/marketing/customer/info", method = RequestMethod.GET)
-    public ResponseEntity<MessageInfo<List<CustomerInfo>>> getCustomerInfo(@Valid @CurrentUser UserInfo userInfo) {
-        return ResponseEntity.ok(customerService.getCunstomerInfo(userInfo));
+    public ResponseEntity<MessageInfo<List<CustomerInfo>>> getCustomerInfo(@Valid @NotNull Integer userId,
+                                                                           @Valid @NotNull @RequestParam("status") Integer status) {
+        return ResponseEntity.ok(customerService.getCunstomerInfo(userId, status));
     }
 
     /**
