@@ -6,13 +6,14 @@ import javax.persistence.*;
 @Table(name = "advice_resp")
 public class AdviceResp {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
      * 用户id
      */
     @Column(name = "user_id")
-    private String userId;
+    private Integer userId;
 
     /**
      * 意见内容
@@ -45,7 +46,7 @@ public class AdviceResp {
      *
      * @return user_id - 用户id
      */
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
@@ -54,8 +55,8 @@ public class AdviceResp {
      *
      * @param userId 用户id
      */
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     /**

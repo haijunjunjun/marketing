@@ -3,13 +3,18 @@ package com.example.demo.service;
 import com.example.demo.dal.mapper.*;
 import com.example.demo.dal.model.*;
 import com.example.demo.model.MyList;
+import com.example.demo.model.MyPerformanceModel;
+import com.example.demo.model.MyPersonalInfo;
 import com.example.demo.util.BizRuntimeException;
 import com.example.demo.util.MessageInfo;
+import com.example.demo.util.PerformanceMessageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,18 +27,24 @@ public class MyService {
     private UserPerformanceMapper userPerformanceMapper;
     private UserGoldBeansMapper userGoldBeansMapper;
     private CashDetailMapper cashDetailMapper;
+    private CustomerInfoMapper customerInfoMapper;
+    private GoldBeansApplyMapper goldBeansApplyMapper;
 
     @Autowired
     public MyService(UserInfoMapper userInfoMapper,
                      UserAccountMapper userAccountMapper,
                      UserPerformanceMapper userPerformanceMapper,
                      UserGoldBeansMapper userGoldBeansMapper,
-                     CashDetailMapper cashDetailMapper) {
+                     CashDetailMapper cashDetailMapper,
+                     CustomerInfoMapper customerInfoMapper,
+                     GoldBeansApplyMapper goldBeansApplyMapper) {
         this.userInfoMapper = userInfoMapper;
         this.userAccountMapper = userAccountMapper;
         this.userPerformanceMapper = userPerformanceMapper;
         this.userGoldBeansMapper = userGoldBeansMapper;
         this.cashDetailMapper = cashDetailMapper;
+        this.customerInfoMapper = customerInfoMapper;
+        this.goldBeansApplyMapper = goldBeansApplyMapper;
     }
 
     public MessageInfo<MyList> getMyListInfo(Integer userId) {
@@ -90,21 +101,86 @@ public class MyService {
         return myListMessageInfo;
     }
 
-    public MessageInfo<List<CashDetail>> getMyCashDetail(Integer userId) {
-        MessageInfo<List<CashDetail>> listMessageInfo = new MessageInfo<>();
+    public MyPersonalInfo getMyPersonalInfo(Integer userId) {
+        MyPersonalInfo myPersonalInfo = new MyPersonalInfo();
         if (StringUtils.isEmpty(userId.toString())) {
-            log.info("用户id 参数异常!");
-            throw new BizRuntimeException("用户id参数异常!");
+            log.info("userid参数信息异常！");
+            throw new BizRuntimeException("userid 参数信息异常！");
         }
-        CashDetail cashDetail = new CashDetail();
-        cashDetail.setUserId(userId);
-        List<CashDetail> cashDetailList = cashDetailMapper.select(cashDetail);
-        if (Objects.isNull(cashDetailList)) {
-            log.info("查询失败!");
-            throw new BizRuntimeException("查询失败");
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        if (Objects.isNull(userInfo)) {
+            log.info("用户信息查询异常!");
+            throw new BizRuntimeException("用户信息查询异常!");
         }
-        listMessageInfo.setData(cashDetailList);
-        listMessageInfo.setContent("success");
-        return listMessageInfo;
+        myPersonalInfo.setImageUrl(userInfo.getImageUrl());
+        myPersonalInfo.setPhone(userInfo.getPhone());
+        myPersonalInfo.setRealName(userInfo.getRealName());
+        myPersonalInfo.setSex(userInfo.getSex());
+        return myPersonalInfo;
+    }
+
+    public PerformanceMessageInfo<List<MyPerformanceModel>> getMyPerformanceInfo(Integer userId, Date date) {
+        PerformanceMessageInfo<List<MyPerformanceModel>> listPerformanceMessageInfo = new PerformanceMessageInfo<>();
+        List<MyPerformanceModel> myPerformanceModelList = new ArrayList<>();
+        MyPerformanceModel myPerformanceModel = new MyPerformanceModel();
+        if (Objects.isNull(userId) || Objects.isNull(date)) {
+            log.info("参数信息异常！");
+            throw new BizRuntimeException("参数信息异常!");
+        }
+        UserPerformance userPerformance = new UserPerformance();
+        userPerformance.setUserId(userId);
+        List<UserPerformance> userPerformanceList = userPerformanceMapper.select(userPerformance);
+        if (Objects.isNull(userPerformanceList)) {
+            log.info("查询信息异常!");
+            throw new BizRuntimeException("查询信息异常!");
+        }
+        int performance = 0;
+        for (UserPerformance u : userPerformanceList) {
+            myPerformanceModel.setTime(u.getCreateTime());
+            performance += u.getPerformance();
+            myPerformanceModel.setPerformance(u.getPerformance());
+            CustomerInfo customerInfo = customerInfoMapper.selectByPrimaryKey(u.getCustId());
+            if (Objects.isNull(customerInfo)) {
+                log.info("客户信息查询异常!");
+                throw new BizRuntimeException("客户信息查询异常！");
+            }
+            myPerformanceModel.setCompanyName(customerInfo.getCompanyName());
+            myPerformanceModel.setCompanyType(customerInfo.getCompanyType());
+            myPerformanceModel.setCustName(customerInfo.getCustName());
+            myPerformanceModel.setCustPhone(customerInfo.getCustPhone());
+            myPerformanceModelList.add(myPerformanceModel);
+        }
+        listPerformanceMessageInfo.setData(myPerformanceModelList);
+        listPerformanceMessageInfo.setTotalPerformance(performance);
+        return listPerformanceMessageInfo;
+    }
+
+    public List<GoldBeansApply> getGoldBeansApplyInfo(Integer userId) {
+        if (StringUtils.isEmpty(userId.toString())) {
+            log.info("userid 参数信息异常!");
+            throw new BizRuntimeException("参数信息异常!");
+        }
+        GoldBeansApply goldBeansApply = new GoldBeansApply();
+        goldBeansApply.setUserId(userId);
+        List<GoldBeansApply> goldBeansApplyList = goldBeansApplyMapper.select(goldBeansApply);
+        if (Objects.isNull(goldBeansApplyList)) {
+            log.info("用户金豆申请列表信息获取异常!");
+            throw new BizRuntimeException("用户金豆申请列表信息获取异常!");
+        }
+        return goldBeansApplyList;
+    }
+
+    public void goldBeanApply(Integer userId, Integer applyNum) {
+        if (StringUtils.isEmpty(userId.toString()) || StringUtils.isEmpty(applyNum)) {
+            log.info("参数信息获取异常!");
+            throw new BizRuntimeException("参数信息获取异常");
+        }
+        GoldBeansApply goldBeansApply = new GoldBeansApply();
+        goldBeansApply.setUserId(userId);
+        goldBeansApply.setApplyTime(new Date());
+        goldBeansApply.setGoldBeansApplyNum(applyNum);
+        goldBeansApply.setStatus(1);
+        goldBeansApply.setType(1);
+        goldBeansApplyMapper.insert(goldBeansApply);
     }
 }

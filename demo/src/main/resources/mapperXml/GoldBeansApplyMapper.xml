@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="gold_beans_apply_num" jdbcType="INTEGER" property="goldBeansApplyNum" />
     <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
     <result column="status" jdbcType="INTEGER" property="status" />

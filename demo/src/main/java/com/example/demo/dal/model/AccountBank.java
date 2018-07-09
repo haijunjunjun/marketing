@@ -6,13 +6,14 @@ import javax.persistence.*;
 @Table(name = "account_bank")
 public class AccountBank {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
      * 用户id
      */
     @Column(name = "user_id")
-    private String userId;
+    private Integer userId;
 
     /**
      * 银行卡号
@@ -57,7 +58,7 @@ public class AccountBank {
      *
      * @return user_id - 用户id
      */
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
@@ -66,8 +67,8 @@ public class AccountBank {
      *
      * @param userId 用户id
      */
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     /**

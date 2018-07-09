@@ -67,7 +67,16 @@
         <!--<table tableName="user_performance">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="cash_detail">
+        <!--<table tableName="cash_detail">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="account_bank">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="gold_beans_apply">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <table tableName="advice_resp">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
     </context>
