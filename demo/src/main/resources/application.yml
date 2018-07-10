@@ -33,3 +33,12 @@ spring:
   session:
     store-type: none
 
+pay:
+  wxpay:
+    appId: wxdded918741d63a55
+    mchId: 1508590871
+    key: pAXBN6jc2HbaoJbtOiXwvyaC5QQNo7TF
+    sandboxKey:
+    certPath: /var/local/cert/apiclient_cert.p12
+    useSandbox: false
+
