@@ -1,5 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.dal.mapper.CustomerInfoMapper;
+import com.example.demo.dal.mapper.PayRecordMapper;
+import com.example.demo.dal.model.CustomerInfo;
+import com.example.demo.dal.model.PayRecord;
+import com.example.demo.util.BizRuntimeException;
 import com.example.demo.util.PayUtil;
 import com.example.demo.wxPay.WXPayClient;
 import com.github.wxpay.sdk.WXPay;
@@ -15,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -24,6 +30,10 @@ public class WXPayPrecreateService {
     private WXPay wxPay;
     @Autowired
     private WXPayClient wxPayClient;
+    @Autowired
+    private PayRecordMapper payRecordMapper;
+    @Autowired
+    private CustomerInfoMapper customerInfoMapper;
 
     /**
      * 扫码支付 - 统一下单
@@ -31,20 +41,26 @@ public class WXPayPrecreateService {
      *
      * <a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_1">扫码支付API</a>
      */
-    public void precreate(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void precreate(HttpServletRequest request, HttpServletResponse response, Integer custId) throws Exception {
+        PayRecord payRecord = new PayRecord();
+        CustomerInfo customerInfo = customerInfoMapper.selectByPrimaryKey(custId);
+        if (Objects.isNull(customerInfo)) {
+            log.info("参数信息异常!");
+            throw new BizRuntimeException("参数信息异常!");
+        }
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("out_trade_no", String.valueOf(System.nanoTime()));
+        reqData.put("out_trade_no", String.valueOf(System.nanoTime()) + custId);
         reqData.put("trade_type", "NATIVE");
-        reqData.put("product_id", "1");
-        reqData.put("body", "客户下单");
+        reqData.put("product_id", "66");
+        reqData.put("body", customerInfo.getCustName() + "客户下单");
         // 订单总金额，单位为分
-        reqData.put("total_fee", "1");
+        reqData.put("total_fee", customerInfo.getPrice().toString());
         // APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
         reqData.put("spbill_create_ip", "192.168.105.75");
         // 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
         reqData.put("notify_url", "http://localhost:8089/wxpay/precreate/marketing/wx/pay/notify");
         // 自定义参数, 可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"
-        reqData.put("device_info", "haijun-device");
+        reqData.put("device_info", "device");
         // 附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用。
         reqData.put("attach", "success");
         /**
@@ -61,6 +77,16 @@ public class WXPayPrecreateService {
         log.info("支付响应信息:" + responseMap.toString());
         String returnCode = responseMap.get("return_code");
         String resultCode = responseMap.get("result_code");
+
+        payRecord.setOutTradeNo(reqData.get("out_trade_no"));
+        payRecord.setTradeType(reqData.get("trade_type"));
+        payRecord.setProductId(reqData.get("product_id"));
+        payRecord.setBody(reqData.get("body"));
+        payRecord.setTotalFee(reqData.get("total_fee"));
+        payRecord.setSpbillCreateIp(reqData.get("spbill_create_ip"));
+        payRecord.setReturnCode(returnCode);
+        payRecord.setResultCode(resultCode);
+
         if (WXPayConstants.SUCCESS.equals(returnCode) && WXPayConstants.SUCCESS.equals(resultCode)) {
             String prepayId = responseMap.get("prepay_id");
             String codeUrl = responseMap.get("code_url");
@@ -72,7 +98,11 @@ public class WXPayPrecreateService {
             response.setHeader("Cache-Control", "no-cache");
             response.setIntHeader("Expires", -1);
             ImageIO.write(image, "JPEG", response.getOutputStream());
+
+            payRecord.setCodeUrl(codeUrl);
+            payRecord.setPrepayId(prepayId);
         }
+        payRecordMapper.insert(payRecord);
     }
 
     public void precreateNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -106,6 +136,14 @@ public class WXPayPrecreateService {
              * 判断该通知是否已经处理过，如果没有处理过再进行处理，如果处理过直接返回结果成功。
              * 在对业务数据进行状态检查和处理之前，要采用数据锁进行并发控制，以避免函数重入造成的数据混乱。
              */
+            String tradeNo = reqData.get("out_trade_no");
+            PayRecord payRecord = new PayRecord();
+            payRecord.setOutTradeNo(tradeNo);
+            PayRecord payRecord1 = payRecordMapper.selectOne(payRecord);
+            PayRecord payRecord2 = new PayRecord();
+            payRecord2.setId(payRecord1.getId());
+            payRecord2.setPayResult("success");
+            payRecordMapper.updateByPrimaryKeySelective(payRecord2);
 
             Map<String, String> responseMap = new HashMap<>(2);
             responseMap.put("return_code", "SUCCESS");

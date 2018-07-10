@@ -76,7 +76,10 @@
         <!--<table tableName="gold_beans_apply">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="advice_resp">
+        <!--<table tableName="advice_resp">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <table tableName="pay_record">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
     </context>
