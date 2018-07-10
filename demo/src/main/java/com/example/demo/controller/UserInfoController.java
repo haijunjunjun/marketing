@@ -36,4 +36,10 @@ public class UserInfoController {
     public String test(@Valid @CurrentUser UserInfo userInfo) {
         return userInfoService.getOpeator(userInfo);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/market/tests", method = RequestMethod.GET)
+    public String Test() {
+        return "success";
+    }
 }

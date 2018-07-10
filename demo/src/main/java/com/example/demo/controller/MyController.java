@@ -41,13 +41,21 @@ public class MyController {
         return ResponseEntity.ok(myService.getMyPerformanceInfo(userId, date));
     }
 
-    @RequestMapping(value = "/marketing/gold/beans/apply", method = RequestMethod.GET)
+    @RequestMapping(value = "/marketing/gold/beans/apply/info", method = RequestMethod.GET)
     public ResponseEntity<List<GoldBeansApply>> getGoldBeansApplyInfo(@Valid @NotNull @RequestParam("id") Integer userId) {
         return ResponseEntity.ok(myService.getGoldBeansApplyInfo(userId));
     }
 
-    @RequestMapping(value = "/marketing/")
-    public void goldBeansApply (){
+    @RequestMapping(value = "/marketing/gold/beans/apply", method = RequestMethod.POST)
+    public void goldBeansApply(@Valid @NotNull @RequestParam("id") Integer userId,
+                               @Valid @NotNull @RequestParam("num") Integer applyNum) {
+        myService.goldBeanApply(userId, applyNum);
+    }
 
+    @RequestMapping(value = "/marketing/gold/beans/edit", method = RequestMethod.POST)
+    public void goldBeansEdit(@Valid @NotNull @RequestParam("id") Integer userId,
+                              @Valid @NotNull @RequestParam("image") String imageUrl,
+                              @Valid @NotNull @RequestParam("sex") Integer sex) {
+        myService.editPersonalInfo(userId, imageUrl, sex);
     }
 }

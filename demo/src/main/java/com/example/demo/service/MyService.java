@@ -119,6 +119,22 @@ public class MyService {
         return myPersonalInfo;
     }
 
+    public void editPersonalInfo(Integer userId, String imageUrl, Integer sex) {
+        if (StringUtils.isEmpty(userId.toString()) || StringUtils.isEmpty(imageUrl) || StringUtils.isEmpty(sex.toString())) {
+            log.info("参数信息有误!");
+            throw new BizRuntimeException("参数信息有误!");
+        }
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(userId);
+        userInfo.setImageUrl(imageUrl);
+        userInfo.setSex(sex);
+        int i = userInfoMapper.updateByPrimaryKey(userInfo);
+        if (i != 1){
+            log.info("数据存储失败!");
+            throw new BizRuntimeException("数据存储失败!");
+        }
+    }
+
     public PerformanceMessageInfo<List<MyPerformanceModel>> getMyPerformanceInfo(Integer userId, Date date) {
         PerformanceMessageInfo<List<MyPerformanceModel>> listPerformanceMessageInfo = new PerformanceMessageInfo<>();
         List<MyPerformanceModel> myPerformanceModelList = new ArrayList<>();
