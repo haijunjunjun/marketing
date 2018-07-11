@@ -12,5 +12,6 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
+    <result column="refuse_reason" jdbcType="VARCHAR" property="refuseReason" />
   </resultMap>
 </mapper>

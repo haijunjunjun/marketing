@@ -23,10 +23,10 @@ public class CustomerServiceTest {
 
     @Test
     public void getCustomerInfoTest() {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(1);
-        MessageInfo<List<CustomerInfo>> cunstomerInfo = customerService.getCunstomerInfo(userInfo);
-        log.info("cunstomerInfo is :" + cunstomerInfo);
+//        UserInfo userInfo = new UserInfo();
+//        userInfo.setId(1);
+//        MessageInfo<List<CustomerInfo>> cunstomerInfo = customerService.getCunstomerInfo(userInfo);
+//        log.info("cunstomerInfo is :" + cunstomerInfo);
     }
 
     @Test

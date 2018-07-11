@@ -5,19 +5,20 @@ import javax.persistence.*;
 @Table(name = "manage_market_relate")
 public class ManageMarketRelate {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
      * 城市经理id
      */
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "manage_id")
+    private Integer manageId;
 
     /**
      * 销售人员id
      */
     @Column(name = "market_id")
-    private String marketId;
+    private Integer marketId;
 
     /**
      * @return id
@@ -36,19 +37,19 @@ public class ManageMarketRelate {
     /**
      * 获取城市经理id
      *
-     * @return user_id - 城市经理id
+     * @return manage_id - 城市经理id
      */
-    public String getUserId() {
-        return userId;
+    public Integer getManageId() {
+        return manageId;
     }
 
     /**
      * 设置城市经理id
      *
-     * @param userId 城市经理id
+     * @param manageId 城市经理id
      */
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public void setManageId(Integer manageId) {
+        this.manageId = manageId;
     }
 
     /**
@@ -56,7 +57,7 @@ public class ManageMarketRelate {
      *
      * @return market_id - 销售人员id
      */
-    public String getMarketId() {
+    public Integer getMarketId() {
         return marketId;
     }
 
@@ -65,7 +66,7 @@ public class ManageMarketRelate {
      *
      * @param marketId 销售人员id
      */
-    public void setMarketId(String marketId) {
-        this.marketId = marketId == null ? null : marketId.trim();
+    public void setMarketId(Integer marketId) {
+        this.marketId = marketId;
     }
 }

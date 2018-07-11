@@ -1,13 +1,16 @@
 package com.example.demo.config.datasource;
 
 import com.github.pagehelper.PageHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -15,6 +18,9 @@ import java.util.Properties;
 /**
  * Created by haijun on 2018/7/3.
  */
+@Configuration
+@Slf4j
+@EnableTransactionManagement
 public class MyBatisConfig {
 
     @Autowired

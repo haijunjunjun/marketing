@@ -44,6 +44,12 @@ public class GoldBeansApply {
     private Date checkTime;
 
     /**
+     * 拒绝原因
+     */
+    @Column(name = "refuse_reason")
+    private String refuseReason;
+
+    /**
      * @return id
      */
     public Integer getId() {
@@ -163,5 +169,23 @@ public class GoldBeansApply {
      */
     public void setCheckTime(Date checkTime) {
         this.checkTime = checkTime;
+    }
+
+    /**
+     * 获取拒绝原因
+     *
+     * @return refuse_reason - 拒绝原因
+     */
+    public String getRefuseReason() {
+        return refuseReason;
+    }
+
+    /**
+     * 设置拒绝原因
+     *
+     * @param refuseReason 拒绝原因
+     */
+    public void setRefuseReason(String refuseReason) {
+        this.refuseReason = refuseReason == null ? null : refuseReason.trim();
     }
 }

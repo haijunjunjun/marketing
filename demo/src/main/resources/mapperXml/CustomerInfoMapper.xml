@@ -26,4 +26,17 @@
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="abandon_reason" jdbcType="VARCHAR" property="abandonReason" />
   </resultMap>
+  <select id="getMonthNum" resultType="java.lang.Integer">
+    SELECT COUNT(*) from customer_info
+    WHERE user_id = #{userId}
+      AND status = 2
+      AND date_format(modify_time,"%Y%m") = #{dtNum};
+  </select>
+
+  <select id="getWeekNum" resultType="java.lang.Integer">
+    select COUNT(*) from customer_info
+    WHERE user_id = #{userId}
+      AND status = 2
+      AND date_format(modify_time,"%Y%m%d") BETWEEN #{dt1} AND #{dt2}
+  </select>
 </mapper>

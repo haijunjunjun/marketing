@@ -9,4 +9,9 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="gold_beans_num" jdbcType="INTEGER" property="goldBeansNum" />
   </resultMap>
+  <update id="updateGoldBeansNum">
+    update user_gold_beans
+    SET gold_beans_num = gold_beans_num + #{num}
+    where user_id = #{id}
+  </update>
 </mapper>
