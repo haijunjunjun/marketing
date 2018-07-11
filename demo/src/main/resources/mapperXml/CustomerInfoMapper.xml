@@ -23,7 +23,7 @@
     <result column="is_money" jdbcType="INTEGER" property="isMoney" />
     <result column="compact_img" jdbcType="VARCHAR" property="compactImg" />
     <result column="mark" jdbcType="VARCHAR" property="mark" />
-    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="price" jdbcType="INTEGER" property="price" />
     <result column="abandon_reason" jdbcType="VARCHAR" property="abandonReason" />
   </resultMap>
   <select id="getMonthNum" resultType="java.lang.Integer">

@@ -1,6 +1,5 @@
 package com.example.demo.dal.model;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -116,7 +115,7 @@ public class CustomerInfo {
     /**
      * 签约价格字段
      */
-    private BigDecimal price;
+    private Integer price;
 
     /**
      * 放弃原因
@@ -453,7 +452,7 @@ public class CustomerInfo {
      *
      * @return price - 签约价格字段
      */
-    public BigDecimal getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
@@ -462,7 +461,7 @@ public class CustomerInfo {
      *
      * @param price 签约价格字段
      */
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

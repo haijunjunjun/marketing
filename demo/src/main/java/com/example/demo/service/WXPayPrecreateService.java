@@ -142,6 +142,7 @@ public class WXPayPrecreateService {
             PayRecord payRecord1 = payRecordMapper.selectOne(payRecord);
             PayRecord payRecord2 = new PayRecord();
             payRecord2.setId(payRecord1.getId());
+            payRecord2.setReturnMsg("success_pay");
             payRecord2.setPayResult("success");
             payRecordMapper.updateByPrimaryKeySelective(payRecord2);
 

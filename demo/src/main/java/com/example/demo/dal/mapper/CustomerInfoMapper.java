@@ -8,5 +8,5 @@ public interface CustomerInfoMapper extends MyMapper<CustomerInfo> {
 
     Integer getMonthNum(@Param("userId") Integer userId, @Param("dtNum") String dtNum);
 
-    Integer getWeekNum(@Param("userId") Integer userId, @Param("dt1") String dt1, @Param("dt2") String dt2);
+    Integer getWeekNum(@Param("userId") Integer userId, @Param("dt1") String begin, @Param("dt2") String end);
 }

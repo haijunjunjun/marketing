@@ -39,6 +39,6 @@ pay:
     mchId: 1508590871
     key: pAXBN6jc2HbaoJbtOiXwvyaC5QQNo7TF
     sandboxKey:
-    certPath: /var/local/cert/apiclient_cert.p12
+    certPath: classpath:apiclient_cert.p12
     useSandbox: false
 

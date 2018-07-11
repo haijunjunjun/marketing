@@ -55,7 +55,7 @@ public class CustomerController {
      * 赠送客户金豆
      */
     @RequestMapping(value = "/marketing/customer/update/beans", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo> updateCustGoldBeans(@Valid @NotNull @RequestParam("id") Integer custId,
+    public ResponseEntity<MessageInfo> donateCustGoldBeans(@Valid @NotNull @RequestParam("id") Integer custId,
                                                            @Valid @NotNull @RequestParam("num") Integer goldBeansNum) {
         return ResponseEntity.ok(customerService.donateGoldBeans(custId, goldBeansNum));
     }
