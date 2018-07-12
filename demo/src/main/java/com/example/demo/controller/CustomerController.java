@@ -30,9 +30,9 @@ public class CustomerController {
      * 获取客户信息
      */
     @RequestMapping(value = "/marketing/customer/info", method = RequestMethod.GET)
-    public ResponseEntity<MessageInfo<List<CustomerInfo>>> getCustomerInfo(@Valid @NotNull Integer userId,
+    public ResponseEntity<MessageInfo<List<CustomerInfo>>> getCustomerInfo(@Valid @NotNull @CurrentUser UserInfo userInfo,
                                                                            @Valid @NotNull @RequestParam("status") Integer status) {
-        return ResponseEntity.ok(customerService.getCunstomerInfo(userId, status));
+        return ResponseEntity.ok(customerService.getCunstomerInfo(userInfo.getId(), status));
     }
 
     /**
@@ -54,18 +54,20 @@ public class CustomerController {
     /**
      * 赠送客户金豆
      */
-    @RequestMapping(value = "/marketing/customer/update/beans", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo> donateCustGoldBeans(@Valid @NotNull @RequestParam("id") Integer custId,
+    @RequestMapping(value = "/marketing/customer/donate/beans", method = RequestMethod.POST)
+    public ResponseEntity<MessageInfo> donateCustGoldBeans(@Valid @NotNull @CurrentUser UserInfo userInfo,
+                                                           @Valid @NotNull @RequestParam("id") Integer custId,
                                                            @Valid @NotNull @RequestParam("num") Integer goldBeansNum) {
-        return ResponseEntity.ok(customerService.donateGoldBeans(custId, goldBeansNum));
+        return ResponseEntity.ok(customerService.donateGoldBeans(userInfo.getId(), custId, goldBeansNum));
     }
 
     /**
      * 客户信息报备
      */
     @RequestMapping(value = "/marketing/customer/save", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo> saveCustomerInfo(@Valid @RequestBody(required = true) CustomerInfo customerInfo) {
-        return ResponseEntity.ok(customerService.saveCustomerInfo(customerInfo));
+    public ResponseEntity<MessageInfo> saveCustomerInfo(@Valid @NotNull @CurrentUser UserInfo userInfo,
+                                                        @Valid @RequestBody(required = true) CustomerInfo customerInfo) {
+        return ResponseEntity.ok(customerService.saveCustomerInfo(userInfo.getId(), customerInfo));
     }
 
 }

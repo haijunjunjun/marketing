@@ -8,5 +8,13 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="cust_id" jdbcType="INTEGER" property="custId" />
     <result column="gold_beans_num" jdbcType="INTEGER" property="goldBeansNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
+
+  <update id="updateCustGoldBeans">
+      UPDATE cust_gold_beans
+         SET gold_beans_num = gold_beans_num + #{num}
+       WHERE cust_id = #{id}
+  </update>
 </mapper>

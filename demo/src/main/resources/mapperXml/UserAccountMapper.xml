@@ -9,5 +9,7 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="balance" jdbcType="DECIMAL" property="balance" />
     <result column="account_bank_no" jdbcType="VARCHAR" property="accountBankNo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
 </mapper>

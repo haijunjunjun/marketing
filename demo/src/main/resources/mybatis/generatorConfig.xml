@@ -55,12 +55,12 @@
         <!--<table tableName="user_gold_beans">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="customer_info">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
-        <!--<table tableName="cust_gold_beans">-->
+        <!--<table tableName="customer_info">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
+        <table tableName="cust_gold_beans">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
         <!--<table tableName="user_info">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->

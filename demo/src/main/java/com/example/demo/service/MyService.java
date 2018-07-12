@@ -64,8 +64,8 @@ public class MyService {
         myList.setImagesUrl(userInfo.getImageUrl());
         myList.setRealName(userInfo.getRealName());
         myList.setPhone(userInfo.getPhone());
-        // TODO: 2018/7/9 等级计算方法
-        myList.setLevel(0);
+//        目前暂时不做等级计算，先由后台自定义分配
+//        myList.setLevel(0);
 
         UserAccount userAccount = new UserAccount();
         userAccount.setUserId(userId);
@@ -129,7 +129,7 @@ public class MyService {
         userInfo.setImageUrl(imageUrl);
         userInfo.setSex(sex);
         int i = userInfoMapper.updateByPrimaryKey(userInfo);
-        if (i != 1){
+        if (i != 1) {
             log.info("数据存储失败!");
             throw new BizRuntimeException("数据存储失败!");
         }

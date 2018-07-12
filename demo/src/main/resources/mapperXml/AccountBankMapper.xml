@@ -11,5 +11,6 @@
     <result column="account_holder" jdbcType="VARCHAR" property="accountHolder" />
     <result column="account_bank_name" jdbcType="VARCHAR" property="accountBankName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
 </mapper>

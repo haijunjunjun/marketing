@@ -29,18 +29,30 @@ import java.util.regex.Pattern;
 @Service
 public class UserInfoService {
 
-    @Autowired
     private UserInfoMapper userInfoMapper;
-    @Autowired
     private RoleInfoMapper roleInfoMapper;
-    @Autowired
     private RoleAuthMapper roleAuthMapper;
-    @Autowired
     private TokenInfoMapper tokenInfoMapper;
-    @Autowired
     private UserAccountMapper userAccountMapper;
-    @Autowired
     private UserGoldBeansMapper userGoldBeansMapper;
+    private AccountBankMapper accountBankMapper;
+
+    @Autowired
+    public UserInfoService(UserInfoMapper userInfoMapper,
+                           RoleInfoMapper roleInfoMapper,
+                           RoleAuthMapper roleAuthMapper,
+                           TokenInfoMapper tokenInfoMapper,
+                           UserAccountMapper userAccountMapper,
+                           UserGoldBeansMapper userGoldBeansMapper,
+                           AccountBankMapper accountBankMapper) {
+        this.userInfoMapper = userInfoMapper;
+        this.roleInfoMapper = roleInfoMapper;
+        this.roleAuthMapper = roleAuthMapper;
+        this.tokenInfoMapper = tokenInfoMapper;
+        this.userAccountMapper = userAccountMapper;
+        this.userGoldBeansMapper = userGoldBeansMapper;
+        this.accountBankMapper = accountBankMapper;
+    }
 
     public List<UserInfo> getUserInfo() {
         List<UserInfo> userInfos = userInfoMapper.selectAll();
@@ -90,24 +102,22 @@ public class UserInfoService {
         if (Objects.isNull(tokenInfo)) {
             AuthToken authToken = this.authToken(user.getId());
             userRole.setAuthToken(authToken);
+            //初始化银行账户数据
+            initAccountBank(user.getId());
+            //初始化金豆数量
+            initGoldBeans(user.getId());
         }
         if (!Objects.isNull(tokenInfo) && System.currentTimeMillis() - tokenInfo.getExpiredTime().getTime() > 0) {
             AuthToken authToken = this.updateTokenInfo(user.getId());
             userRole.setAuthToken(authToken);
         } else {
+            TokenInfo tokenInfoV1 = this.getTokenInfo(user.getId());
             AuthToken authToken = new AuthToken();
-            BeanUtils.copyProperties(tokenInfo, authToken);
+            BeanUtils.copyProperties(tokenInfoV1, authToken);
             userRole.setAuthToken(authToken);
         }
-
-//        //初始化银行账户数据
-//        initAccountBank(user.getId());
-//        //初始化金豆数量
-//        initGoldBeans(user.getId());
-
         userRoleMessageInfo.setData(userRole);
         userRoleMessageInfo.setContent("success");
-
 
         return userRoleMessageInfo;
     }
@@ -207,7 +217,12 @@ public class UserInfoService {
         UserAccount userAccount = new UserAccount();
         userAccount.setUserId(userId);
         userAccount.setBalance(new BigDecimal(0));
+        userAccount.setCreateTime(new Date());
         userAccountMapper.insert(userAccount);
+        AccountBank accountBank = new AccountBank();
+        accountBank.setUserId(userId);
+        accountBank.setCreateTime(new Date());
+        accountBankMapper.insert(accountBank);
     }
 
     /**
@@ -217,6 +232,7 @@ public class UserInfoService {
         UserGoldBeans userGoldBeans = new UserGoldBeans();
         userGoldBeans.setUserId(userId);
         userGoldBeans.setGoldBeansNum(0);
+        userGoldBeans.setCreateTime(new Date());
         userGoldBeansMapper.insert(userGoldBeans);
     }
 

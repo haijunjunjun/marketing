@@ -40,6 +40,12 @@ public class AccountBank {
     private Date createTime;
 
     /**
+     * 修改时间
+     */
+    @Column(name = "modify_time")
+    private Date modifyTime;
+
+    /**
      * @return id
      */
     public Integer getId() {
@@ -141,5 +147,23 @@ public class AccountBank {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取修改时间
+     *
+     * @return modify_time - 修改时间
+     */
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    /**
+     * 设置修改时间
+     *
+     * @param modifyTime 修改时间
+     */
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }
