@@ -27,7 +27,7 @@ public class MyList implements Serializable {
     /**
      * 余额
      */
-    private BigDecimal balance;
+    private Integer balance;
     /**
      * 业绩
      */

@@ -79,6 +79,7 @@ public class WXPayPrecreateService {
         String resultCode = responseMap.get("result_code");
 
         payRecord.setOutTradeNo(reqData.get("out_trade_no"));
+        payRecord.setCustId(custId);
         payRecord.setTradeType(reqData.get("trade_type"));
         payRecord.setProductId(reqData.get("product_id"));
         payRecord.setBody(reqData.get("body"));
@@ -145,6 +146,10 @@ public class WXPayPrecreateService {
             payRecord2.setReturnMsg("success_pay");
             payRecord2.setPayResult("success");
             payRecordMapper.updateByPrimaryKeySelective(payRecord2);
+            CustomerInfo customerInfo = new CustomerInfo();
+            customerInfo.setId(payRecord1.getCustId());
+            customerInfo.setIsMoney(1);
+            customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
 
             Map<String, String> responseMap = new HashMap<>(2);
             responseMap.put("return_code", "SUCCESS");

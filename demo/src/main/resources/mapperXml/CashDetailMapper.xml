@@ -7,6 +7,10 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="cash" jdbcType="DECIMAL" property="cash" />
+    <result column="cash" jdbcType="INTEGER" property="cash" />
+    <result column="check_status" jdbcType="INTEGER" property="checkStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="refuse_reason" jdbcType="VARCHAR" property="refuseReason" />
   </resultMap>
 </mapper>

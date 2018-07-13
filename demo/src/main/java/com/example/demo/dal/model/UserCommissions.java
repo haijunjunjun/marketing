@@ -3,31 +3,25 @@ package com.example.demo.dal.model;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "user_account")
-public class UserAccount {
+@Table(name = "user_commissions")
+public class UserCommissions {
     /**
-     * 账户id
+     * 主键id
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
-     * 用户id
+     * 销售人员id
      */
     @Column(name = "user_id")
     private Integer userId;
 
     /**
-     * 余额
+     * 提成
      */
-    private Integer balance;
-
-    /**
-     * 银行卡号
-     */
-    @Column(name = "account_bank_no")
-    private String accountBankNo;
+    private Integer commission;
 
     /**
      * 创建时间
@@ -36,81 +30,63 @@ public class UserAccount {
     private Date createTime;
 
     /**
-     * 修改时间
+     * 更新时间
      */
     @Column(name = "modify_time")
     private Date modifyTime;
 
     /**
-     * 获取账户id
+     * 获取主键id
      *
-     * @return id - 账户id
+     * @return id - 主键id
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     * 设置账户id
+     * 设置主键id
      *
-     * @param id 账户id
+     * @param id 主键id
      */
     public void setId(Integer id) {
         this.id = id;
     }
 
     /**
-     * 获取用户id
+     * 获取销售人员id
      *
-     * @return user_id - 用户id
+     * @return user_id - 销售人员id
      */
     public Integer getUserId() {
         return userId;
     }
 
     /**
-     * 设置用户id
+     * 设置销售人员id
      *
-     * @param userId 用户id
+     * @param userId 销售人员id
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
     /**
-     * 获取余额
+     * 获取提成
      *
-     * @return balance - 余额
+     * @return commission - 提成
      */
-    public Integer getBalance() {
-        return balance;
+    public Integer getCommission() {
+        return commission;
     }
 
     /**
-     * 设置余额
+     * 设置提成
      *
-     * @param balance 余额
+     * @param commission 提成
      */
-    public void setBalance(Integer balance) {
-        this.balance = balance;
-    }
-
-    /**
-     * 获取银行卡号
-     *
-     * @return account_bank_no - 银行卡号
-     */
-    public String getAccountBankNo() {
-        return accountBankNo;
-    }
-
-    /**
-     * 设置银行卡号
-     *
-     * @param accountBankNo 银行卡号
-     */
-    public void setAccountBankNo(String accountBankNo) {
-        this.accountBankNo = accountBankNo == null ? null : accountBankNo.trim();
+    public void setCommission(Integer commission) {
+        this.commission = commission;
     }
 
     /**
@@ -132,18 +108,18 @@ public class UserAccount {
     }
 
     /**
-     * 获取修改时间
+     * 获取更新时间
      *
-     * @return modify_time - 修改时间
+     * @return modify_time - 更新时间
      */
     public Date getModifyTime() {
         return modifyTime;
     }
 
     /**
-     * 设置修改时间
+     * 设置更新时间
      *
-     * @param modifyTime 修改时间
+     * @param modifyTime 更新时间
      */
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;

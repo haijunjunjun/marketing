@@ -29,6 +29,7 @@ public class MyService {
     private CashDetailMapper cashDetailMapper;
     private CustomerInfoMapper customerInfoMapper;
     private GoldBeansApplyMapper goldBeansApplyMapper;
+    private UserCommissionsMapper userCommissionsMapper;
 
     @Autowired
     public MyService(UserInfoMapper userInfoMapper,
@@ -37,7 +38,8 @@ public class MyService {
                      UserGoldBeansMapper userGoldBeansMapper,
                      CashDetailMapper cashDetailMapper,
                      CustomerInfoMapper customerInfoMapper,
-                     GoldBeansApplyMapper goldBeansApplyMapper) {
+                     GoldBeansApplyMapper goldBeansApplyMapper,
+                     UserCommissionsMapper userCommissionsMapper) {
         this.userInfoMapper = userInfoMapper;
         this.userAccountMapper = userAccountMapper;
         this.userPerformanceMapper = userPerformanceMapper;
@@ -45,35 +47,32 @@ public class MyService {
         this.cashDetailMapper = cashDetailMapper;
         this.customerInfoMapper = customerInfoMapper;
         this.goldBeansApplyMapper = goldBeansApplyMapper;
+        this.userCommissionsMapper = userCommissionsMapper;
     }
 
     public MessageInfo<MyList> getMyListInfo(Integer userId) {
         MessageInfo<MyList> myListMessageInfo = new MessageInfo<>();
         MyList myList = new MyList();
-        if (StringUtils.isEmpty(userId.toString())) {
-            log.info("userid is null !");
-            myListMessageInfo.setContent("userId is null !");
-            return myListMessageInfo;
+        if (StringUtils.isEmpty(userId.toString()) || userId <= 0) {
+            log.info("userid 参数信息异常 !");
+            throw new BizRuntimeException("userId 参数信息异常!");
         }
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         if (Objects.isNull(userInfo)) {
             log.info("用户信息数据查询异常!");
-            myListMessageInfo.setContent("数据查询异常!");
-            return myListMessageInfo;
+            throw new BizRuntimeException("用户信息数据查询异常!");
         }
         myList.setImagesUrl(userInfo.getImageUrl());
         myList.setRealName(userInfo.getRealName());
         myList.setPhone(userInfo.getPhone());
-//        目前暂时不做等级计算，先由后台自定义分配
-//        myList.setLevel(0);
-
+        //目前暂时不做等级计算，先由后台自定义分配
+        myList.setLevel(userInfo.getLevel());
         UserAccount userAccount = new UserAccount();
         userAccount.setUserId(userId);
         UserAccount userAccounts = userAccountMapper.selectOne(userAccount);
         if (Objects.isNull(userAccounts)) {
             log.info("用户账户数据查询异常!");
-            myListMessageInfo.setContent("用户账户数据查询异常!");
-            return myListMessageInfo;
+            throw new BizRuntimeException("用户账户数据查询异常!");
         }
         myList.setBalance(userAccounts.getBalance());
 
@@ -198,5 +197,20 @@ public class MyService {
         goldBeansApply.setStatus(1);
         goldBeansApply.setType(1);
         goldBeansApplyMapper.insert(goldBeansApply);
+    }
+
+    public List<UserCommissions> getUserCommissionList(Integer userId) {
+        if (StringUtils.isEmpty(userId.toString()) || userId <= 0) {
+            log.info("userId 用户id参数信息异常!");
+            throw new BizRuntimeException("userId 用户id参数信息异常!");
+        }
+        UserCommissions userCommissions = new UserCommissions();
+        userCommissions.setUserId(userId);
+        List<UserCommissions> userCommissionsList = userCommissionsMapper.select(userCommissions);
+        if (Objects.isNull(userCommissionsList)) {
+            log.info("数据信息查询异常!");
+            throw new BizRuntimeException("数据信息查询异常!");
+        }
+        return userCommissionsList;
     }
 }

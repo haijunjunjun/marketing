@@ -25,6 +25,7 @@
     <result column="mark" jdbcType="VARCHAR" property="mark" />
     <result column="price" jdbcType="INTEGER" property="price" />
     <result column="abandon_reason" jdbcType="VARCHAR" property="abandonReason" />
+    <result column="check_refuse_reason" jdbcType="VARCHAR" property="checkRefuseReason" />
   </resultMap>
   <select id="getMonthNum" resultType="java.lang.Integer">
     SELECT COUNT(*) from customer_info

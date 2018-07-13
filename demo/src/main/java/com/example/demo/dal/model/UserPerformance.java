@@ -19,10 +19,10 @@ public class UserPerformance {
      * 客户id
      */
     @Column(name = "cust_id")
-    private String custId;
+    private Integer custId;
 
     /**
-     * 业绩提成
+     * 业绩
      */
     private Integer performance;
 
@@ -75,7 +75,7 @@ public class UserPerformance {
      *
      * @return cust_id - 客户id
      */
-    public String getCustId() {
+    public Integer getCustId() {
         return custId;
     }
 
@@ -84,8 +84,8 @@ public class UserPerformance {
      *
      * @param custId 客户id
      */
-    public void setCustId(String custId) {
-        this.custId = custId == null ? null : custId.trim();
+    public void setCustId(Integer custId) {
+        this.custId = custId;
     }
 
     /**

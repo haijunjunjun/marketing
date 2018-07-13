@@ -69,6 +69,11 @@ public class UserInfo {
     private String imageUrl;
 
     /**
+     * 1：初级 2|：中级 3：高级
+     */
+    private Integer level;
+
+    /**
      * 获取用户id
      *
      * @return id - 用户id
@@ -264,5 +269,23 @@ public class UserInfo {
      */
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl == null ? null : imageUrl.trim();
+    }
+
+    /**
+     * 获取1：初级 2|：中级 3：高级
+     *
+     * @return level - 1：初级 2|：中级 3：高级
+     */
+    public Integer getLevel() {
+        return level;
+    }
+
+    /**
+     * 设置1：初级 2|：中级 3：高级
+     *
+     * @param level 1：初级 2|：中级 3：高级
+     */
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 }

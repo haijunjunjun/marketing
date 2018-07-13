@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cust_id" jdbcType="INTEGER" property="custId" />
     <result column="out_trade_no" jdbcType="VARCHAR" property="outTradeNo" />
     <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
     <result column="product_id" jdbcType="VARCHAR" property="productId" />

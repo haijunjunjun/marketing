@@ -124,6 +124,12 @@ public class CustomerInfo {
     private String abandonReason;
 
     /**
+     * 审核失败原因
+     */
+    @Column(name = "check_refuse_reason")
+    private String checkRefuseReason;
+
+    /**
      * 获取客户id
      *
      * @return id - 客户id
@@ -481,5 +487,23 @@ public class CustomerInfo {
      */
     public void setAbandonReason(String abandonReason) {
         this.abandonReason = abandonReason == null ? null : abandonReason.trim();
+    }
+
+    /**
+     * 获取审核失败原因
+     *
+     * @return check_refuse_reason - 审核失败原因
+     */
+    public String getCheckRefuseReason() {
+        return checkRefuseReason;
+    }
+
+    /**
+     * 设置审核失败原因
+     *
+     * @param checkRefuseReason 审核失败原因
+     */
+    public void setCheckRefuseReason(String checkRefuseReason) {
+        this.checkRefuseReason = checkRefuseReason == null ? null : checkRefuseReason.trim();
     }
 }

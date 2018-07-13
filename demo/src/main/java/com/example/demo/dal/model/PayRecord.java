@@ -12,6 +12,12 @@ public class PayRecord {
     private Integer id;
 
     /**
+     * 客户id
+     */
+    @Column(name = "cust_id")
+    private Integer custId;
+
+    /**
      * 订单号
      */
     @Column(name = "out_trade_no")
@@ -98,6 +104,24 @@ public class PayRecord {
      */
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    /**
+     * 获取客户id
+     *
+     * @return cust_id - 客户id
+     */
+    public Integer getCustId() {
+        return custId;
+    }
+
+    /**
+     * 设置客户id
+     *
+     * @param custId 客户id
+     */
+    public void setCustId(Integer custId) {
+        this.custId = custId;
     }
 
     /**
