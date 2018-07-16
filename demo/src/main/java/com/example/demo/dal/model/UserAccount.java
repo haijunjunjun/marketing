@@ -21,7 +21,7 @@ public class UserAccount {
     /**
      * 余额
      */
-    private Integer balance;
+    private Double balance;
 
     /**
      * 银行卡号
@@ -82,7 +82,7 @@ public class UserAccount {
      *
      * @return balance - 余额
      */
-    public Integer getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
@@ -91,7 +91,7 @@ public class UserAccount {
      *
      * @param balance 余额
      */
-    public void setBalance(Integer balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

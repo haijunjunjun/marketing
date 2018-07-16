@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dal.mapper.UserInfoMapper">
-  <resultMap id="BaseResultMap" type="com.example.demo.dal.model.UserInfo">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="role_id" jdbcType="INTEGER" property="roleId" />
-    <result column="real_name" jdbcType="VARCHAR" property="realName" />
-    <result column="sex" jdbcType="INTEGER" property="sex" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="open_id" jdbcType="VARCHAR" property="openId" />
-    <result column="manage_id" jdbcType="INTEGER" property="manageId" />
-    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
-    <result column="level" jdbcType="INTEGER" property="level" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.example.demo.dal.model.UserInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="manage_id" jdbcType="INTEGER" property="manageId"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="level" jdbcType="VARCHAR" property="level"/>
+    </resultMap>
+
+    <select id="validNew" resultType="java.lang.Integer">
+    select COUNT(*) from user_info
+    WHERE id = #{userId}
+      AND date_format(#{endDt},"%Y%m%d") BETWEEN date_format(create_time,"%Y%m%d") AND date_format(#{now},"%Y%m%d")
+  </select>
 </mapper>

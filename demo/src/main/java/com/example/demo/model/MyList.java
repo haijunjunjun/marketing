@@ -23,11 +23,11 @@ public class MyList implements Serializable {
     /**
      * 等级
      */
-    private Integer level;
+    private String level;
     /**
      * 余额
      */
-    private Integer balance;
+    private double balance;
     /**
      * 业绩
      */

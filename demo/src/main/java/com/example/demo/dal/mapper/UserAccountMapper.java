@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Param;
 
 public interface UserAccountMapper extends MyMapper<UserAccount> {
 
-    int updateUserAccount(@Param("id") Integer userId, @Param("cash") Integer cash);
+    int updateUserAccount(@Param("id") Integer userId, @Param("cash") double cash);
 }

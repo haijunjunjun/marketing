@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.dal.mapper.CustomerInfoMapper;
-import com.example.demo.dal.mapper.UserCommissionsMapper;
 import com.example.demo.dal.mapper.UserPerformanceMapper;
 import com.example.demo.dal.model.CustomerInfo;
 import com.example.demo.dal.model.UserPerformance;
@@ -25,8 +24,6 @@ public class FileUploadService {
     private CustomerInfoMapper customerInfoMapper;
     @Autowired
     private UserPerformanceMapper userPerformanceMapper;
-    @Autowired
-    private UserCommissionsMapper userCommissionsMapper;
 
     public String uploadFile(Integer custId, MultipartFile multipartFile, String uploadPath) {
         if (StringUtils.isEmpty(custId.toString()) || custId <= 0) {

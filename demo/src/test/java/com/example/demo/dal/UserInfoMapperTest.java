@@ -1,7 +1,8 @@
 package com.example.demo.dal;
 
 import com.example.demo.DemoApplication;
-import com.example.demo.dal.mapper.UserAccountMapper;
+import com.example.demo.dal.mapper.UserInfoMapper;
+import com.example.demo.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,17 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Date;
+
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DemoApplication.class)
-public class UserAccountMapperTest {
+public class UserInfoMapperTest {
 
     @Autowired
-    private UserAccountMapper userAccountMapper;
+    private UserInfoMapper userInfoMapper;
 
     @Test
-    public void updateUserAccountTest() {
-        int i = userAccountMapper.updateUserAccount(1, +300.13);
-        log.info("info is :" + i);
+    public void validNewTest() {
+        Integer integer = userInfoMapper.validNew(1, "20180709", DateUtil.dateStrV1(new Date()));
+        log.info("result is :" + integer);
     }
 }

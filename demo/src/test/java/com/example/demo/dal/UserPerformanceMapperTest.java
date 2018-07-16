@@ -1,7 +1,7 @@
 package com.example.demo.dal;
 
 import com.example.demo.DemoApplication;
-import com.example.demo.dal.mapper.UserAccountMapper;
+import com.example.demo.dal.mapper.UserPerformanceMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,14 +12,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DemoApplication.class)
-public class UserAccountMapperTest {
+public class UserPerformanceMapperTest {
 
     @Autowired
-    private UserAccountMapper userAccountMapper;
+    private UserPerformanceMapper userPerformanceMapper;
 
     @Test
-    public void updateUserAccountTest() {
-        int i = userAccountMapper.updateUserAccount(1, +300.13);
-        log.info("info is :" + i);
+    public void getPerformanceTest() {
+        Integer performance = userPerformanceMapper.getPerformance(1, "20180709", "20180715");
+        log.info("performance is :" + performance);
     }
 }

@@ -29,7 +29,6 @@ public class MyService {
     private CashDetailMapper cashDetailMapper;
     private CustomerInfoMapper customerInfoMapper;
     private GoldBeansApplyMapper goldBeansApplyMapper;
-    private UserCommissionsMapper userCommissionsMapper;
 
     @Autowired
     public MyService(UserInfoMapper userInfoMapper,
@@ -38,8 +37,7 @@ public class MyService {
                      UserGoldBeansMapper userGoldBeansMapper,
                      CashDetailMapper cashDetailMapper,
                      CustomerInfoMapper customerInfoMapper,
-                     GoldBeansApplyMapper goldBeansApplyMapper,
-                     UserCommissionsMapper userCommissionsMapper) {
+                     GoldBeansApplyMapper goldBeansApplyMapper) {
         this.userInfoMapper = userInfoMapper;
         this.userAccountMapper = userAccountMapper;
         this.userPerformanceMapper = userPerformanceMapper;
@@ -47,7 +45,6 @@ public class MyService {
         this.cashDetailMapper = cashDetailMapper;
         this.customerInfoMapper = customerInfoMapper;
         this.goldBeansApplyMapper = goldBeansApplyMapper;
-        this.userCommissionsMapper = userCommissionsMapper;
     }
 
     public MessageInfo<MyList> getMyListInfo(Integer userId) {
@@ -65,7 +62,6 @@ public class MyService {
         myList.setImagesUrl(userInfo.getImageUrl());
         myList.setRealName(userInfo.getRealName());
         myList.setPhone(userInfo.getPhone());
-        //目前暂时不做等级计算，先由后台自定义分配
         myList.setLevel(userInfo.getLevel());
         UserAccount userAccount = new UserAccount();
         userAccount.setUserId(userId);
@@ -199,18 +195,4 @@ public class MyService {
         goldBeansApplyMapper.insert(goldBeansApply);
     }
 
-    public List<UserCommissions> getUserCommissionList(Integer userId) {
-        if (StringUtils.isEmpty(userId.toString()) || userId <= 0) {
-            log.info("userId 用户id参数信息异常!");
-            throw new BizRuntimeException("userId 用户id参数信息异常!");
-        }
-        UserCommissions userCommissions = new UserCommissions();
-        userCommissions.setUserId(userId);
-        List<UserCommissions> userCommissionsList = userCommissionsMapper.select(userCommissions);
-        if (Objects.isNull(userCommissionsList)) {
-            log.info("数据信息查询异常!");
-            throw new BizRuntimeException("数据信息查询异常!");
-        }
-        return userCommissionsList;
-    }
 }

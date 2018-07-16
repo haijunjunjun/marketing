@@ -216,7 +216,7 @@ public class UserInfoService {
     public void initAccountBank(Integer userId) {
         UserAccount userAccount = new UserAccount();
         userAccount.setUserId(userId);
-        userAccount.setBalance(0);
+        userAccount.setBalance(0d);
         userAccount.setCreateTime(new Date());
         userAccountMapper.insert(userAccount);
         AccountBank accountBank = new AccountBank();

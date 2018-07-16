@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.config.annotation.CurrentUser;
 import com.example.demo.dal.model.GoldBeansApply;
-import com.example.demo.dal.model.UserCommissions;
 import com.example.demo.dal.model.UserInfo;
 import com.example.demo.model.MyList;
 import com.example.demo.model.MyPerformanceModel;
@@ -62,8 +61,4 @@ public class MyController {
         myService.editPersonalInfo(userInfo.getId(), imageUrl, sex);
     }
 
-    @RequestMapping(value = "/marketing/user/commissions/list")
-    public ResponseEntity<List<UserCommissions>> getUserCommissionList(@CurrentUser UserInfo userInfo) {
-        return ResponseEntity.ok(myService.getUserCommissionList(userInfo.getId()));
-    }
 }

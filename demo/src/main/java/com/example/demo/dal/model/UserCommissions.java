@@ -13,7 +13,7 @@ public class UserCommissions {
     private Integer id;
 
     /**
-     * 销售人员id
+     * 用户id
      */
     @Column(name = "user_id")
     private Integer userId;
@@ -21,7 +21,7 @@ public class UserCommissions {
     /**
      * 提成
      */
-    private Integer commission;
+    private Double commission;
 
     /**
      * 创建时间
@@ -30,7 +30,7 @@ public class UserCommissions {
     private Date createTime;
 
     /**
-     * 更新时间
+     * 修改时间
      */
     @Column(name = "modify_time")
     private Date modifyTime;
@@ -54,18 +54,18 @@ public class UserCommissions {
     }
 
     /**
-     * 获取销售人员id
+     * 获取用户id
      *
-     * @return user_id - 销售人员id
+     * @return user_id - 用户id
      */
     public Integer getUserId() {
         return userId;
     }
 
     /**
-     * 设置销售人员id
+     * 设置用户id
      *
-     * @param userId 销售人员id
+     * @param userId 用户id
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
@@ -76,7 +76,7 @@ public class UserCommissions {
      *
      * @return commission - 提成
      */
-    public Integer getCommission() {
+    public Double getCommission() {
         return commission;
     }
 
@@ -85,7 +85,7 @@ public class UserCommissions {
      *
      * @param commission 提成
      */
-    public void setCommission(Integer commission) {
+    public void setCommission(Double commission) {
         this.commission = commission;
     }
 
@@ -108,18 +108,18 @@ public class UserCommissions {
     }
 
     /**
-     * 获取更新时间
+     * 获取修改时间
      *
-     * @return modify_time - 更新时间
+     * @return modify_time - 修改时间
      */
     public Date getModifyTime() {
         return modifyTime;
     }
 
     /**
-     * 设置更新时间
+     * 设置修改时间
      *
-     * @param modifyTime 更新时间
+     * @param modifyTime 修改时间
      */
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;

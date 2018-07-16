@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -32,6 +31,8 @@ public class ManageService {
     private GoldBeansApplyMapper goldBeansApplyMapper;
     @Autowired
     private UserGoldBeansMapper userGoldBeansMapper;
+    @Autowired
+    private PerformanceConfigService performanceConfigService;
 
     public List<SaleList> getSaleListInfo(Integer manageId) {
         List<SaleList> saleListList = new ArrayList<>();
@@ -142,43 +143,12 @@ public class ManageService {
             throw new BizRuntimeException("参数信息异常!");
         }
         Integer monthNum = customerInfoMapper.getMonthNum(userId, getDt(new Date()));
-        Map<String, String> mapInfo = getMapInfo(getTimeInterval(new Date()));
+        Map<String, String> mapInfo = getMapInfo(performanceConfigService.getTimeInterval(new Date()));
         Integer weekNum = customerInfoMapper.getWeekNum(userId, mapInfo.get("begin"), mapInfo.get("end"));
         map.put("monthNum", monthNum);
         map.put("weekNum", weekNum);
         return map;
 
-    }
-
-    /**
-     * 根据当前日期获得所在周的日期区间（周一和周日日期）
-     *
-     * @return
-     * @throws ParseException
-     * @author zhaoxuepu
-     */
-    private String getTimeInterval(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        // 判断要计算的日期是否是周日，如果是则减一天计算周六的，否则会出问题，计算到下一周去了
-        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);// 获得当前日期是一个星期的第几天
-        if (1 == dayWeek) {
-            cal.add(Calendar.DAY_OF_MONTH, -1);
-        }
-        // System.out.println("要计算日期为:" + sdf.format(cal.getTime())); // 输出要计算日期
-        // 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
-        cal.setFirstDayOfWeek(Calendar.MONDAY);
-        // 获得当前日期是一个星期的第几天
-        int day = cal.get(Calendar.DAY_OF_WEEK);
-        // 根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
-        cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
-        String imptimeBegin = sdf.format(cal.getTime());
-        // System.out.println("所在周星期一的日期：" + imptimeBegin);
-        cal.add(Calendar.DATE, 6);
-        String imptimeEnd = sdf.format(cal.getTime());
-        // System.out.println("所在周星期日的日期：" + imptimeEnd);
-        return imptimeBegin + "," + imptimeEnd;
     }
 
     private Map<String, String> getMapInfo(String str) {
