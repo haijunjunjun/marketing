@@ -166,10 +166,17 @@ public class UserAccountService {
             messageInfo.setContent("开户银行不能为空!");
             return messageInfo;
         }
-        UserAccount userAccount = new UserAccount();
-        userAccount.setUserId(userId);
-        UserAccount userAccountInfo = userAccountMapper.selectOne(userAccount);
-        UserAccount userAccountV1 = new UserAccount();
-        return null;
+        int i = userAccountMapper.updateBankNo(userId, bindCardModel.getAccountBankNo());
+        if (1 != i) {
+            log.info("用户" + userId + "的账户信息更新异常!");
+            throw new BizRuntimeException("用户" + userId + "的账户信息更新异常!");
+        }
+        int updateInfo = accountBankMapper.updateBankInfo(userId, bindCardModel.getAccountBankNo(), bindCardModel.getAccountHolder(), bindCardModel.getAccountBankName());
+        if (1 != updateInfo) {
+            log.info("用户" + userId + "的账户相关-银行卡信息更新异常!");
+            throw new BizRuntimeException("用户" + userId + "的账户相关-银行卡信息更新异常!");
+        }
+        messageInfo.setContent("success");
+        return messageInfo;
     }
 }

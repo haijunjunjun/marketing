@@ -13,4 +13,9 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
+  <update id="updateBankInfo">
+    update account_bank
+       set  bank_no = #{bankNo},account_holder = #{accountHolder},account_bank_name = #{bankName},modify_time = now()
+    where  user_id = #{id}
+  </update>
 </mapper>

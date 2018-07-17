@@ -1,7 +1,7 @@
 package com.example.demo.dal;
 
 import com.example.demo.DemoApplication;
-import com.example.demo.dal.mapper.UserAccountMapper;
+import com.example.demo.dal.mapper.AccountBankMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,20 +12,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DemoApplication.class)
-public class UserAccountMapperTest {
+public class AccountBankMapperTest {
 
     @Autowired
-    private UserAccountMapper userAccountMapper;
+    private AccountBankMapper accountBankMapper;
 
     @Test
-    public void updateUserAccountTest() {
-        int i = userAccountMapper.updateUserAccount(1, +300.13);
-        log.info("info is :" + i);
-    }
-
-    @Test
-    public void updateBankNoTest() {
-        int i = userAccountMapper.updateBankNo(1, "6217000340000351365");
+    public void updateBankInfoTest() {
+        int i = accountBankMapper.updateBankInfo(1, "6217000340000351365", "海军", "建设银行");
         log.info("info is :" + i);
     }
 }

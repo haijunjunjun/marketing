@@ -17,6 +17,6 @@ public class PerformanceConfigController {
     @RequestMapping(value = "/marketing/batch/execute", method = RequestMethod.POST)
     public void excuteBatch(@CurrentUser UserInfo userInfo) {
         Double aDouble = performanceConfigService.calUserCommission(userInfo.getId());
-        performanceConfigService.saveUserCommission(userInfo.getId(), aDouble);
+        performanceConfigService.saveUserCommission(userInfo.getId());
     }
 }

@@ -206,22 +206,23 @@ public class PerformanceConfigService {
         return Double.parseDouble("0");
     }
 
-    public void saveUserCommission(Integer userId, double commission) {
+    public void saveUserCommission(Integer userId) {
+        Double commission = this.calUserCommission(userId);
         UserCommissions userCommissions = new UserCommissions();
         userCommissions.setUserId(userId);
         userCommissions.setCommission(commission);
         userCommissions.setCreateTime(new Date());
         int i = userCommissionsMapper.insert(userCommissions);
         if (1 != i) {
-            log.info("用户提成数据保存异常!");
-            throw new BizRuntimeException("用户提成数据保存异常!");
+            log.info("用户" + userId + "提成数据保存异常!");
+            throw new BizRuntimeException("用户" + userId + "提成数据保存异常!");
         }
         log.info("用户提成数据保存成功!");
         //更新用户账户信息
-        int updateInfo = userAccountMapper.updateUserAccount(userId, -commission);
+        int updateInfo = userAccountMapper.updateUserAccount(userId, commission);
         if (1 != updateInfo) {
-            log.info("更新信息异常！");
-            throw new BizRuntimeException("更新信息异常!");
+            log.info("用户" + userId + "更新信息异常！");
+            throw new BizRuntimeException("用户" + userId + "更新信息异常!");
         }
     }
 }

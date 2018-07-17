@@ -4,11 +4,13 @@ import com.example.demo.config.annotation.CurrentUser;
 import com.example.demo.dal.model.CashDetail;
 import com.example.demo.dal.model.UserInfo;
 import com.example.demo.model.BankInfoModel;
+import com.example.demo.model.BindCardModel;
 import com.example.demo.service.UserAccountService;
 import com.example.demo.util.MessageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,5 +46,11 @@ public class UserAccountController {
     @RequestMapping(value = "/marketing/my/bank/info", method = RequestMethod.POST)
     public ResponseEntity<BankInfoModel> getBankInfo(@Valid @NotNull @CurrentUser UserInfo userInfo) {
         return ResponseEntity.ok(userAccountService.getBankInfo(userInfo.getId()));
+    }
+
+    @RequestMapping(value = "/marketing/my/bank/bind", method = RequestMethod.POST)
+    public ResponseEntity<MessageInfo> bindCard(@Valid @NotNull @CurrentUser UserInfo userInfo,
+                                                @Valid @RequestBody(required = true) BindCardModel bindCardModel) {
+        return ResponseEntity.ok(userAccountService.bindCard(userInfo.getId(), bindCardModel));
     }
 }

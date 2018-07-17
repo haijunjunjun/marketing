@@ -14,7 +14,12 @@
     </resultMap>
     <update id="updateUserAccount">
       update user_account
-        set  balance = balance + #{cash}
+        set  balance = balance + #{cash},modify_time = now()
        WHERE user_id = #{id}
-  </update>
+    </update>
+    <update id="updateBankNo">
+        update user_account
+           set  account_bank_no = #{bankNo},modify_time = now()
+         where user_id = #{id}
+    </update>
 </mapper>

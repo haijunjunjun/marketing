@@ -286,4 +286,5 @@ public class UserInfoService {
     public String getOpeator(@CurrentUser UserInfo userInfo) {
         return "用户" + userInfo.getRealName() + "不需要重复登录";
     }
+
 }
