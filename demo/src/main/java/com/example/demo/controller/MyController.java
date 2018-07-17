@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.config.annotation.CurrentUser;
 import com.example.demo.dal.model.GoldBeansApply;
 import com.example.demo.dal.model.UserInfo;
+import com.example.demo.model.Balance;
 import com.example.demo.model.MyList;
 import com.example.demo.model.MyPerformanceModel;
 import com.example.demo.model.MyPersonalInfo;
@@ -59,6 +60,11 @@ public class MyController {
                               @Valid @NotNull @RequestParam("image") String imageUrl,
                               @Valid @NotNull @RequestParam("sex") Integer sex) {
         myService.editPersonalInfo(userInfo.getId(), imageUrl, sex);
+    }
+
+    @RequestMapping(value = "/marketing/balance/list", method = RequestMethod.GET)
+    public ResponseEntity<Balance> getBalanceListInfo(@Valid @NotNull @CurrentUser UserInfo userInfo) {
+        return ResponseEntity.ok(myService.getBalanceList(userInfo.getId()));
     }
 
 }

@@ -2,9 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dal.mapper.*;
 import com.example.demo.dal.model.*;
-import com.example.demo.model.MyList;
-import com.example.demo.model.MyPerformanceModel;
-import com.example.demo.model.MyPersonalInfo;
+import com.example.demo.model.*;
 import com.example.demo.util.BizRuntimeException;
 import com.example.demo.util.MessageInfo;
 import com.example.demo.util.PerformanceMessageInfo;
@@ -29,6 +27,7 @@ public class MyService {
     private CashDetailMapper cashDetailMapper;
     private CustomerInfoMapper customerInfoMapper;
     private GoldBeansApplyMapper goldBeansApplyMapper;
+    private UserCommissionsMapper userCommissionsMapper;
 
     @Autowired
     public MyService(UserInfoMapper userInfoMapper,
@@ -37,7 +36,8 @@ public class MyService {
                      UserGoldBeansMapper userGoldBeansMapper,
                      CashDetailMapper cashDetailMapper,
                      CustomerInfoMapper customerInfoMapper,
-                     GoldBeansApplyMapper goldBeansApplyMapper) {
+                     GoldBeansApplyMapper goldBeansApplyMapper,
+                     UserCommissionsMapper userCommissionsMapper) {
         this.userInfoMapper = userInfoMapper;
         this.userAccountMapper = userAccountMapper;
         this.userPerformanceMapper = userPerformanceMapper;
@@ -45,6 +45,7 @@ public class MyService {
         this.cashDetailMapper = cashDetailMapper;
         this.customerInfoMapper = customerInfoMapper;
         this.goldBeansApplyMapper = goldBeansApplyMapper;
+        this.userCommissionsMapper = userCommissionsMapper;
     }
 
     public MessageInfo<MyList> getMyListInfo(Integer userId) {
@@ -193,6 +194,40 @@ public class MyService {
         goldBeansApply.setStatus(1);
         goldBeansApply.setType(1);
         goldBeansApplyMapper.insert(goldBeansApply);
+    }
+
+    public Balance getBalanceList(Integer userId) {
+        Balance balance = new Balance();
+        List<BalanceCommission> balanceCommissionList = new ArrayList<>();
+        List<BalanceCash> balanceCashList = new ArrayList<>();
+        if (StringUtils.isEmpty(userId.toString()) || userId <= 0) {
+            log.info("参数信息异常!");
+            throw new BizRuntimeException("参数信息异常！");
+        }
+        CashDetail cashDetail = new CashDetail();
+        cashDetail.setUserId(userId);
+        cashDetail.setCheckStatus(1);
+        List<CashDetail> cashDetailList = cashDetailMapper.select(cashDetail);
+        for (CashDetail c : cashDetailList) {
+            BalanceCash balanceCash = new BalanceCash();
+            balanceCash.setType("cash");
+            balanceCash.setCash(-c.getCash());
+            balanceCash.setDate(c.getModifyTime() == null ? c.getCreateTime() : c.getModifyTime());
+            balanceCashList.add(balanceCash);
+        }
+        UserCommissions userCommissions = new UserCommissions();
+        userCommissions.setUserId(userId);
+        List<UserCommissions> userCommissionsList = userCommissionsMapper.select(userCommissions);
+        for (UserCommissions u : userCommissionsList) {
+            BalanceCommission balanceCommission = new BalanceCommission();
+            balanceCommission.setType("commission");
+            balanceCommission.setCommission(u.getCommission());
+            balanceCommission.setDate(u.getModifyTime() == null ? u.getCreateTime() : u.getModifyTime());
+            balanceCommissionList.add(balanceCommission);
+        }
+        balance.setBalanceCashList(balanceCashList);
+        balance.setBalanceCommissionList(balanceCommissionList);
+        return balance;
     }
 
 }
