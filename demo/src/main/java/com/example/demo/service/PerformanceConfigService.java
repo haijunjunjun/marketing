@@ -6,6 +6,7 @@ import com.example.demo.dal.model.UserCommissions;
 import com.example.demo.dal.model.UserInfo;
 import com.example.demo.util.BizRuntimeException;
 import com.example.demo.util.DateUtil;
+import com.example.demo.util.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -224,5 +225,60 @@ public class PerformanceConfigService {
             log.info("用户" + userId + "更新信息异常！");
             throw new BizRuntimeException("用户" + userId + "更新信息异常!");
         }
+    }
+
+    public MessageInfo<Double> calCommission(Integer userId, Integer preWeekPerformanceV1, Integer preWeekPerformanceV2) {
+        MessageInfo<Double> messageInfo = new MessageInfo<>();
+        if (preWeekPerformanceV1 < 0 || preWeekPerformanceV2 < 0) {
+            log.info("非法参数");
+            messageInfo.setContent("非法参数");
+            return messageInfo;
+        }
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        String level = userInfo.getLevel();
+        Map<String, Object> config = this.getPerformanceConfig();
+        //根据等级获取当前销售员的定额
+        BigDecimal quota = new BigDecimal(config.get(level).toString());
+        //获取配置（提成百分比）
+        BigDecimal r1 = new BigDecimal(config.get("R1").toString());
+        BigDecimal r2 = new BigDecimal(config.get("R2").toString());
+        BigDecimal r3 = new BigDecimal(config.get("R3").toString());
+        BigDecimal r6 = new BigDecimal(config.get("R6").toString());
+
+        BigDecimal performanceV1 = new BigDecimal(preWeekPerformanceV1);
+        BigDecimal performanceV2 = new BigDecimal(preWeekPerformanceV2);
+
+        //上周的业绩小于定额
+        if (performanceV1.compareTo(quota) == -1) {
+            messageInfo.setData(performanceV1.multiply(r1).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue());
+            messageInfo.setContent("success");
+            return messageInfo;
+        }
+        if (this.validNew(userId, new Date())) {
+            performanceV2 = quota;
+        }
+        if ((performanceV1.compareTo(quota) == 1 || performanceV1.compareTo(quota) == 0)
+                && (performanceV1.compareTo(performanceV2) == -1 || performanceV1.compareTo(performanceV2) == 0)) {
+            messageInfo.setData((quota.multiply(r2).add(performanceV1.subtract(quota).multiply(r3))).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue());
+            messageInfo.setContent("success");
+            return messageInfo;
+        }
+        BigDecimal r4 = r2.multiply(new BigDecimal(1).add((performanceV1.subtract(quota)).divide(performanceV1, 2, BigDecimal.ROUND_HALF_DOWN)));
+        BigDecimal r5 = r3.multiply(new BigDecimal(1).add((performanceV1.subtract(quota)).divide(performanceV1, 2, BigDecimal.ROUND_HALF_DOWN)));
+        if ((performanceV1.compareTo(quota) == 1 || performanceV1.compareTo(quota) == 0)
+                && performanceV1.compareTo(performanceV2) == 1) {
+            BigDecimal dft = quota.multiply(r4).add((performanceV1.subtract(quota)).multiply(r5));
+            if (performanceV2.compareTo(quota) == 1) {
+                messageInfo.setData(dft.add((performanceV1.subtract(performanceV2)).multiply(r6)).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue());
+                messageInfo.setContent("success");
+                return messageInfo;
+            }
+            messageInfo.setData(dft.setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue());
+            messageInfo.setContent("success");
+            return messageInfo;
+        }
+        messageInfo.setData(Double.parseDouble("0"));
+        messageInfo.setContent("fail");
+        return messageInfo;
     }
 }
