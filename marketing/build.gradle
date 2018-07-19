@@ -72,6 +72,8 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.0.3.RELEASE'
+
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.43'
     compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '1.3.2'
     compile group: 'com.github.pagehelper', name: 'pagehelper', version: '4.2.1'
