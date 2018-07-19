@@ -1,0 +1,5 @@
+server:
+  port: 8088
+token:
+  header: ACCESS_TOKEN
+  name: ACCESS_TOKEN
