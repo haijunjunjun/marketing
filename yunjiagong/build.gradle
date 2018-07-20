@@ -23,16 +23,14 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.0.3.RELEASE'
+
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.0.3.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.0.3.RELEASE'
+
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.47'
 
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.0'
