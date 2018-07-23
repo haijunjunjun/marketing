@@ -1,9 +1,12 @@
 package com.niule.yunjiagong.yunjiagong.token;
 
+import com.niule.yunjiagong.yunjiagong.redis.RedisService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -14,7 +17,11 @@ import java.util.Date;
  * @author haijun
  * @create 2018 - 07 - 20 - 10:48
  */
+@Service
 public class JwtHelper {
+
+    @Autowired
+    private RedisService redisService;
 
     /**
      * parse token
@@ -61,6 +68,7 @@ public class JwtHelper {
             builder.setExpiration(exp).setNotBefore(now);
         }
         String token = builder.compact();
+        redisService.setKey(userId, token);
         return token;
     }
 

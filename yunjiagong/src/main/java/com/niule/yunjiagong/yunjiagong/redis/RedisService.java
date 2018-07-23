@@ -2,7 +2,7 @@ package com.niule.yunjiagong.yunjiagong.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author haijun
  * @create 2018 - 07 - 20 - 16:01
  */
-@Repository
+@Service
 public class RedisService {
 
     @Autowired

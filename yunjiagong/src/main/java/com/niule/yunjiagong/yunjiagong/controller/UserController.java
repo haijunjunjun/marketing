@@ -1,5 +1,7 @@
 package com.niule.yunjiagong.yunjiagong.controller;
 
+import com.niule.yunjiagong.yunjiagong.config.annotation.Operator;
+import com.niule.yunjiagong.yunjiagong.model.CurOperator;
 import com.niule.yunjiagong.yunjiagong.service.GetUserService;
 import com.niule.yunjiagong.yunjiagong.token.JwtHelper;
 import com.niule.yunjiagong.yunjiagong.token.JwtInfo;
@@ -20,11 +22,12 @@ public class UserController {
     @Autowired
     private JwtInfo jwtInfo;
     @Autowired
+    private JwtHelper jwtHelper;
+    @Autowired
     private GetUserService getUserService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ResponseEntity<String> login() {
-        JwtHelper jwtHelper = new JwtHelper();
         String jwt = jwtHelper.createJwt(jwtInfo.getName(), "1", "manage", "niule", "niule", Long.parseLong(jwtInfo.getExpiresSecond()), jwtInfo.getBase64Secret());
         return ResponseEntity.ok(jwt);
     }
@@ -35,8 +38,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public ResponseEntity<String> getInfo() {
-        return ResponseEntity.ok("success");
+    public ResponseEntity<String> getInfo(@Operator CurOperator curOperator) {
+        return ResponseEntity.ok(curOperator.getUserId() + "," + curOperator.getRole());
     }
 
     @RequestMapping(value = "/parse", method = RequestMethod.POST)
@@ -44,6 +47,5 @@ public class UserController {
                                             @RequestParam("base64Secret") String base64Secret) {
         return ResponseEntity.ok(JwtHelper.parseJwt(token, base64Secret).toString());
     }
-
 
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @create 2018 - 07 - 20 - 16:48
  */
 @Data
-public class Operator implements Serializable {
+public class CurOperator implements Serializable {
     private static final long serialVersionUID = -2239030833148332733L;
     private String userId;
     private String role;

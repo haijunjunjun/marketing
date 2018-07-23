@@ -3,6 +3,7 @@ package com.niule.yunjiagong.yunjiagong.token;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.niule.yunjiagong.yunjiagong.config.ResultStatus;
 import com.niule.yunjiagong.yunjiagong.constants.ResultInfo;
+import com.niule.yunjiagong.yunjiagong.model.CurOperator;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -38,8 +39,11 @@ public class JwtAuthorizeFilter implements Filter {
                 auth = auth.substring(7, auth.length());
                 Claims claims = JwtHelper.parseJwt(auth, jwtInfo.getBase64Secret());
                 if (claims != null) {
+                    CurOperator operator = new CurOperator();
+                    operator.setUserId(claims.get("userId").toString());
+                    operator.setRole(claims.get("role").toString());
+                    httpServletRequest.setAttribute("operator", operator);
                     chain.doFilter(request, response);
-                    httpServletRequest.setAttribute("userId", claims.get("userId").toString());
                     return;
                 }
             }

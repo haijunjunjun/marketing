@@ -1,6 +1,8 @@
-package com.niule.yunjiagong.yunjiagong.redis;
+package com.niule.yunjiagong.yunjiagong.dal;
 
 import com.niule.yunjiagong.yunjiagong.YunjiagongApplication;
+import com.niule.yunjiagong.yunjiagong.dal.mapper.UserMapper;
+import com.niule.yunjiagong.yunjiagong.dal.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,30 +12,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author haijun
- * @create 2018 - 07 - 20 - 16:03
+ * @create 2018 - 07 - 23 - 10:07
  */
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = YunjiagongApplication.class)
-public class RedisServiceTest {
+public class UserMapperTest {
 
     @Autowired
-    private RedisService redisService;
+    private UserMapper userMapper;
 
     @Test
-    public void setKeyTest() {
-        redisService.setKey("test-22", "success--info");
+    public void getUserInfo() {
+        User user = userMapper.selectByPrimaryKey(1);
+        log.info("info is :" + user.getName());
     }
 
     @Test
-    public void getValue() {
-        Object test = redisService.get("test");
-        log.info("info is :" + test);
+    public void getInfoTest() {
+        User info = userMapper.getInfo(1);
+        log.info("info is :" + info.getName());
     }
-
-    @Test
-    public void deleteKey() {
-        redisService.remove("test");
-    }
-
 }
