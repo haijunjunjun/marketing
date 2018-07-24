@@ -2,7 +2,6 @@ package com.niule.yunjiagong.yunjiagong.controller;
 
 import com.niule.yunjiagong.yunjiagong.config.annotation.Operator;
 import com.niule.yunjiagong.yunjiagong.model.CurOperator;
-import com.niule.yunjiagong.yunjiagong.service.GetUserService;
 import com.niule.yunjiagong.yunjiagong.token.JwtHelper;
 import com.niule.yunjiagong.yunjiagong.token.JwtInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ public class UserController {
     private JwtInfo jwtInfo;
     @Autowired
     private JwtHelper jwtHelper;
-    @Autowired
-    private GetUserService getUserService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ResponseEntity<String> login() {
