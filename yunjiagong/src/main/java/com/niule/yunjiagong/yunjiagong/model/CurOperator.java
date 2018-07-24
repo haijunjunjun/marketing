@@ -11,6 +11,6 @@ import java.io.Serializable;
 @Data
 public class CurOperator implements Serializable {
     private static final long serialVersionUID = -2239030833148332733L;
-    private String userId;
-    private String role;
+    private Integer userId;
+    private Integer userType;
 }

@@ -25,7 +25,7 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ResponseEntity<String> login() {
-        String jwt = jwtHelper.createJwt(jwtInfo.getName(), "1", "manage", "niule", "niule", Long.parseLong(jwtInfo.getExpiresSecond()), jwtInfo.getBase64Secret());
+        String jwt = jwtHelper.createJwt(jwtInfo.getName(), 1, 1, "niule", "niule", Long.parseLong(jwtInfo.getExpiresSecond()), jwtInfo.getBase64Secret());
         return ResponseEntity.ok(jwt);
     }
 
@@ -36,7 +36,7 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<String> getInfo(@Operator CurOperator curOperator) {
-        return ResponseEntity.ok(curOperator.getUserId() + "," + curOperator.getRole());
+        return ResponseEntity.ok(curOperator.getUserId() + "," + curOperator.getUserType());
     }
 
     @RequestMapping(value = "/parse", method = RequestMethod.POST)

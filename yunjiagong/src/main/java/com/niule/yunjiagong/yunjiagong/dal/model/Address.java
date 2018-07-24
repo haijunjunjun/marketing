@@ -21,7 +21,7 @@ public class Address {
      * 用户类型
      */
     @Column(name = "user_type")
-    private String userType;
+    private Integer userType;
 
     /**
      * 地址
@@ -104,7 +104,7 @@ public class Address {
      *
      * @return user_type - 用户类型
      */
-    public String getUserType() {
+    public Integer getUserType() {
         return userType;
     }
 
@@ -113,8 +113,8 @@ public class Address {
      *
      * @param userType 用户类型
      */
-    public void setUserType(String userType) {
-        this.userType = userType == null ? null : userType.trim();
+    public void setUserType(Integer userType) {
+        this.userType = userType;
     }
 
     /**

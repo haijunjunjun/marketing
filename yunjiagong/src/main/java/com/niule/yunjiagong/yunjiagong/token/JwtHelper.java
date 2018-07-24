@@ -38,7 +38,7 @@ public class JwtHelper {
      *
      * @param name           keyId
      * @param userId
-     * @param role
+     * @param userType
      * @param audience       接收者
      * @param issuer         发行者
      * @param TTLMillis      过期时间(毫秒)
@@ -46,7 +46,7 @@ public class JwtHelper {
      * @author haijun
      * @date 2016年10月18日 下午2:51:38
      */
-    public String createJwt(String name, String userId, String role,
+    public String createJwt(String name, Integer userId, Integer userType,
                             String audience, String issuer, long TTLMillis, String base64Security) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         long nowMillis = System.currentTimeMillis();
@@ -57,7 +57,7 @@ public class JwtHelper {
         JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
                 .claim("name", name)
                 .claim("userId", userId)
-                .claim("role", role)
+                .claim("userType", userType)
                 .setIssuer(issuer)
                 .setAudience(audience)
                 .signWith(signatureAlgorithm, signingKey);
@@ -68,7 +68,7 @@ public class JwtHelper {
             builder.setExpiration(exp).setNotBefore(now);
         }
         String token = builder.compact();
-        redisService.setKey(userId, token);
+        redisService.setKey(userId.toString(), token);
         return token;
     }
 

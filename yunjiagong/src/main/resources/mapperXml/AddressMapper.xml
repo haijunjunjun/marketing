@@ -7,7 +7,7 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="user_type" jdbcType="VARCHAR" property="userType" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
     <result column="addr" jdbcType="VARCHAR" property="addr" />
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
     <result column="address_detail" jdbcType="VARCHAR" property="addressDetail" />
@@ -16,4 +16,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+    <select id="getAddressList" resultMap="BaseResultMap">
+        select * from address where user_id = #{userId} and user_type = #{userType}
+    </select>
 </mapper>

@@ -40,8 +40,8 @@ public class JwtAuthorizeFilter implements Filter {
                 Claims claims = JwtHelper.parseJwt(auth, jwtInfo.getBase64Secret());
                 if (claims != null) {
                     CurOperator operator = new CurOperator();
-                    operator.setUserId(claims.get("userId").toString());
-                    operator.setRole(claims.get("role").toString());
+                    operator.setUserId(Integer.parseInt(claims.get("userId").toString()));
+                    operator.setUserType(Integer.parseInt(claims.get("userType").toString()));
                     httpServletRequest.setAttribute("operator", operator);
                     chain.doFilter(request, response);
                     return;
