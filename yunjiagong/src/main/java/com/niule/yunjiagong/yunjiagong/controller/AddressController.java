@@ -3,6 +3,8 @@ package com.niule.yunjiagong.yunjiagong.controller;
 import com.github.pagehelper.PageInfo;
 import com.niule.yunjiagong.yunjiagong.config.annotation.Operator;
 import com.niule.yunjiagong.yunjiagong.dal.model.Address;
+import com.niule.yunjiagong.yunjiagong.dal.model.Area;
+import com.niule.yunjiagong.yunjiagong.dal.model.City;
 import com.niule.yunjiagong.yunjiagong.dal.model.Province;
 import com.niule.yunjiagong.yunjiagong.model.CurOperator;
 import com.niule.yunjiagong.yunjiagong.service.AddressService;
@@ -22,6 +24,7 @@ import java.util.List;
  * @author haijun
  * @create 2018 - 07 - 24 - 10:50
  */
+@Description("城市列表相关信息")
 @Controller
 public class AddressController {
 
@@ -36,8 +39,21 @@ public class AddressController {
         return ResponseEntity.ok(addressService.getAddressList(curOperator.getUserId(), curOperator.getUserType(), pageSize, pageNum));
     }
 
+    @Description("获取省份信息")
     @RequestMapping(value = "/user/province")
     public ResponseEntity<List<Province>> getProvince() {
         return ResponseEntity.ok(addressService.getProvince());
+    }
+
+    @Description("获取城市信息")
+    @RequestMapping(value = "/user/city", method = RequestMethod.GET)
+    public ResponseEntity<List<City>> getCity(@Valid @NotNull @RequestParam("provinceId") Integer provinceId) {
+        return ResponseEntity.ok(addressService.getCity(provinceId));
+    }
+
+    @Description("获取区域信息")
+    @RequestMapping(value = "/user/area", method = RequestMethod.GET)
+    public ResponseEntity<List<Area>> getArea(@Valid @NotNull @RequestParam("cityId") Integer cityId) {
+        return ResponseEntity.ok(addressService.getArea(cityId));
     }
 }

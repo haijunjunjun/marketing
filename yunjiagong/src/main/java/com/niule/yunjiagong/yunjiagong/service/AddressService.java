@@ -3,11 +3,15 @@ package com.niule.yunjiagong.yunjiagong.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.AddressMapper;
+import com.niule.yunjiagong.yunjiagong.dal.mapper.AreaMapper;
+import com.niule.yunjiagong.yunjiagong.dal.mapper.CityMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.ProvinceMapper;
 import com.niule.yunjiagong.yunjiagong.dal.model.Address;
+import com.niule.yunjiagong.yunjiagong.dal.model.Area;
 import com.niule.yunjiagong.yunjiagong.dal.model.City;
 import com.niule.yunjiagong.yunjiagong.dal.model.Province;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,6 +23,7 @@ import java.util.Objects;
  * @author haijun
  * @create 2018 - 07 - 24 - 10:25
  */
+@Slf4j
 @Service
 public class AddressService {
 
@@ -26,6 +31,10 @@ public class AddressService {
     private AddressMapper addressMapper;
     @Autowired
     private ProvinceMapper provinceMapper;
+    @Autowired
+    private CityMapper cityMapper;
+    @Autowired
+    private AreaMapper areaMapper;
 
     public PageInfo<Address> getAddressList(Integer userId, Integer userType, Integer pageNum, Integer pageSize) {
         if (StringUtils.isEmpty(userId.toString()) || StringUtils.isEmpty(userType)) {
@@ -45,7 +54,29 @@ public class AddressService {
         return province;
     }
 
-    public List<City> getCity() {
-        return null;
+    public List<City> getCity(Integer provinceId) {
+        if (StringUtils.isEmpty(provinceId)) {
+            log.info("参数信息异常！");
+            throw new BizRuntimeException("参数信息异常!");
+        }
+        List<City> city = cityMapper.getCity(provinceId);
+        if (Objects.isNull(city)) {
+            log.info("数据库信息异常!");
+            throw new BizRuntimeException("数据库信息异常!");
+        }
+        return city;
+    }
+
+    public List<Area> getArea(Integer cityId) {
+        if (StringUtils.isEmpty(cityId.toString())) {
+            log.info("参数信息异常！");
+            throw new BizRuntimeException("参数信息异常！");
+        }
+        List<Area> area = areaMapper.getArea(cityId);
+        if (Objects.isNull(area)) {
+            log.info("数据库信息异常！");
+            throw new BizRuntimeException("数据库信息异常！");
+        }
+        return area;
     }
 }

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.AreaMapper">
-  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.Area">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="area" jdbcType="VARCHAR" property="area" />
-    <result column="city_id" jdbcType="INTEGER" property="cityId" />
-    <result column="is_show" jdbcType="VARCHAR" property="isShow" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.Area">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="city_id" jdbcType="INTEGER" property="cityId"/>
+        <result column="is_show" jdbcType="VARCHAR" property="isShow"/>
+    </resultMap>
+    <select id="getArea" resultMap="BaseResultMap">
+        select * from area where city_id = #{cityId} and is_show = 1 order by id desc
+    </select>
 </mapper>
