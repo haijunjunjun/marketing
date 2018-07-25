@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.BannerMapper">
-  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.Banner">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="resource_url" jdbcType="VARCHAR" property="resourceUrl" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="creator_id" jdbcType="INTEGER" property="creatorId" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="banner_type" jdbcType="VARCHAR" property="bannerType" />
-    <result column="link" jdbcType="VARCHAR" property="link" />
-    <result column="sort" jdbcType="VARCHAR" property="sort" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.Banner">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="resource_url" jdbcType="VARCHAR" property="resourceUrl"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="creator_id" jdbcType="INTEGER" property="creatorId"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="banner_type" jdbcType="VARCHAR" property="bannerType"/>
+        <result column="link" jdbcType="VARCHAR" property="link"/>
+        <result column="sort" jdbcType="VARCHAR" property="sort"/>
+    </resultMap>
+    <select id="getBanner" resultMap="BaseResultMap">
+        select * from  banner where banner_type = #{type} order by sort asc ,id desc
+    </select>
 </mapper>
