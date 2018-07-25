@@ -8,7 +8,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="impression" jdbcType="VARCHAR" property="impression" />
-    <result column="standard" jdbcType="VARCHAR" property="standard" />
+    <result column="standard" jdbcType="INTEGER" property="standard" />
     <result column="source" jdbcType="VARCHAR" property="source" />
     <result column="template" jdbcType="VARCHAR" property="template" />
   </resultMap>

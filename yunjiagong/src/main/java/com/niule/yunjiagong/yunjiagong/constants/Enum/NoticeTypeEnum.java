@@ -18,4 +18,11 @@ public enum NoticeTypeEnum {
         this.code = code;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getCode() {
+        return code;
+    }
 }

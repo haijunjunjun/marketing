@@ -18,7 +18,7 @@ public class NoticeType {
     /**
      * 标准
      */
-    private String standard;
+    private Integer standard;
 
     /**
      * 资源
@@ -81,7 +81,7 @@ public class NoticeType {
      *
      * @return standard - 标准
      */
-    public String getStandard() {
+    public Integer getStandard() {
         return standard;
     }
 
@@ -90,8 +90,8 @@ public class NoticeType {
      *
      * @param standard 标准
      */
-    public void setStandard(String standard) {
-        this.standard = standard == null ? null : standard.trim();
+    public void setStandard(Integer standard) {
+        this.standard = standard;
     }
 
     /**

@@ -18,7 +18,7 @@ public class DefaultResourceTemplate {
     /**
      * 类型
      */
-    private String type;
+    private Integer type;
 
     /**
      * 创建时间
@@ -44,9 +44,9 @@ public class DefaultResourceTemplate {
     private String creator;
 
     /**
-     * 分类
+     * 排序
      */
-    private String sort;
+    private Integer sort;
 
     /**
      * @return id
@@ -85,7 +85,7 @@ public class DefaultResourceTemplate {
      *
      * @return type - 类型
      */
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
@@ -94,8 +94,8 @@ public class DefaultResourceTemplate {
      *
      * @param type 类型
      */
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     /**
@@ -171,20 +171,20 @@ public class DefaultResourceTemplate {
     }
 
     /**
-     * 获取分类
+     * 获取排序
      *
-     * @return sort - 分类
+     * @return sort - 排序
      */
-    public String getSort() {
+    public Integer getSort() {
         return sort;
     }
 
     /**
-     * 设置分类
+     * 设置排序
      *
-     * @param sort 分类
+     * @param sort 排序
      */
-    public void setSort(String sort) {
-        this.sort = sort == null ? null : sort.trim();
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }
