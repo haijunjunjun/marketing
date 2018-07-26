@@ -2,7 +2,8 @@ package com.example.demo.test;
 
 /**
  * @author haijun
- * @create 2018 - 07 - 25 - 9:01
+ * @create 2018 - 07 - 25 - 9:07
  */
-public enum  EnumTest {
+public class EnumTest {
+
 }
