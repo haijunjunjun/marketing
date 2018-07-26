@@ -9,7 +9,10 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
     <result column="source" jdbcType="VARCHAR" property="source" />
-    <result column="action" jdbcType="VARCHAR" property="action" />
+    <result column="beans" jdbcType="VARCHAR" property="beans" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+    <insert id="saveSignLog">
+        insert into sign_log (user_id,beans,source,create_time) values (#{userId},#{beans},#{source},#{createTime})
+    </insert>
 </mapper>

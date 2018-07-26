@@ -27,9 +27,9 @@ public class SignLog {
     private String source;
 
     /**
-     * 动作
+     * 金豆
      */
-    private String action;
+    private String beans;
 
     /**
      * 创建时间
@@ -106,21 +106,21 @@ public class SignLog {
     }
 
     /**
-     * 获取动作
+     * 获取金豆
      *
-     * @return action - 动作
+     * @return beans - 金豆
      */
-    public String getAction() {
-        return action;
+    public String getBeans() {
+        return beans;
     }
 
     /**
-     * 设置动作
+     * 设置金豆
      *
-     * @param action 动作
+     * @param beans 金豆
      */
-    public void setAction(String action) {
-        this.action = action == null ? null : action.trim();
+    public void setBeans(String beans) {
+        this.beans = beans == null ? null : beans.trim();
     }
 
     /**
