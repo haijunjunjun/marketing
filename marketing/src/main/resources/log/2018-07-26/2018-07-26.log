@@ -161,3 +161,52 @@ java.lang.NullPointerException: null
 2018-07-26 16:04:59 -FrameworkServlet 'dispatcherServlet': initialization completed in 18 ms
 2018-07-26 16:04:59 -HikariPool-1 - Starting...
 2018-07-26 16:05:00 -HikariPool-1 - Start completed.
+2018-07-26 16:29:51 -Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@3da30852: startup date [Thu Jul 26 16:29:51 CST 2018]; root of context hierarchy
+2018-07-26 16:29:51 -No MyBatis mapper was found in '[com.niule.market]' package. Please check your configuration.
+2018-07-26 16:29:51 -Cannot enhance @Configuration bean definition 'myBatisMapperScannerConfig' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2018-07-26 16:29:52 -Tomcat initialized with port(s): 8088 (http)
+2018-07-26 16:29:52 -Initializing ProtocolHandler ["http-nio-8088"]
+2018-07-26 16:29:52 -Starting service [Tomcat]
+2018-07-26 16:29:52 -Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-07-26 16:29:52 -The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Java\jdk1.8.0_172\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\javaSoftware\mySql\bin;D:\javaSoftware\jdk1.8\jdk\bin;D:\javaSoftware\SVN\bin;D:\Git Tortoise\bin;D:\javaSoftware\tomcat8\bin;D:\javaSoftware\gradle-4.8.1\bin;D:\javaSoftware\apache-maven-3.5.4\bin;D:\Java\jdk1.8.0_172\bin;D:\javaSoftware\redis-server;D:\javaSoftware\Git\Git\bin;D:\javaSoftware\db2\BIN;D:\javaSoftware\db2\FUNCTION;D:\javaSoftware\db2\SAMPLES\REPL;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;.]
+2018-07-26 16:29:52 -Initializing Spring embedded WebApplicationContext
+2018-07-26 16:29:52 -Root WebApplicationContext: initialization completed in 1245 ms
+2018-07-26 16:29:52 -Servlet dispatcherServlet mapped to [/]
+2018-07-26 16:29:52 -Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-26 16:29:52 -Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-26 16:29:52 -Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-26 16:29:52 -Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-26 16:29:53 -Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-26 16:29:53 -Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@3da30852: startup date [Thu Jul 26 16:29:51 CST 2018]; root of context hierarchy
+2018-07-26 16:29:53 -Mapped "{[/market/make],methods=[POST]}" onto public org.springframework.http.ResponseEntity<com.niule.market.util.MessageV1> com.niule.market.controller.AdvertController.makeAdvert(com.niule.market.model.AdvertMakeInfo)
+2018-07-26 16:29:53 -Mapped "{[/market/record],methods=[POST]}" onto public void com.niule.market.controller.RecordController.record(javax.servlet.http.HttpServletRequest,java.lang.Integer,java.lang.Integer)
+2018-07-26 16:29:53 -Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-07-26 16:29:53 -Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-07-26 16:29:53 -Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-26 16:29:53 -Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-26 16:29:53 -Adding welcome page: class path resource [static/index.html]
+2018-07-26 16:29:53 -Registering beans for JMX exposure on startup
+2018-07-26 16:29:53 -Bean with name 'readDatasource' has been autodetected for JMX exposure
+2018-07-26 16:29:53 -Located MBean 'readDatasource': registering with JMX server as MBean [com.zaxxer.hikari:name=readDatasource,type=HikariDataSource]
+2018-07-26 16:29:53 -Starting ProtocolHandler ["http-nio-8088"]
+2018-07-26 16:29:53 -Using a shared selector for servlet write/read
+2018-07-26 16:29:53 -Tomcat started on port(s): 8088 (http) with context path ''
+2018-07-26 16:30:53 -Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-07-26 16:30:53 -FrameworkServlet 'dispatcherServlet': initialization started
+2018-07-26 16:30:53 -FrameworkServlet 'dispatcherServlet': initialization completed in 27 ms
+2018-07-26 16:30:53 -Request method 'GET' not supported
+2018-07-26 16:31:00 -Request method 'GET' not supported
+2018-07-26 16:31:34 -Request method 'GET' not supported
+2018-07-26 16:31:37 -HikariPool-1 - Starting...
+2018-07-26 16:31:37 -HikariPool-1 - Start completed.
+2018-07-26 16:31:39 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:35:27 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:40:27 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:43:52 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:47:45 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:47:51 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:51:05 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:51:28 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:52:44 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:55:01 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
+2018-07-26 16:56:59 -Failed to bind request element: org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "false"
