@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.SignTemplateMapper">
+  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.SignTemplate">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cycles" jdbcType="INTEGER" property="cycles" />
+    <result column="beans" jdbcType="INTEGER" property="beans" />
+  </resultMap>
+</mapper>

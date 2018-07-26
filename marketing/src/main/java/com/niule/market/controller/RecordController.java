@@ -2,6 +2,7 @@ package com.niule.market.controller;
 
 import com.niule.market.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Description;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
  * @author haijun
  * @create 2018 - 07 - 18 - 15:39
  */
+@Description("动作记录")
 @Controller
 public class RecordController {
 
@@ -23,6 +25,7 @@ public class RecordController {
     private RecordService recordService;
 
     //跳转页面
+    @Description("动作记录")
     @ResponseBody
     @RequestMapping(value = "/market/record", method = RequestMethod.POST)
     public void record(HttpServletRequest request,

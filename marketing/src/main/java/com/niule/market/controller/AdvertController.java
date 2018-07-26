@@ -26,8 +26,7 @@ public class AdvertController {
 
     //生成广告
     @RequestMapping(value = "/market/make", method = RequestMethod.POST)
-    public ResponseEntity<MessageV1> makeAdvert(@Valid @NotNull @RequestParam("path") String path,
-                                                @Valid @NotNull @RequestBody(required = true) AdvertMakeInfo advertMakeInfo) {
-        return ResponseEntity.ok(advertService.makeAdvert(advertMakeInfo, path));
+    public ResponseEntity<MessageV1> makeAdvert(@Valid @NotNull @RequestBody(required = true) AdvertMakeInfo advertMakeInfo) {
+        return ResponseEntity.ok(advertService.makeAdvert(advertMakeInfo));
     }
 }

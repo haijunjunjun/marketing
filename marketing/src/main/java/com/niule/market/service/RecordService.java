@@ -1,6 +1,8 @@
 package com.niule.market.service;
 
+import com.niule.market.dao.mapper.ActionMapper;
 import com.niule.market.dao.mapper.AdvRecordMapper;
+import com.niule.market.dao.model.Action;
 import com.niule.market.dao.model.AdvRecord;
 import com.niule.market.util.BizRunTimeException;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author haijun
@@ -23,20 +26,11 @@ public class RecordService {
 
     @Autowired
     private AdvRecordMapper advRecordMapper;
+    @Autowired
+    private ActionMapper actionMapper;
 
     //获取用户的详细信息 ip地址、来源信息、访问url
     private Map<String, String> getDetailInfio(HttpServletRequest request) {
-//        String ipAddress = null;
-//        if (request.getHeader("x-forwarded-for") == null) {
-//            ipAddress = request.getRemoteAddr();
-//        }else{
-//            if(request.getHeader("x-forwarded-for").length()  > 15){
-//                String [] aStr = request.getHeader("x-forwarded-for").split(",");
-//                ipAddress = aStr[0];
-//            } else{
-//                ipAddress = request.getHeader("x-forwarded-for");
-//            }
-//        }
         String ip = request.getHeader("x-forwarded-for");
         System.out.println("x-forwarded-for ip: " + ip);
         if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
@@ -95,9 +89,10 @@ public class RecordService {
             log.info("行为代码参数信息异常！");
             throw new BizRunTimeException("行为代码参数异常！");
         }
+        Action action = this.getAction(actionCode);
         AdvRecord advRecord = new AdvRecord();
         advRecord.setAdvertId(advertId);
-        advRecord.setActionId(actionCode);
+        advRecord.setAction(action.getAction());
         Map<String, String> detailInfio = this.getDetailInfio(request);
         advRecord.setIp(detailInfio.get("ip"));
         advRecord.setResource(detailInfio.get("resource"));
@@ -108,6 +103,18 @@ public class RecordService {
             log.info("信息存储异常!");
             throw new BizRunTimeException("信息存储异常!");
         }
+        Action actionV1 = new Action();
+        actionV1.setId(actionCode);
+        actionV1.setHappenCount(action.getHappenCount() + 1);
+        int updateInfo = actionMapper.updateByPrimaryKeySelective(actionV1);
+        if (Objects.isNull(updateInfo)) {
+            log.info("信息更新异常!");
+            throw new BizRunTimeException("信息更新异常!");
+        }
         return;
+    }
+
+    private Action getAction(Integer code) {
+        return actionMapper.selectByPrimaryKey(code);
     }
 }

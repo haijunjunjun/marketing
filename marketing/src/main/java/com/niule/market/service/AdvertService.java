@@ -25,7 +25,7 @@ public class AdvertService {
     @Autowired
     private AdvertMapper advertMapper;
 
-    public MessageV1 makeAdvert(AdvertMakeInfo advertMakeInfo, String path) {
+    public MessageV1 makeAdvert(AdvertMakeInfo advertMakeInfo) {
         MessageV1 messageV1 = new MessageV1();
         if (Objects.isNull(advertMakeInfo)) {
             log.info("请输入生成所需要的信息!");
@@ -34,13 +34,13 @@ public class AdvertService {
         }
         //判断类型 (1:二维码链接 2:url链接)
         if (1 == advertMakeInfo.getType()) {
-            if (StringUtils.isEmpty(path)) {
+            if (StringUtils.isEmpty(advertMakeInfo.getEwmUrl())) {
                 log.info("二维码路径不能为空!");
                 messageV1.setResult("二维码路径不能为空!");
                 return messageV1;
             }
             try {
-                QRCodeUtil.encode(advertMakeInfo.getEwmUrl(), "", path, true);
+                QRCodeUtil.encode(advertMakeInfo.getEwmUrl(), "", advertMakeInfo.getEwmUrl(), true);
             } catch (Exception e) {
                 e.printStackTrace();
             }

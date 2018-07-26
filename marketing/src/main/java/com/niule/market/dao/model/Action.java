@@ -7,12 +7,19 @@ public class Action {
      * 主键id
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
      * 动作名称
      */
     private String action;
+
+    /**
+     * 发生次数
+     */
+    @Column(name = "happen_count")
+    private Integer happenCount;
 
     /**
      * 获取主键id
@@ -48,5 +55,23 @@ public class Action {
      */
     public void setAction(String action) {
         this.action = action == null ? null : action.trim();
+    }
+
+    /**
+     * 获取发生次数
+     *
+     * @return happen_count - 发生次数
+     */
+    public Integer getHappenCount() {
+        return happenCount;
+    }
+
+    /**
+     * 设置发生次数
+     *
+     * @param happenCount 发生次数
+     */
+    public void setHappenCount(Integer happenCount) {
+        this.happenCount = happenCount;
     }
 }

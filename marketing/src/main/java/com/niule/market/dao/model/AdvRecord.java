@@ -9,6 +9,7 @@ public class AdvRecord {
      * 主键id
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -23,10 +24,9 @@ public class AdvRecord {
     private String ip;
 
     /**
-     * 动作id
+     * 动作
      */
-    @Column(name = "action_id")
-    private Integer actionId;
+    private String action;
 
     /**
      * 来源
@@ -100,21 +100,21 @@ public class AdvRecord {
     }
 
     /**
-     * 获取动作id
+     * 获取动作
      *
-     * @return action_id - 动作id
+     * @return action - 动作
      */
-    public Integer getActionId() {
-        return actionId;
+    public String getAction() {
+        return action;
     }
 
     /**
-     * 设置动作id
+     * 设置动作
      *
-     * @param actionId 动作id
+     * @param action 动作
      */
-    public void setActionId(Integer actionId) {
-        this.actionId = actionId;
+    public void setAction(String action) {
+        this.action = action == null ? null : action.trim();
     }
 
     /**
