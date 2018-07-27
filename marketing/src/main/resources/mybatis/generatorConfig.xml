@@ -43,8 +43,14 @@
         <!--<table tableName="%">-->
             <!--<generatedKey column="epa_id" sqlStatement="Mysql" identity="true" />-->
         <!--</table>-->
-        <table tableName="action">
+        <!--<table tableName="action">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <table tableName="advert">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
+        <!--<table tableName="work_auth_no">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>

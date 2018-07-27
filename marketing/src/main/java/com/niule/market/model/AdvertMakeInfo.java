@@ -2,6 +2,7 @@ package com.niule.market.model;
 
 import lombok.Data;
 
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 /**
@@ -22,11 +23,7 @@ public class AdvertMakeInfo implements Serializable {
     /**
      * 渠道
      */
-    private Integer channel;
-    /**
-     * 类型
-     */
-    private Integer type;
+    private String icon;
     /**
      * 二维码
      */

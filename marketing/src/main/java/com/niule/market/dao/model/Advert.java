@@ -8,6 +8,7 @@ public class Advert {
      * 广告id
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -21,10 +22,9 @@ public class Advert {
     private String content;
 
     /**
-     * 渠道id
+     * icon
      */
-    @Column(name = "channel_id")
-    private Integer channelId;
+    private String icon;
 
     /**
      * 类型（1：二维码 2：链接）
@@ -103,21 +103,21 @@ public class Advert {
     }
 
     /**
-     * 获取渠道id
+     * 获取icon
      *
-     * @return channel_id - 渠道id
+     * @return icon - icon
      */
-    public Integer getChannelId() {
-        return channelId;
+    public String getIcon() {
+        return icon;
     }
 
     /**
-     * 设置渠道id
+     * 设置icon
      *
-     * @param channelId 渠道id
+     * @param icon icon
      */
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
+    public void setIcon(String icon) {
+        this.icon = icon == null ? null : icon.trim();
     }
 
     /**

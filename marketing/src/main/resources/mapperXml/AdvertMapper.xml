@@ -8,7 +8,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="channel_id" jdbcType="INTEGER" property="channelId" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="ewm_url" jdbcType="VARCHAR" property="ewmUrl" />
     <result column="url" jdbcType="VARCHAR" property="url" />
