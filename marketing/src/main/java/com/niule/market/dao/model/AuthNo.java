@@ -1,5 +1,6 @@
 package com.niule.market.dao.model;
 
+import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "auth_no")
@@ -24,6 +25,12 @@ public class AuthNo {
      */
     @Column(name = "work_no")
     private String workNo;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    private Date createTime;
 
     /**
      * @return id
@@ -91,5 +98,23 @@ public class AuthNo {
      */
     public void setWorkNo(String workNo) {
         this.workNo = workNo == null ? null : workNo.trim();
+    }
+
+    /**
+     * 获取创建时间
+     *
+     * @return create_time - 创建时间
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

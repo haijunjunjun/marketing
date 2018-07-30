@@ -1,0 +1,197 @@
+2018-07-30 11:27:08 -Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@305a0c5f: startup date [Mon Jul 30 11:27:08 CST 2018]; root of context hierarchy
+2018-07-30 11:27:09 -No MyBatis mapper was found in '[com.niule.market]' package. Please check your configuration.
+2018-07-30 11:27:09 -Cannot enhance @Configuration bean definition 'myBatisMapperScannerConfig' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2018-07-30 11:27:10 -Tomcat initialized with port(s): 8088 (http)
+2018-07-30 11:27:10 -Initializing ProtocolHandler ["http-nio-8088"]
+2018-07-30 11:27:10 -Starting service [Tomcat]
+2018-07-30 11:27:10 -Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-07-30 11:27:10 -The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Java\jdk1.8.0_172\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\javaSoftware\mySql\bin;D:\javaSoftware\jdk1.8\jdk\bin;D:\javaSoftware\SVN\bin;D:\Git Tortoise\bin;D:\javaSoftware\tomcat8\bin;D:\javaSoftware\gradle-4.8.1\bin;D:\javaSoftware\apache-maven-3.5.4\bin;D:\Java\jdk1.8.0_172\bin;D:\javaSoftware\redis-server;D:\javaSoftware\Git\Git\bin;D:\javaSoftware\db2\BIN;D:\javaSoftware\db2\FUNCTION;D:\javaSoftware\db2\SAMPLES\REPL;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;.]
+2018-07-30 11:27:10 -Initializing Spring embedded WebApplicationContext
+2018-07-30 11:27:10 -Root WebApplicationContext: initialization completed in 1772 ms
+2018-07-30 11:27:10 -Servlet dispatcherServlet mapped to [/]
+2018-07-30 11:27:10 -Servlet userPicture mapped to [/user/picture]
+2018-07-30 11:27:10 -Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-30 11:27:10 -Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-30 11:27:10 -Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-30 11:27:10 -Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-30 11:27:11 -Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 11:27:11 -Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@305a0c5f: startup date [Mon Jul 30 11:27:08 CST 2018]; root of context hierarchy
+2018-07-30 11:27:11 -Mapped "{[/market/share],methods=[POST]}" onto public org.springframework.http.ResponseEntity<com.niule.market.model.Share> com.niule.market.controller.AdvertController.shareInfo(java.lang.String,java.lang.Integer) throws java.lang.Exception
+2018-07-30 11:27:11 -Mapped "{[/market/get/info],methods=[POST]}" onto public org.springframework.http.ResponseEntity<com.niule.market.util.MessageInfo<com.niule.market.model.AdvertMakeInfo>> com.niule.market.controller.AdvertController.getAdvertMakeInfo(com.niule.market.model.AdvertParamModel)
+2018-07-30 11:27:11 -Mapped "{[/market/record],methods=[POST]}" onto public void com.niule.market.controller.RecordController.record(javax.servlet.http.HttpServletRequest,java.lang.Integer,java.lang.Integer)
+2018-07-30 11:27:11 -Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-07-30 11:27:11 -Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-07-30 11:27:11 -Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 11:27:11 -Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 11:27:11 -Adding welcome page: class path resource [static/index.html]
+2018-07-30 11:27:12 -Registering beans for JMX exposure on startup
+2018-07-30 11:27:12 -Bean with name 'readDatasource' has been autodetected for JMX exposure
+2018-07-30 11:27:12 -Located MBean 'readDatasource': registering with JMX server as MBean [com.zaxxer.hikari:name=readDatasource,type=HikariDataSource]
+2018-07-30 11:27:12 -Starting ProtocolHandler ["http-nio-8088"]
+2018-07-30 11:27:12 -Failed to start connector [Connector[HTTP/1.1-8088]]
+org.apache.catalina.LifecycleException: Failed to start component [Connector[HTTP/1.1-8088]]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:167)
+	at org.apache.catalina.core.StandardService.addConnector(StandardService.java:225)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.addPreviouslyRemovedConnectors(TomcatWebServer.java:256)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start(TomcatWebServer.java:198)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.startWebServer(ServletWebServerApplicationContext.java:300)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.finishRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:553)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243)
+	at com.niule.market.MarketingApplication.main(MarketingApplication.java:12)
+Caused by: org.apache.catalina.LifecycleException: Protocol handler start failed
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1020)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	... 13 common frames omitted
+Caused by: java.net.BindException: Address already in use: bind
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:210)
+	at org.apache.tomcat.util.net.AbstractEndpoint.start(AbstractEndpoint.java:1150)
+	at org.apache.coyote.AbstractProtocol.start(AbstractProtocol.java:591)
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1018)
+	... 14 common frames omitted
+2018-07-30 11:27:12 -Pausing ProtocolHandler ["http-nio-8088"]
+2018-07-30 11:27:12 -Stopping service [Tomcat]
+2018-07-30 11:27:12 -The stop() method was called on component [StandardServer[-1]] after stop() had already been called. The second call will be ignored.
+2018-07-30 11:27:12 -Stopping ProtocolHandler ["http-nio-8088"]
+2018-07-30 11:27:12 -Destroying ProtocolHandler ["http-nio-8088"]
+2018-07-30 11:27:12 -
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2018-07-30 11:27:12 -
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The Tomcat connector configured to listen on port 8088 failed to start. The port may already be in use or the connector may be misconfigured.
+
+Action:
+
+Verify the connector's configuration, identify and stop any process that's listening on port 8088, or configure this application to listen on another port.
+
+2018-07-30 11:27:12 -Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@305a0c5f: startup date [Mon Jul 30 11:27:08 CST 2018]; root of context hierarchy
+2018-07-30 11:27:12 -Unregistering JMX-exposed beans on shutdown
+2018-07-30 11:27:12 -Unregistering JMX-exposed beans
+2018-07-30 11:27:47 -Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@8dbfffb: startup date [Mon Jul 30 11:27:47 CST 2018]; root of context hierarchy
+2018-07-30 11:27:48 -No MyBatis mapper was found in '[com.niule.market]' package. Please check your configuration.
+2018-07-30 11:27:48 -Cannot enhance @Configuration bean definition 'myBatisMapperScannerConfig' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2018-07-30 11:27:48 -Tomcat initialized with port(s): 8088 (http)
+2018-07-30 11:27:48 -Initializing ProtocolHandler ["http-nio-8088"]
+2018-07-30 11:27:48 -Starting service [Tomcat]
+2018-07-30 11:27:48 -Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-07-30 11:27:48 -The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Java\jdk1.8.0_172\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\javaSoftware\mySql\bin;D:\javaSoftware\jdk1.8\jdk\bin;D:\javaSoftware\SVN\bin;D:\Git Tortoise\bin;D:\javaSoftware\tomcat8\bin;D:\javaSoftware\gradle-4.8.1\bin;D:\javaSoftware\apache-maven-3.5.4\bin;D:\Java\jdk1.8.0_172\bin;D:\javaSoftware\redis-server;D:\javaSoftware\Git\Git\bin;D:\javaSoftware\db2\BIN;D:\javaSoftware\db2\FUNCTION;D:\javaSoftware\db2\SAMPLES\REPL;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;.]
+2018-07-30 11:27:48 -Initializing Spring embedded WebApplicationContext
+2018-07-30 11:27:48 -Root WebApplicationContext: initialization completed in 1326 ms
+2018-07-30 11:27:49 -Servlet dispatcherServlet mapped to [/]
+2018-07-30 11:27:49 -Servlet userPicture mapped to [/user/picture]
+2018-07-30 11:27:49 -Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-30 11:27:49 -Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-30 11:27:49 -Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-30 11:27:49 -Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-30 11:27:49 -Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 11:27:50 -Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@8dbfffb: startup date [Mon Jul 30 11:27:47 CST 2018]; root of context hierarchy
+2018-07-30 11:27:50 -Mapped "{[/market/get/info],methods=[POST]}" onto public org.springframework.http.ResponseEntity<com.niule.market.util.MessageInfo<com.niule.market.model.AdvertMakeInfo>> com.niule.market.controller.AdvertController.getAdvertMakeInfo(com.niule.market.model.AdvertParamModel)
+2018-07-30 11:27:50 -Mapped "{[/market/share],methods=[POST]}" onto public org.springframework.http.ResponseEntity<com.niule.market.model.Share> com.niule.market.controller.AdvertController.shareInfo(java.lang.String,java.lang.Integer) throws java.lang.Exception
+2018-07-30 11:27:50 -Mapped "{[/market/record],methods=[POST]}" onto public void com.niule.market.controller.RecordController.record(javax.servlet.http.HttpServletRequest,java.lang.Integer,java.lang.Integer)
+2018-07-30 11:27:50 -Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-07-30 11:27:50 -Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-07-30 11:27:50 -Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 11:27:50 -Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 11:27:50 -Adding welcome page: class path resource [static/index.html]
+2018-07-30 11:27:50 -Registering beans for JMX exposure on startup
+2018-07-30 11:27:50 -Bean with name 'readDatasource' has been autodetected for JMX exposure
+2018-07-30 11:27:50 -Located MBean 'readDatasource': registering with JMX server as MBean [com.zaxxer.hikari:name=readDatasource,type=HikariDataSource]
+2018-07-30 11:27:50 -Starting ProtocolHandler ["http-nio-8088"]
+2018-07-30 11:27:50 -Using a shared selector for servlet write/read
+2018-07-30 11:27:50 -Tomcat started on port(s): 8088 (http) with context path ''
+2018-07-30 11:28:46 -Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-07-30 11:28:46 -FrameworkServlet 'dispatcherServlet': initialization started
+2018-07-30 11:28:46 -FrameworkServlet 'dispatcherServlet': initialization completed in 24 ms
+2018-07-30 11:28:46 -HikariPool-1 - Starting...
+2018-07-30 11:28:47 -HikariPool-1 - Start completed.
+2018-07-30 13:53:30 -Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@9ef8eb7: startup date [Mon Jul 30 13:53:30 CST 2018]; root of context hierarchy
+2018-07-30 13:53:31 -No MyBatis mapper was found in '[com.niule.market]' package. Please check your configuration.
+2018-07-30 13:53:31 -Cannot enhance @Configuration bean definition 'myBatisMapperScannerConfig' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2018-07-30 13:53:31 -Tomcat initialized with port(s): 8088 (http)
+2018-07-30 13:53:31 -Initializing ProtocolHandler ["http-nio-8088"]
+2018-07-30 13:53:31 -Starting service [Tomcat]
+2018-07-30 13:53:31 -Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-07-30 13:53:31 -The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Java\jdk1.8.0_172\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\javaSoftware\mySql\bin;D:\javaSoftware\jdk1.8\jdk\bin;D:\javaSoftware\SVN\bin;D:\Git Tortoise\bin;D:\javaSoftware\tomcat8\bin;D:\javaSoftware\gradle-4.8.1\bin;D:\javaSoftware\apache-maven-3.5.4\bin;D:\Java\jdk1.8.0_172\bin;D:\javaSoftware\redis-server;D:\javaSoftware\Git\Git\bin;D:\javaSoftware\db2\BIN;D:\javaSoftware\db2\FUNCTION;D:\javaSoftware\db2\SAMPLES\REPL;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;.]
+2018-07-30 13:53:32 -Initializing Spring embedded WebApplicationContext
+2018-07-30 13:53:32 -Root WebApplicationContext: initialization completed in 1485 ms
+2018-07-30 13:53:32 -Servlet dispatcherServlet mapped to [/]
+2018-07-30 13:53:32 -Servlet userPicture mapped to [/user/picture]
+2018-07-30 13:53:32 -Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-30 13:53:32 -Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-30 13:53:32 -Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-30 13:53:32 -Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-30 13:53:33 -Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 13:53:33 -Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@9ef8eb7: startup date [Mon Jul 30 13:53:30 CST 2018]; root of context hierarchy
+2018-07-30 13:53:33 -Mapped "{[/market/share],methods=[POST]}" onto public org.springframework.http.ResponseEntity<com.niule.market.model.Share> com.niule.market.controller.AdvertController.shareInfo(java.lang.String,java.lang.Integer) throws java.lang.Exception
+2018-07-30 13:53:33 -Mapped "{[/market/get/info],methods=[POST]}" onto public org.springframework.http.ResponseEntity<com.niule.market.util.MessageInfo<com.niule.market.model.AdvertMakeInfo>> com.niule.market.controller.AdvertController.getAdvertMakeInfo(com.niule.market.model.AdvertParamModel) throws java.lang.Exception
+2018-07-30 13:53:33 -Mapped "{[/market/record],methods=[POST]}" onto public void com.niule.market.controller.RecordController.record(javax.servlet.http.HttpServletRequest,java.lang.Integer,java.lang.Integer)
+2018-07-30 13:53:33 -Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-07-30 13:53:33 -Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-07-30 13:53:33 -Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 13:53:33 -Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 13:53:33 -Adding welcome page: class path resource [static/index.html]
+2018-07-30 13:53:33 -Registering beans for JMX exposure on startup
+2018-07-30 13:53:33 -Bean with name 'readDatasource' has been autodetected for JMX exposure
+2018-07-30 13:53:33 -Located MBean 'readDatasource': registering with JMX server as MBean [com.zaxxer.hikari:name=readDatasource,type=HikariDataSource]
+2018-07-30 13:53:33 -Starting ProtocolHandler ["http-nio-8088"]
+2018-07-30 13:53:33 -Using a shared selector for servlet write/read
+2018-07-30 13:53:33 -Tomcat started on port(s): 8088 (http) with context path ''
+2018-07-30 13:53:50 -Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-07-30 13:53:50 -FrameworkServlet 'dispatcherServlet': initialization started
+2018-07-30 13:53:50 -FrameworkServlet 'dispatcherServlet': initialization completed in 24 ms
+2018-07-30 13:53:50 -HikariPool-1 - Starting...
+2018-07-30 13:53:50 -HikariPool-1 - Start completed.
+2018-07-30 13:56:39 -Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@294e5088: startup date [Mon Jul 30 13:56:39 CST 2018]; root of context hierarchy
+2018-07-30 13:56:39 -No MyBatis mapper was found in '[com.niule.market]' package. Please check your configuration.
+2018-07-30 13:56:39 -Cannot enhance @Configuration bean definition 'myBatisMapperScannerConfig' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2018-07-30 13:56:40 -Tomcat initialized with port(s): 8088 (http)
+2018-07-30 13:56:40 -Initializing ProtocolHandler ["http-nio-8088"]
+2018-07-30 13:56:40 -Starting service [Tomcat]
+2018-07-30 13:56:40 -Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-07-30 13:56:40 -The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Java\jdk1.8.0_172\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\javaSoftware\mySql\bin;D:\javaSoftware\jdk1.8\jdk\bin;D:\javaSoftware\SVN\bin;D:\Git Tortoise\bin;D:\javaSoftware\tomcat8\bin;D:\javaSoftware\gradle-4.8.1\bin;D:\javaSoftware\apache-maven-3.5.4\bin;D:\Java\jdk1.8.0_172\bin;D:\javaSoftware\redis-server;D:\javaSoftware\Git\Git\bin;D:\javaSoftware\db2\BIN;D:\javaSoftware\db2\FUNCTION;D:\javaSoftware\db2\SAMPLES\REPL;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;.]
+2018-07-30 13:56:40 -Initializing Spring embedded WebApplicationContext
+2018-07-30 13:56:40 -Root WebApplicationContext: initialization completed in 1322 ms
+2018-07-30 13:56:40 -Servlet dispatcherServlet mapped to [/]
+2018-07-30 13:56:40 -Servlet userPicture mapped to [/user/picture]
+2018-07-30 13:56:40 -Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-07-30 13:56:40 -Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-07-30 13:56:40 -Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-07-30 13:56:40 -Mapping filter: 'requestContextFilter' to: [/*]
+2018-07-30 13:56:41 -Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 13:56:41 -Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@294e5088: startup date [Mon Jul 30 13:56:39 CST 2018]; root of context hierarchy
+2018-07-30 13:56:41 -Mapped "{[/market/share],methods=[POST]}" onto public org.springframework.http.ResponseEntity<com.niule.market.model.Share> com.niule.market.controller.AdvertController.shareInfo(java.lang.String,java.lang.Integer) throws java.lang.Exception
+2018-07-30 13:56:41 -Mapped "{[/market/get/info],methods=[POST]}" onto public org.springframework.http.ResponseEntity<com.niule.market.util.MessageInfo<com.niule.market.model.AdvertMakeInfo>> com.niule.market.controller.AdvertController.getAdvertMakeInfo(com.niule.market.model.AdvertParamModel) throws java.lang.Exception
+2018-07-30 13:56:41 -Mapped "{[/market/record],methods=[POST]}" onto public void com.niule.market.controller.RecordController.record(javax.servlet.http.HttpServletRequest,java.lang.Integer,java.lang.Integer)
+2018-07-30 13:56:41 -Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-07-30 13:56:41 -Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-07-30 13:56:41 -Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 13:56:41 -Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-07-30 13:56:41 -Adding welcome page: class path resource [static/index.html]
+2018-07-30 13:56:42 -Registering beans for JMX exposure on startup
+2018-07-30 13:56:42 -Bean with name 'readDatasource' has been autodetected for JMX exposure
+2018-07-30 13:56:42 -Located MBean 'readDatasource': registering with JMX server as MBean [com.zaxxer.hikari:name=readDatasource,type=HikariDataSource]
+2018-07-30 13:56:42 -Starting ProtocolHandler ["http-nio-8088"]
+2018-07-30 13:56:42 -Using a shared selector for servlet write/read
+2018-07-30 13:56:42 -Tomcat started on port(s): 8088 (http) with context path ''
+2018-07-30 13:56:59 -Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-07-30 13:56:59 -FrameworkServlet 'dispatcherServlet': initialization started
+2018-07-30 13:57:00 -FrameworkServlet 'dispatcherServlet': initialization completed in 22 ms
+2018-07-30 13:57:00 -HikariPool-1 - Starting...
+2018-07-30 13:57:00 -HikariPool-1 - Start completed.

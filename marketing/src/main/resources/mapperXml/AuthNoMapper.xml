@@ -9,5 +9,6 @@
     <result column="advert_id" jdbcType="INTEGER" property="advertId" />
     <result column="qq" jdbcType="VARCHAR" property="qq" />
     <result column="work_no" jdbcType="VARCHAR" property="workNo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 </mapper>
