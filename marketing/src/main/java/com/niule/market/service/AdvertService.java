@@ -18,8 +18,6 @@ import com.niule.market.model.AdvertMakeInfo;
 import com.niule.market.model.Share;
 import com.niule.market.util.BizRunTimeException;
 import com.niule.market.util.MessageInfo;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +26,9 @@ import org.springframework.util.StringUtils;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.Hashtable;
@@ -157,32 +154,33 @@ public class AdvertService {
         try {
             BitMatrix bitMatrix = new MultiFormatWriter().encode(share.getUrl(), BarcodeFormat.QR_CODE, width, height, hints);
 //            Path file = new java.io.File("/home/www/images/QRCode_" + qqNumber + ".png").toPath();
-            Path file = new java.io.File("D://image/QRCode_" + qqNumber + ".png").toPath();
+            Path file = new java.io.File("/home/www/images/QRCode_" + qqNumber + ".png").toPath();
             MatrixToImageWriter.writeToPath(bitMatrix, format, file);
         } catch (WriterException e) {
             e.printStackTrace();
         }
 
-        InputStream imagein = new FileInputStream("D:///dt.png");
-        InputStream imagein2 = new FileInputStream("D://image/QRCode_" + qqNumber + ".png");
-
+        InputStream imagein = new FileInputStream("/home/www/images/dt.png");
+        InputStream imagein2 = new FileInputStream("/home/www/images/QRCode_" + qqNumber + ".png");
 
         BufferedImage image = ImageIO.read(imagein);
         BufferedImage image2 = ImageIO.read(imagein2);
         Graphics g = image.getGraphics();
         g.drawImage(image2, 228, 677, 295, 286, null);
 
-        OutputStream outImage = new FileOutputStream("D://image/QRCode/QRCode_" + qqNumber + ".jpg");
-//        String formatName = dstName.substring(dstName.lastIndexOf(".") + 1);
-//        ImageIO.write(image, /*"GIF"*/ formatName /* format desired */ , new File("custom" + j + "-" + i + ".jpg") /* target */ );
+//        OutputStream outImage = new FileOutputStream("/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg");
+        String dstName = "/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg";
+        String formatName = dstName.substring(dstName.lastIndexOf(".") + 1);
+        ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(dstName) /* target */);
 
 //        Runtime.getRuntime().exec("chmod 644 -R " + "/home/www/images/QRCode/QRCode_"+qqNumber+".jpg");
 
-        JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(outImage);
-        enc.encode(image);
+//        JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(outImage);
+//        enc.encode(image);
         imagein.close();
         imagein2.close();
-        outImage.close();
+//        outImage.close();
+//        share.setQRcodeUrl("http://192.168.105.75:8088/images/QRCode/QRCode_" + qqNumber + ".jpg");
         share.setQRcodeUrl("http://image.yunjg.net/images/QRCode/QRCode_" + qqNumber + ".jpg");
         return share;
     }
