@@ -91,7 +91,10 @@
         <!--<table tableName="sign_log">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="complaint">
+        <!--<table tableName="complaint">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <table tableName="active_info">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
     </context>
