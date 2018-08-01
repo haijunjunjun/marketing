@@ -268,7 +268,7 @@
                 <div class="element-item grid">
                         <div class="effect-zoe-v5">
                             <img class="img-responsive" alt="Portfolio" src="images/什么是云加工@2x.png" name="pic">
-                            <h2 class="hidden-xs">什么是云加工</h2>
+                            <h2 class="picV1">什么是云加工</h2>
                             <!--<figcaption>-->
                                 <!--&lt;!&ndash;<h2 class="hidden-xs">Creative <span>Joe</span></h2>&ndash;&gt;-->
                                 <!--&lt;!&ndash;<p class="icon-links">&ndash;&gt;-->
@@ -555,6 +555,16 @@
     				}
 				})
 			});
+        </script>
+        <script>
+            $(document).ready(function () {
+                $(".effect-zoe-v5").mouseover(function () {
+                    $(".effect-zoe-v5 .picV1").show();
+                })
+                $(".effect-zoe-v5").mouseout(function () {
+                    $(".effect-zoe-v5 .picV1").show();
+                })
+            })
         </script>
 
 	</body>
