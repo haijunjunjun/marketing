@@ -46,6 +46,12 @@ public class AdvRecord {
     private Date createTime;
 
     /**
+     * 授权id
+     */
+    @Column(name = "auth_no_id")
+    private Integer authNoId;
+
+    /**
      * 获取主键id
      *
      * @return id - 主键id
@@ -169,5 +175,23 @@ public class AdvRecord {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取授权id
+     *
+     * @return auth_no_id - 授权id
+     */
+    public Integer getAuthNoId() {
+        return authNoId;
+    }
+
+    /**
+     * 设置授权id
+     *
+     * @param authNoId 授权id
+     */
+    public void setAuthNoId(Integer authNoId) {
+        this.authNoId = authNoId;
     }
 }

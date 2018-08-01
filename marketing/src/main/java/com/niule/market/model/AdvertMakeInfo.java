@@ -2,7 +2,6 @@ package com.niule.market.model;
 
 import lombok.Data;
 
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 /**
@@ -32,4 +31,8 @@ public class AdvertMakeInfo implements Serializable {
      * 链接
      */
     private String url;
+    /**
+     * 授权记录id
+     */
+    private Integer authNoId;
 }

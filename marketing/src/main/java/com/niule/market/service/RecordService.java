@@ -80,7 +80,7 @@ public class RecordService {
         return map;
     }
 
-    public void jump(HttpServletRequest request, Integer advertId, Integer actionCode) {
+    public void jump(HttpServletRequest request, Integer advertId, Integer actionCode, Integer authNoId) {
         if (StringUtils.isEmpty(advertId.toString()) || advertId <= 0) {
             log.info("路径参数信息异常！");
             throw new BizRunTimeException("路径参数信息异常！");
@@ -93,6 +93,7 @@ public class RecordService {
         AdvRecord advRecord = new AdvRecord();
         advRecord.setAdvertId(advertId);
         advRecord.setAction(action.getAction());
+        advRecord.setAuthNoId(authNoId);
         Map<String, String> detailInfio = this.getDetailInfio(request);
         advRecord.setIp(detailInfio.get("ip"));
         advRecord.setResource(detailInfio.get("resource"));

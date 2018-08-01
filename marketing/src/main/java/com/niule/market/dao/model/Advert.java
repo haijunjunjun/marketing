@@ -1,7 +1,10 @@
 package com.niule.market.dao.model;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
-import javax.persistence.*;
 
 public class Advert {
     /**
@@ -27,7 +30,7 @@ public class Advert {
     private String icon;
 
     /**
-     * 类型（1：二维码 2：链接）
+     * 类型（渠道号）
      */
     private Integer type;
 
@@ -121,18 +124,18 @@ public class Advert {
     }
 
     /**
-     * 获取类型（1：二维码 2：链接）
+     * 类型（渠道号）
      *
-     * @return type - 类型（1：二维码 2：链接）
+     * @return type - 类型（渠道号）
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置类型（1：二维码 2：链接）
+     * 设置类型（渠道号）
      *
-     * @param type 类型（1：二维码 2：链接）
+     * @param type 类型（渠道号）
      */
     public void setType(Integer type) {
         this.type = type;

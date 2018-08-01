@@ -20,6 +20,7 @@ import com.niule.market.util.BizRunTimeException;
 import com.niule.market.util.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -109,23 +110,28 @@ public class AdvertService {
         }
         AdvertMakeInfo advertMakeInfo = new AdvertMakeInfo();
 //        Advert advert = advertMapper.selectByPrimaryKey(1);
-        Share inviteShareInfo = this.getInviteShareInfo(qq, Integer.parseInt(workNo));
-        advertMakeInfo.setIcon(inviteShareInfo.getIcon());
-        advertMakeInfo.setContent(inviteShareInfo.getContent());
-        advertMakeInfo.setEwmUrl(inviteShareInfo.getQRcodeUrl());
-        advertMakeInfo.setTitle(inviteShareInfo.getTitle());
-        advertMakeInfo.setUrl(inviteShareInfo.getUrl());
-
         AuthNo authNo = new AuthNo();
         authNo.setAdvertId(1);
         authNo.setQq(qq);
         authNo.setWorkNo(workNo);
         authNo.setCreateTime(new Date());
-        int i = authNoMapper.insertSelective(authNo);
-        if (1 != i) {
-            log.info("信息存储异常!");
-            throw new BizRunTimeException("信息存储异常!");
+        try {
+            int i = authNoMapper.insertSelective(authNo);
+            if (1 != i) {
+                log.info("信息存储异常!");
+                throw new BizRunTimeException("信息存储异常!");
+            }
+        } catch (DuplicateKeyException e) {
+            messageInfo.setResult("该qq号已授权!");
+            return messageInfo;
         }
+        Share inviteShareInfo = this.getInviteShareInfo(qq, Integer.parseInt(workNo),authNo.getId());
+        advertMakeInfo.setIcon(inviteShareInfo.getIcon());
+        advertMakeInfo.setContent(inviteShareInfo.getContent());
+        advertMakeInfo.setEwmUrl(inviteShareInfo.getQRcodeUrl());
+        advertMakeInfo.setTitle(inviteShareInfo.getTitle());
+        advertMakeInfo.setUrl(inviteShareInfo.getUrl());
+        advertMakeInfo.setAuthNoId(authNo.getId());
         messageInfo.setData(advertMakeInfo);
         messageInfo.setResult("success");
         return messageInfo;
@@ -135,14 +141,14 @@ public class AdvertService {
         return channelMapper.selectByPrimaryKey(channelId).getValue();
     }
 
-    public Share getInviteShareInfo(String qqNumber, Integer serviceId) throws Exception {
+    public Share getInviteShareInfo(String qqNumber, Integer serviceId, Integer authNoId) throws Exception {
         //获取分享内容 + 链接拼接 + 二维码图片地址
         Advert advert = advertMapper.selectByPrimaryKey(1);
         Share share = new Share();
         share.setTitle(advert.getTitle());
         share.setContent(advert.getContent());
         share.setIcon(advert.getIcon());
-        share.setUrl("http://api.yunjg.net/login.html?qqNumber=" + qqNumber + "&serviceId=" + serviceId);
+        share.setUrl("http://api.yunjg.net/login.html?qqNumber=" + qqNumber + "&serviceId=" + serviceId + "authNoId=" + authNoId);
 
         int width = 295;
         int height = 286;
@@ -168,19 +174,20 @@ public class AdvertService {
         Graphics g = image.getGraphics();
         g.drawImage(image2, 228, 677, 295, 286, null);
 
-//        OutputStream outImage = new FileOutputStream("/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg");
+
         String dstName = "/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg";
         String formatName = dstName.substring(dstName.lastIndexOf(".") + 1);
         ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(dstName) /* target */);
 
-//        Runtime.getRuntime().exec("chmod 644 -R " + "/home/www/images/QRCode/QRCode_"+qqNumber+".jpg");
-
+//        OutputStream outImage = new FileOutputStream("/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg");
 //        JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(outImage);
 //        enc.encode(image);
+
+        Runtime.getRuntime().exec("chmod 644 -R " + "/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg");
+
         imagein.close();
         imagein2.close();
 //        outImage.close();
-//        share.setQRcodeUrl("http://192.168.105.75:8088/images/QRCode/QRCode_" + qqNumber + ".jpg");
         share.setQRcodeUrl("http://image.yunjg.net/images/QRCode/QRCode_" + qqNumber + ".jpg");
         return share;
     }

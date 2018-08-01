@@ -12,5 +12,6 @@
     <result column="resource" jdbcType="VARCHAR" property="resource" />
     <result column="view_url" jdbcType="VARCHAR" property="viewUrl" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="auth_no_id" jdbcType="INTEGER" property="authNoId" />
   </resultMap>
 </mapper>

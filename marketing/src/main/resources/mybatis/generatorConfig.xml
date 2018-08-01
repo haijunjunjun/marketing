@@ -46,7 +46,7 @@
         <!--<table tableName="action">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="auth_no">
+        <table tableName="adv_record">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
         <!--<table tableName="work_auth_no">-->
