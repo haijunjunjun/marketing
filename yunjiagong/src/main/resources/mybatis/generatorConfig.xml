@@ -94,7 +94,7 @@
         <!--<table tableName="complaint">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="active_info">
+        <table tableName="recommend_log">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
     </context>
