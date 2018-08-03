@@ -52,43 +52,6 @@ public class AdvertService {
     @Autowired
     private WorkAuthNoMapper workAuthNoMapper;
 
-//    public MessageV1 makeAdvert(AdvertMakeInfo advertMakeInfo) {
-//        MessageV1 messageV1 = new MessageV1();
-//        if (Objects.isNull(advertMakeInfo)) {
-//            log.info("请输入生成所需要的信息!");
-//            messageV1.setResult("请输入生成所需要的信息!");
-//            return messageV1;
-//        }
-//        //判断类型 (1:二维码链接 2:url链接)
-//        if (1 == advertMakeInfo.getType()) {
-//            if (StringUtils.isEmpty(advertMakeInfo.getEwmUrl())) {
-//                log.info("二维码路径不能为空!");
-//                messageV1.setResult("二维码路径不能为空!");
-//                return messageV1;
-//            }
-//            try {
-//                QRCodeUtil.encode(advertMakeInfo.getEwmUrl(), "", advertMakeInfo.getEwmUrl(), true);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        Advert advert = new Advert();
-//        advert.setTitle(advertMakeInfo.getTitle());
-//        advert.setChannelId(advertMakeInfo.getChannel());
-//        advert.setContent(advertMakeInfo.getContent());
-//        advert.setEwmUrl(advertMakeInfo.getEwmUrl() == null ? null : advertMakeInfo.getEwmUrl());
-//        advert.setUrl(advertMakeInfo.getUrl() == null ? null : advertMakeInfo.getUrl());
-//        advert.setType(advertMakeInfo.getType());
-//        advert.setCreateTime(new Date());
-//        int i = advertMapper.insert(advert);
-//        if (1 != i) {
-//            log.info("数据保存异常!");
-//            throw new BizRunTimeException("数据保存异常!");
-//        }
-//        messageV1.setResult("success");
-//        return messageV1;
-//    }
-
     public MessageInfo<AdvertMakeInfo> makeAdvertV1(String qq, String workNo) throws Exception {
         MessageInfo<AdvertMakeInfo> messageInfo = new MessageInfo<>();
         if (StringUtils.isEmpty(qq)) {
@@ -123,6 +86,14 @@ public class AdvertService {
             }
         } catch (DuplicateKeyException e) {
             messageInfo.setResult("该qq号已授权!");
+            Share inviteShareInfo = this.getInviteShareInfo(qq, Integer.parseInt(workNo),authNo.getId());
+            advertMakeInfo.setIcon(inviteShareInfo.getIcon());
+            advertMakeInfo.setContent(inviteShareInfo.getContent());
+            advertMakeInfo.setEwmUrl(inviteShareInfo.getQRcodeUrl());
+            advertMakeInfo.setTitle(inviteShareInfo.getTitle());
+            advertMakeInfo.setUrl(inviteShareInfo.getUrl());
+            advertMakeInfo.setAuthNoId(authNo.getId());
+            messageInfo.setData(advertMakeInfo);
             return messageInfo;
         }
         Share inviteShareInfo = this.getInviteShareInfo(qq, Integer.parseInt(workNo),authNo.getId());
@@ -140,7 +111,59 @@ public class AdvertService {
     public String getChannel(Integer channelId) {
         return channelMapper.selectByPrimaryKey(channelId).getValue();
     }
+    //线上
+//    public Share getInviteShareInfo(String qqNumber, Integer serviceId, Integer authNoId) throws Exception {
+//        //获取分享内容 + 链接拼接 + 二维码图片地址
+//        Advert advert = advertMapper.selectByPrimaryKey(1);
+//        Share share = new Share();
+//        share.setTitle(advert.getTitle());
+//        share.setContent(advert.getContent());
+//        share.setIcon(advert.getIcon());
+//        share.setUrl("http://api.yunjg.net/login.html?qqNumber=" + qqNumber + "&serviceId=" + serviceId + "&authNoId=" + authNoId + "&advertId=1");
+//
+//        int width = 295;
+//        int height = 286;
+//        String format = "png";
+//        Hashtable hints = new Hashtable();
+//        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+//        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+//        hints.put(EncodeHintType.MARGIN, 2);
+//        try {
+//            BitMatrix bitMatrix = new MultiFormatWriter().encode(share.getUrl(), BarcodeFormat.QR_CODE, width, height, hints);
+////            Path file = new java.io.File("/home/www/images/QRCode_" + qqNumber + ".png").toPath();
+//            Path file = new java.io.File("/home/www/images/QRCode_" + qqNumber + ".png").toPath();
+//            MatrixToImageWriter.writeToPath(bitMatrix, format, file);
+//        } catch (WriterException e) {
+//            e.printStackTrace();
+//        }
+//
+//        InputStream imagein = new FileInputStream("/home/www/images/dt.png");
+//        InputStream imagein2 = new FileInputStream("/home/www/images/QRCode_" + qqNumber + ".png");
+//
+//        BufferedImage image = ImageIO.read(imagein);
+//        BufferedImage image2 = ImageIO.read(imagein2);
+//        Graphics g = image.getGraphics();
+//        g.drawImage(image2, 228, 677, 295, 286, null);
+//
+//
+//        String dstName = "/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg";
+//        String formatName = dstName.substring(dstName.lastIndexOf(".") + 1);
+//        ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(dstName) /* target */);
+//
+////        OutputStream outImage = new FileOutputStream("/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg");
+////        JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(outImage);
+////        enc.encode(image);
+//
+//        Runtime.getRuntime().exec("chmod 644 -R " + "/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg");
+//
+//        imagein.close();
+//        imagein2.close();
+////        outImage.close();
+//        share.setQRcodeUrl("http://image.yunjg.net/images/QRCode/QRCode_" + qqNumber + ".jpg");
+//        return share;
+//    }
 
+    //本地
     public Share getInviteShareInfo(String qqNumber, Integer serviceId, Integer authNoId) throws Exception {
         //获取分享内容 + 链接拼接 + 二维码图片地址
         Advert advert = advertMapper.selectByPrimaryKey(1);
@@ -148,7 +171,7 @@ public class AdvertService {
         share.setTitle(advert.getTitle());
         share.setContent(advert.getContent());
         share.setIcon(advert.getIcon());
-        share.setUrl("http://api.yunjg.net/login.html?qqNumber=" + qqNumber + "&serviceId=" + serviceId + "authNoId=" + authNoId);
+        share.setUrl("http://api.yunjg.net/login.html?qqNumber=" + qqNumber + "&serviceId=" + serviceId + "&authNoId=" + authNoId + "&advertId=1");
 
         int width = 295;
         int height = 286;
@@ -160,14 +183,14 @@ public class AdvertService {
         try {
             BitMatrix bitMatrix = new MultiFormatWriter().encode(share.getUrl(), BarcodeFormat.QR_CODE, width, height, hints);
 //            Path file = new java.io.File("/home/www/images/QRCode_" + qqNumber + ".png").toPath();
-            Path file = new java.io.File("/home/www/images/QRCode_" + qqNumber + ".png").toPath();
+            Path file = new java.io.File("D://image/QRCode_" + qqNumber + ".png").toPath();
             MatrixToImageWriter.writeToPath(bitMatrix, format, file);
         } catch (WriterException e) {
             e.printStackTrace();
         }
 
-        InputStream imagein = new FileInputStream("/home/www/images/dt.png");
-        InputStream imagein2 = new FileInputStream("/home/www/images/QRCode_" + qqNumber + ".png");
+        InputStream imagein = new FileInputStream("D://dt.png");
+        InputStream imagein2 = new FileInputStream("D://image/QRCode_" + qqNumber + ".png");
 
         BufferedImage image = ImageIO.read(imagein);
         BufferedImage image2 = ImageIO.read(imagein2);
@@ -175,7 +198,7 @@ public class AdvertService {
         g.drawImage(image2, 228, 677, 295, 286, null);
 
 
-        String dstName = "/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg";
+        String dstName = "D://image/QRCode/QRCode_" + qqNumber + ".jpg";
         String formatName = dstName.substring(dstName.lastIndexOf(".") + 1);
         ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(dstName) /* target */);
 
@@ -183,7 +206,7 @@ public class AdvertService {
 //        JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(outImage);
 //        enc.encode(image);
 
-        Runtime.getRuntime().exec("chmod 644 -R " + "/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg");
+//        Runtime.getRuntime().exec("chmod 644 -R " + "/home/www/images/QRCode/QRCode_" + qqNumber + ".jpg");
 
         imagein.close();
         imagein2.close();

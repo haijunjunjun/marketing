@@ -1,4 +1,5 @@
 server:
+#  port: 8083
   port: 8088
 
 spring:
@@ -12,7 +13,9 @@ spring:
       readwrite:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/market?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
+        url: jdbc:mysql://localhost:3306/market?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false
+#        username: developer
+#        password: developer!@#
         username:
         password:
 # 下面为连接池的补充设置，应用到上面所有数据源中

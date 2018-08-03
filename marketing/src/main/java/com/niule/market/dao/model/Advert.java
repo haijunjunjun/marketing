@@ -32,7 +32,7 @@ public class Advert {
     /**
      * 类型（渠道号）
      */
-    private Integer type;
+    private String type;
 
     /**
      * 二维码链接
@@ -124,11 +124,11 @@ public class Advert {
     }
 
     /**
-     * 类型（渠道号）
+     * 获取类型（渠道号）
      *
      * @return type - 类型（渠道号）
      */
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
@@ -137,8 +137,8 @@ public class Advert {
      *
      * @param type 类型（渠道号）
      */
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     /**
