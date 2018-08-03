@@ -412,6 +412,43 @@ body {
     cursor: pointer;
 }
 
+/*.effect-zoe-v6:hover figcaption,*/
+/*.effect-zoe-v6:hover h2,*/
+/*.effect-zoe-v6:hover p.icon-links a {*/
+    /*-webkit-transform: translate3d(0, 0, 0);*/
+    /*transform: translate3d(0, 0, 0);*/
+/*}*/
+
+/*.effect-zoe-v6 h2 {*/
+    /*display: inline-block;*/
+/*}*/
+
+/*.effect-zoe-v6 figcaption {*/
+    /*top: auto;*/
+    /*margin: 0px 0px 0px 0px;*/
+    /*bottom: 0;*/
+    /*padding: 1em;*/
+    /*height: 24.75em;*/
+    /*background: rgba(0, 0, 0, 0.75);*/
+    /*color: #3c4a50;*/
+    /*-webkit-transition: -webkit-transform 0.35s;*/
+    /*transition: transform 0.35s;*/
+    /*-webkit-transform: translate3d(0, 100%, 0);*/
+    /*transform: translate3d(0, 100%, 0);*/
+/*}*/
+
+/*.grid .effect-zoe-v6 {*/
+    /*position: relative;*/
+    /*float: left;*/
+    /*overflow: hidden;*/
+    /*background: #e1f7f6;*/
+    /*text-align: center;*/
+    /*cursor: pointer;*/
+    /*margin: 0px 0px 0px 53px;*/
+    /*width: 371px;*/
+    /*height: 454px;*/
+/*}*/
+
 .grid .effect-zoe-v1 {
     position: relative;
     float: left;
@@ -483,9 +520,11 @@ body {
 
 .effect-zoe-v5 .picV1{
     position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 474px;
+    margin: -1px 0px 0px -2px;
+    top: -15px;
+    left: 113px;
+    right: 0px;
+    width: 356px;
     height: 470px;
     background: rgba(61, 58, 103, 0.7);
     color: #f5f5f5;
