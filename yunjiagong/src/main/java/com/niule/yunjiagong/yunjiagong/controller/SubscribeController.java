@@ -1,10 +1,7 @@
 package com.niule.yunjiagong.yunjiagong.controller;
 
-import com.github.pagehelper.PageInfo;
-import com.niule.yunjiagong.yunjiagong.config.annotation.Operator;
-import com.niule.yunjiagong.yunjiagong.dal.model.Subscribe;
-import com.niule.yunjiagong.yunjiagong.model.CurOperator;
 import com.niule.yunjiagong.yunjiagong.service.SubscribeService;
+import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import com.niule.yunjiagong.yunjiagong.util.MessageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
@@ -29,22 +26,19 @@ public class SubscribeController {
     private SubscribeService subscribeService;
 
     @RequestMapping(value = "/market/get/subscribe", method = RequestMethod.GET)
-    public ResponseEntity<PageInfo<Subscribe>> getSubscribe(@Valid @NotNull @Operator CurOperator curOperator,
-                                                            @Valid @RequestParam("pageNum") Integer pageNum,
-                                                            @Valid @RequestParam("pageSize") Integer pageSize) {
-        return ResponseEntity.ok(subscribeService.getSubscribe(curOperator.getUserId(), pageNum, pageSize));
+    public DataResponse getSubscribe(@Valid @RequestParam("pageNum") Integer pageNum,
+                                     @Valid @RequestParam("pageSize") Integer pageSize) {
+        return DataResponse.success(subscribeService.getSubscribe(pageNum, pageSize));
     }
 
     @RequestMapping(value = "/market/add/subscribe", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo> addSubscribe(@Valid @NotNull @Operator CurOperator curOperator,
-                                                    @Valid @NotNull @RequestParam("mobile") String mobile,
+    public DataResponse addSubscribe(@Valid @NotNull @RequestParam("mobile") String mobile,
                                                     @Valid @NotNull @RequestParam("subscribeName") String subscribeName) {
-        return ResponseEntity.ok(subscribeService.addSubscribe(curOperator.getUserId(), mobile, subscribeName));
+        return DataResponse.success(subscribeService.addSubscribe(mobile, subscribeName));
     }
 
     @RequestMapping(value = "/market/delete/subscribe", method = RequestMethod.POST)
-    public ResponseEntity<Boolean> deleteSubscribe(@Valid @NotNull @Operator CurOperator curOperator,
-                                                   @Valid @NotNull @RequestParam("subscribeId") Integer subscribeId) {
-        return ResponseEntity.ok(subscribeService.deleteSubscribe(subscribeId, curOperator.getUserId()));
+    public DataResponse deleteSubscribe(@Valid @NotNull @RequestParam("subscribeId") Integer subscribeId) {
+        return DataResponse.success(subscribeService.deleteSubscribe(subscribeId));
     }
 }

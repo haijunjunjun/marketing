@@ -5,6 +5,8 @@ import com.niule.yunjiagong.yunjiagong.dal.mapper.RecommendLogMapper;
 import com.niule.yunjiagong.yunjiagong.dal.model.ActiveInfo;
 import com.niule.yunjiagong.yunjiagong.dal.model.RecommendLog;
 import com.niule.yunjiagong.yunjiagong.model.Share;
+import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
+import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class ActiveInfoService {
     private ActiveInfoMapper activeInfoMapper;
     @Autowired
     private RecommendLogMapper recommendLogMapper;
+    @Autowired
+    private UserInfoFeginService userInfoFeginService;
 
     public List<ActiveInfo> getActiveInfo() {
         ActiveInfo activeInfo = new ActiveInfo();
@@ -33,7 +37,8 @@ public class ActiveInfoService {
         return activeInfos;
     }
 
-    public String getLocal(Integer userId, Integer activityId) {
+    public String getLocal(Integer activityId) {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
         ActiveInfo activeInfo = activeInfoMapper.selectByPrimaryKey(activityId);
         if (Objects.isNull(activeInfo)) {
             log.info("数据库信息查询异常!");
@@ -45,9 +50,9 @@ public class ActiveInfoService {
         if ("RECOMMEND".equals(activeInfo.getActiveSign())) {
             int userCnt = 0;
             int beanCnt = 0;
-            if (userId != null) {
+            if (userBaseInfo.getId() != null) {
                 RecommendLog recommendLog = new RecommendLog();
-                recommendLog.setUserId(userId);
+                recommendLog.setUserId(userBaseInfo.getId().intValue());
                 List<RecommendLog> recommendLogList = recommendLogMapper.select(recommendLog);
                 userCnt = recommendLogList.size();
                 for (RecommendLog r : recommendLogList) {
@@ -59,13 +64,14 @@ public class ActiveInfoService {
         return activeInfo.getLocalUrl();
     }
 
-    public Share getShareUrl(Integer userId, Integer activityId) {
+    public Share getShareUrl(Integer activityId) {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
         ActiveInfo activeInfo = activeInfoMapper.selectByPrimaryKey(activityId);
         String shareUrl;
         if ("NORMAL".equals(activeInfo.getActiveSign())) {
             shareUrl = activeInfo.getShareUrl();
         } else if ("RECOMMEND".equals(activeInfo.getActiveSign())) {
-            shareUrl = activeInfo.getShareUrl() + "?activityId=" + activityId + "&hostId=" + userId;
+            shareUrl = activeInfo.getShareUrl() + "?activityId=" + activityId + "&hostId=" + userBaseInfo.getId();
         } else {
             shareUrl = activeInfo.getShareUrl();
         }

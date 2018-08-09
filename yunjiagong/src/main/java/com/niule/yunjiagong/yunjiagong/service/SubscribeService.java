@@ -6,6 +6,8 @@ import com.niule.yunjiagong.yunjiagong.dal.mapper.SubscribeMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.UserInfoMapper;
 import com.niule.yunjiagong.yunjiagong.dal.model.Subscribe;
 import com.niule.yunjiagong.yunjiagong.dal.model.UserInfo;
+import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
+import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
 import com.niule.yunjiagong.yunjiagong.util.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +31,12 @@ public class SubscribeService {
     private SubscribeMapper subscribeMapper;
     @Autowired
     private UserInfoMapper userInfoMapper;
+    @Autowired
+    private UserInfoFeginService userInfoFeginService;
 
-    public PageInfo<Subscribe> getSubscribe(Integer userId, Integer pageNum, Integer pageSize) {
+    public PageInfo<Subscribe> getSubscribe(Integer pageNum, Integer pageSize) {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
+        int userId = userBaseInfo.getId().intValue();
         PageHelper.startPage(pageNum == null ? 1 : pageNum, pageSize == null ? 10 : pageSize);
         Subscribe subscribe = new Subscribe();
         subscribe.setUserId(userId);
@@ -47,7 +53,9 @@ public class SubscribeService {
         return subscribePageInfo;
     }
 
-    public MessageInfo addSubscribe(Integer userId, String mobile, String subscribeName) {
+    public MessageInfo addSubscribe(String mobile, String subscribeName) {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
+        int userId = userBaseInfo.getId().intValue();
         MessageInfo messageInfo = new MessageInfo();
         if (StringUtils.isEmpty(mobile)) {
             log.info("手机号为空!");
@@ -65,7 +73,7 @@ public class SubscribeService {
         int subscribeCount = userInfo.getSubscribeCount().intValue();
         if (subscribeCount == 0) {
             log.info("已达关键词订阅次数上限");
-            messageInfo.setContent("messageInfo");
+            messageInfo.setContent("已达关键词订阅次数上限");
             return messageInfo;
         }
         UserInfo userInfoV1 = new UserInfo();
@@ -87,11 +95,13 @@ public class SubscribeService {
             log.info("数据库信息异常!");
             throw new BizRuntimeException("数据库信息异常!");
         }
-        messageInfo.setContent("info");
+        messageInfo.setContent("订阅成功!");
         return messageInfo;
     }
 
-    public boolean deleteSubscribe(Integer subscribeId, Integer userId) {
+    public boolean deleteSubscribe(Integer subscribeId) {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
+        int userId = userBaseInfo.getId().intValue();
         if (Objects.isNull(subscribeId)) {
             log.info("参数信息异常!");
             throw new BizRuntimeException("参数信息异常！");

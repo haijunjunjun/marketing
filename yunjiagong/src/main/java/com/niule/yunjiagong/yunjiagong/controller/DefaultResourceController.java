@@ -2,6 +2,7 @@ package com.niule.yunjiagong.yunjiagong.controller;
 
 import com.niule.yunjiagong.yunjiagong.model.DefaultResource;
 import com.niule.yunjiagong.yunjiagong.service.DefaultResourceService;
+import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class DefaultResourceController {
 
     @Description("获取默认图片")
     @RequestMapping(value = "/user/default/resource", method = RequestMethod.GET)
-    public ResponseEntity<List<DefaultResource>> getDefaultResource() {
-        return ResponseEntity.ok(defaultResourceService.getDefaultResource());
+    public DataResponse getDefaultResource() {
+        return DataResponse.success(defaultResourceService.getDefaultResource());
     }
 }

@@ -1,52 +1,46 @@
 package com.niule.yunjiagong.yunjiagong.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.niule.yunjiagong.yunjiagong.config.annotation.Operator;
-import com.niule.yunjiagong.yunjiagong.dal.model.ActiveInfo;
-import com.niule.yunjiagong.yunjiagong.model.CurOperator;
-import com.niule.yunjiagong.yunjiagong.model.Share;
+import com.niule.yunjiagong.yunjiagong.model.ActivityModel;
+import com.niule.yunjiagong.yunjiagong.model.ShareInfoParamModel;
 import com.niule.yunjiagong.yunjiagong.service.ActiveInfoService;
+import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author haijun
  * @create 2018 - 07 - 30 - 16:41
  */
-@Controller
+@RestController
 public class ActiveInfoController {
 
     @Autowired
     private ActiveInfoService activeInfoService;
 
     @RequestMapping(value = "/market/active/info", method = RequestMethod.POST)
-    public ResponseEntity<List<ActiveInfo>> getActiveInfoList() {
-        return ResponseEntity.ok(activeInfoService.getActiveInfo());
+    public DataResponse getActiveInfoList() {
+        return DataResponse.success(activeInfoService.getActiveInfo());
     }
 
-    @RequestMapping(value = "/market/local/url", method = RequestMethod.GET)
-    public ResponseEntity<String> getLocalUrl(@Valid @Operator CurOperator curOperator,
-                                              @Valid @NotNull @RequestParam("activityId") Integer activityId) {
-        return ResponseEntity.ok(activeInfoService.getLocal(curOperator.getUserId(), activityId));
+    @RequestMapping(value = "/market/local/url", method = RequestMethod.POST)
+    public DataResponse getLocalUrl(@Valid @NotNull @RequestBody(required = true) ActivityModel activityModel) {
+        return DataResponse.success(activeInfoService.getLocal(activityModel.getActivityId()));
     }
 
-    @RequestMapping(value = "/market/share/url", method = RequestMethod.GET)
-    public ResponseEntity<Share> getShareUrl(@Valid @Operator CurOperator curOperator,
-                                             @Valid @NotNull @RequestParam("activityId") Integer activityId) {
-        return ResponseEntity.ok(activeInfoService.getShareUrl(curOperator.getUserId(), activityId));
+    @RequestMapping(value = "/market/share/url", method = RequestMethod.POST)
+    public DataResponse getShareUrl(@Valid @NotNull @RequestBody(required = true) ActivityModel activityModel) {
+        return DataResponse.success(activeInfoService.getShareUrl(activityModel.getActivityId()));
     }
 
-    @RequestMapping(value = "/market/share/info", method = RequestMethod.GET)
-    public ResponseEntity<String> getShareUrl(@Valid @NotNull @RequestParam("callback") String callback,
-                                              @Valid @NotNull @RequestParam("activityId") Integer activityId) {
-        return ResponseEntity.ok(callback + "(" + JSON.toJSON(activeInfoService.getShareInfo(activityId)) + ")");
+    @RequestMapping(value = "/market/share/info", method = RequestMethod.POST)
+    public DataResponse getShareUrl(@Valid @NotNull @RequestBody(required = true) ShareInfoParamModel shareInfoParamModel) {
+        return DataResponse.success(shareInfoParamModel.getCallback() + "(" + JSON.toJSON(activeInfoService.getShareInfo(shareInfoParamModel.getActivityId())) + ")");
     }
 }

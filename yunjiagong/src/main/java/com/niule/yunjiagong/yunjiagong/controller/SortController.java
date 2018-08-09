@@ -2,6 +2,7 @@ package com.niule.yunjiagong.yunjiagong.controller;
 
 import com.niule.yunjiagong.yunjiagong.dal.model.SortType;
 import com.niule.yunjiagong.yunjiagong.service.SortService;
+import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class SortController {
 
     @Description("获取排序列表")
     @RequestMapping(value = "/user/sort/type", method = RequestMethod.GET)
-    public ResponseEntity<List<SortType>> getSortType() {
-        return ResponseEntity.ok(sortService.getSortType());
+    public DataResponse getSortType() {
+        return DataResponse.success(sortService.getSortType());
     }
 }

@@ -8,6 +8,8 @@ import com.niule.yunjiagong.yunjiagong.dal.mapper.UserInfoMapper;
 import com.niule.yunjiagong.yunjiagong.dal.model.SignInfo;
 import com.niule.yunjiagong.yunjiagong.dal.model.SignTemplate;
 import com.niule.yunjiagong.yunjiagong.dal.model.UserInfo;
+import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
+import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
 import com.niule.yunjiagong.yunjiagong.util.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +38,12 @@ public class SignService {
     private SignLogMapper signLogMapper;
     @Autowired
     private UserInfoMapper userInfoMapper;
+    @Autowired
+    private UserInfoFeginService userInfoFeginService;
 
-    public MessageInfo doSign(Integer userId, String signDateV1) throws ParseException {
+    public MessageInfo doSign(String signDateV1) throws ParseException {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
+        int userId = userBaseInfo.getId().intValue();
         Date signDate = this.formatDate(signDateV1);
         if (Objects.isNull(userId) || Objects.isNull(signDate)) {
             log.info("参数信息异常！");
@@ -75,7 +81,9 @@ public class SignService {
         return messageInfo;
     }
 
-    public boolean checkSign(Integer userId, String signDateV1) throws ParseException {
+    public boolean checkSign(String signDateV1) throws ParseException {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
+        int userId = userBaseInfo.getId().intValue();
         Date signDate = this.formatDate(signDateV1);
         if (Objects.isNull(userId) || Objects.isNull(signDate)) {
             log.info("参数信息异常！");

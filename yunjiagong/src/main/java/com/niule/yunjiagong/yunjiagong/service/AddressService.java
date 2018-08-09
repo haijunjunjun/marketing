@@ -10,6 +10,8 @@ import com.niule.yunjiagong.yunjiagong.dal.model.Address;
 import com.niule.yunjiagong.yunjiagong.dal.model.Area;
 import com.niule.yunjiagong.yunjiagong.dal.model.City;
 import com.niule.yunjiagong.yunjiagong.dal.model.Province;
+import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
+import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +37,16 @@ public class AddressService {
     private CityMapper cityMapper;
     @Autowired
     private AreaMapper areaMapper;
+    @Autowired
+    private UserInfoFeginService userInfoFeginService;
 
-    public PageInfo<Address> getAddressList(Integer userId, Integer userType, Integer pageNum, Integer pageSize) {
-        if (StringUtils.isEmpty(userId.toString()) || StringUtils.isEmpty(userType)) {
+    public PageInfo<Address> getAddressList(Integer pageNum, Integer pageSize) {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
+        if (Objects.isNull(userBaseInfo)) {
             throw new BizRuntimeException("系統信息異常！");
         }
         PageHelper.startPage(pageNum == null ? 1 : pageNum, pageSize == null ? 5 : pageSize);
-        List<Address> addresses = addressMapper.getAddressList(userId, userType);
+        List<Address> addresses = addressMapper.getAddressList(userBaseInfo.getId().intValue(), 1);
         PageInfo<Address> addressPageInfo = new PageInfo<>(addresses);
         return addressPageInfo;
     }

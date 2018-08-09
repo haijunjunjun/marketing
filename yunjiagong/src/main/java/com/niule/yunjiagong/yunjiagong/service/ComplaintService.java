@@ -3,6 +3,8 @@ package com.niule.yunjiagong.yunjiagong.service;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.ComplaintMapper;
 import com.niule.yunjiagong.yunjiagong.dal.model.Complaint;
 import com.niule.yunjiagong.yunjiagong.model.ComplaintModel;
+import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
+import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
 import com.niule.yunjiagong.yunjiagong.util.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +26,13 @@ public class ComplaintService {
 
     @Autowired
     private ComplaintMapper complaintMapper;
+    @Autowired
+    private UserInfoFeginService userInfoFeginService;
 
-    public MessageInfo doComplaint(Integer userId, ComplaintModel complaintModel) {
+    public MessageInfo doComplaint(ComplaintModel complaintModel) {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
         MessageInfo messageInfo = new MessageInfo();
-        if (Objects.isNull(userId)) {
+        if (Objects.isNull(userBaseInfo.getId())) {
             log.info("参数信息异常！");
             throw new BizRuntimeException("参数信息异常！");
         }
@@ -47,7 +52,7 @@ public class ComplaintService {
             messageInfo.setContent("备注不能为空！");
             return messageInfo;
         }
-        complaintModel.setUserId(userId);
+        complaintModel.setUserId(userBaseInfo.getId().intValue());
         Complaint complaint = new Complaint();
         BeanUtils.copyProperties(complaintModel, complaint);
         complaint.setCreateTime(new Date());

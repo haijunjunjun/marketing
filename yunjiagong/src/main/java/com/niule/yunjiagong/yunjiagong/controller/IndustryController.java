@@ -2,6 +2,7 @@ package com.niule.yunjiagong.yunjiagong.controller;
 
 import com.niule.yunjiagong.yunjiagong.dal.model.Industry;
 import com.niule.yunjiagong.yunjiagong.service.IndustryService;
+import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class IndustryController {
 
     @Description("获取工种信息")
     @RequestMapping(value = "/user/industry", method = RequestMethod.GET)
-    public ResponseEntity<List<Industry>> getIndustry() {
-        return ResponseEntity.ok(industryService.getIndustryInfo());
+    public DataResponse getIndustry() {
+        return DataResponse.success(industryService.getIndustryInfo());
     }
 }

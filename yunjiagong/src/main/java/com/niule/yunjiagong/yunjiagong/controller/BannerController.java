@@ -1,19 +1,18 @@
 package com.niule.yunjiagong.yunjiagong.controller;
 
-import com.niule.yunjiagong.yunjiagong.dal.model.Banner;
+import com.niule.yunjiagong.yunjiagong.model.BannerModel;
 import com.niule.yunjiagong.yunjiagong.service.BannerService;
+import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * @author haijun
@@ -21,15 +20,15 @@ import java.util.List;
  */
 @Description("banner")
 @Slf4j
-@Controller
+@RestController
 public class BannerController {
 
     @Autowired
     private BannerService bannerService;
 
     @Description("获取banner信息")
-    @RequestMapping(value = "/user/banner", method = RequestMethod.GET)
-    public ResponseEntity<List<Banner>> getBanner(@Valid @NotNull @RequestParam("type") Integer bannerType) {
-        return ResponseEntity.ok(bannerService.getBanner(bannerType));
+    @RequestMapping(value = "/user/banner", method = RequestMethod.POST)
+    public DataResponse getBanner(@Valid @NotNull @RequestBody(required = true) BannerModel bannerModel) {
+        return DataResponse.success(bannerService.getBanner(bannerModel.getBannerType()));
     }
 }
