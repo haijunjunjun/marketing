@@ -15,21 +15,10 @@ public class Subscribe {
     private Integer userId;
 
     /**
-     * 用户名
-     */
-    @Column(name = "user_name")
-    private String userName;
-
-    /**
      * 订阅名字
      */
     @Column(name = "subscribe_name")
     private String subscribeName;
-
-    /**
-     * 手机
-     */
-    private String mobile;
 
     /**
      * 创建时间
@@ -70,24 +59,6 @@ public class Subscribe {
     }
 
     /**
-     * 获取用户名
-     *
-     * @return user_name - 用户名
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * 设置用户名
-     *
-     * @param userName 用户名
-     */
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
-    }
-
-    /**
      * 获取订阅名字
      *
      * @return subscribe_name - 订阅名字
@@ -103,24 +74,6 @@ public class Subscribe {
      */
     public void setSubscribeName(String subscribeName) {
         this.subscribeName = subscribeName == null ? null : subscribeName.trim();
-    }
-
-    /**
-     * 获取手机
-     *
-     * @return mobile - 手机
-     */
-    public String getMobile() {
-        return mobile;
-    }
-
-    /**
-     * 设置手机
-     *
-     * @param mobile 手机
-     */
-    public void setMobile(String mobile) {
-        this.mobile = mobile == null ? null : mobile.trim();
     }
 
     /**

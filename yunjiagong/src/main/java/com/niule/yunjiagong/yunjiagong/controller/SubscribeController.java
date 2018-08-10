@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ import javax.validation.constraints.NotNull;
  * @create 2018 - 07 - 30 - 9:18
  */
 @Description("订阅信息的增删查")
-@Controller
+@RestController
 public class SubscribeController {
 
     @Autowired

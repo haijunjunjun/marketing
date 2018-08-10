@@ -86,9 +86,7 @@ public class SubscribeService {
         }
         Subscribe subscribe = new Subscribe();
         subscribe.setUserId(userId);
-        subscribe.setUserName(userInfo.getRealName());
         subscribe.setCreateTime(new Date());
-        subscribe.setMobile(mobile);
         subscribe.setSubscribeName(subscribeName);
         int info = subscribeMapper.insertSelective(subscribe);
         if (1 != info) {
