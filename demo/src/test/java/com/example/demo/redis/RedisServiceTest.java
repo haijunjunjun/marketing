@@ -20,8 +20,8 @@ public class RedisServiceTest {
     @Autowired
     private RedisService redisService;
 
-    @Test
-    public void t1 (){
-        redisService.setKey("1","success");
-    }
+//    @Test
+//    public void t1 (){
+//        redisService.setKey("1","success");
+//    }
 }

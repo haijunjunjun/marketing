@@ -4,7 +4,8 @@ public enum CustomerStatus {
 
     FURTHER(1, "待跟进"),
     FINISH(2, "已签约"),
-    ABANDON(3, "已放弃");
+    ABANDON(3, "已放弃"),
+    DELETE(4, "已删除");
 
     private Integer status;
     private String name;

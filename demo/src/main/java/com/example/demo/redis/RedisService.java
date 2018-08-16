@@ -1,4 +1,4 @@
-package com.niule.yunjiagong.yunjiagong.redis;
+package com.example.demo.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
@@ -17,10 +17,6 @@ public class RedisService {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
-
-    public void setKey(String key, String value) {
-        redisTemplate.opsForValue().set(key, value);
-    }
 
     /**
      * 写入缓存

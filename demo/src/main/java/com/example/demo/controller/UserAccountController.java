@@ -1,19 +1,17 @@
 package com.example.demo.controller;
 
-import com.example.demo.config.annotation.CurrentUser;
+import com.example.demo.config.annotation.Operator;
 import com.example.demo.dal.model.CashDetail;
-import com.example.demo.dal.model.UserInfo;
 import com.example.demo.model.BankInfoModel;
 import com.example.demo.model.BindCardModel;
+import com.example.demo.model.CurOperator;
 import com.example.demo.service.UserAccountService;
 import com.example.demo.util.MessageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -26,14 +24,14 @@ public class UserAccountController {
     private UserAccountService userAccountService;
 
     @RequestMapping(value = "/marketing/my/cash/detail/list", method = RequestMethod.GET)
-    public ResponseEntity<MessageInfo<List<CashDetail>>> getMyCashDetailListInfo(@Valid @NotNull @CurrentUser UserInfo userInfo) {
-        return ResponseEntity.ok(userAccountService.getMyCashDetail(userInfo.getId()));
+    public ResponseEntity<MessageInfo<List<CashDetail>>> getMyCashDetailListInfo(@Valid @NotNull @Operator CurOperator curOperator) {
+        return ResponseEntity.ok(userAccountService.getMyCashDetail(curOperator.getId()));
     }
 
     @RequestMapping(value = "/marketing/my/cash/apply", method = RequestMethod.POST)
-    public ResponseEntity<String> cashApply(@Valid @NotNull @CurrentUser UserInfo userInfo,
-                                            @Valid @NotNull @RequestParam("money") Integer money) {
-        return ResponseEntity.ok(userAccountService.cashApply(userInfo.getId(), money));
+    public ResponseEntity<MessageInfo> cashApply(@Valid @NotNull @Operator CurOperator curOperator,
+                                            @Valid @NotNull @RequestParam("money") double money) {
+        return ResponseEntity.ok(userAccountService.cashApply(curOperator.getId(), money));
     }
 
     @RequestMapping(value = "/marketing/my/check")
@@ -43,14 +41,22 @@ public class UserAccountController {
         return ResponseEntity.ok(userAccountService.cashCheck(cashDetailId, status, refuseReason));
     }
 
+    @Description("获取银行卡信息")
     @RequestMapping(value = "/marketing/my/bank/info", method = RequestMethod.POST)
-    public ResponseEntity<BankInfoModel> getBankInfo(@Valid @NotNull @CurrentUser UserInfo userInfo) {
-        return ResponseEntity.ok(userAccountService.getBankInfo(userInfo.getId()));
+    public ResponseEntity<BankInfoModel> getBankInfo(@Valid @NotNull @Operator CurOperator curOperator) {
+        return ResponseEntity.ok(userAccountService.getBankInfo(curOperator.getId()));
     }
 
+    @Description("绑定银行卡")
     @RequestMapping(value = "/marketing/my/bank/bind", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo> bindCard(@Valid @NotNull @CurrentUser UserInfo userInfo,
+    public ResponseEntity<MessageInfo> bindCard(@Valid @NotNull @Operator CurOperator curOperator,
                                                 @Valid @RequestBody(required = true) BindCardModel bindCardModel) {
-        return ResponseEntity.ok(userAccountService.bindCard(userInfo.getId(), bindCardModel));
+        return ResponseEntity.ok(userAccountService.bindCard(curOperator.getId(), bindCardModel));
+    }
+
+    @Description("获取可用余额")
+    @RequestMapping(value = "/marketing/available/money", method = RequestMethod.GET)
+    public ResponseEntity<Double> getAvailableMoney(@Valid @NotNull @Operator CurOperator curOperator) {
+        return ResponseEntity.ok(userAccountService.getAvailavleMoney(curOperator.getId()));
     }
 }

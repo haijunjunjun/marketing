@@ -8,5 +8,6 @@ import java.io.Serializable;
 public class Reason implements Serializable {
     private static final long serialVersionUID = 3218309598297971255L;
     private Integer custId;
+    private Integer status;
     private String reason;
 }

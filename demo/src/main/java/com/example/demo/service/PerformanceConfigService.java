@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dal.mapper.*;
 import com.example.demo.dal.model.PerformanceConfig;
+import com.example.demo.dal.model.PerformanceConfigV1;
 import com.example.demo.dal.model.UserCommissions;
 import com.example.demo.dal.model.UserInfo;
 import com.example.demo.util.BizRuntimeException;
@@ -33,6 +34,8 @@ public class PerformanceConfigService {
     private UserCommissionsMapper userCommissionsMapper;
     @Autowired
     private UserAccountMapper userAccountMapper;
+    @Autowired
+    private PerformanceConfigV1Mapper performanceConfigV1Mapper;
 
     /**
      * 通过 userId 获取等级
@@ -152,7 +155,7 @@ public class PerformanceConfigService {
     }
 
     /**
-     * 计算用户的提成
+     * 计算用户的提成（浮动比例算法）
      */
     public Double calUserCommission(Integer userId) {
         if (StringUtils.isEmpty(userId.toString().trim()) || userId <= 0) {
@@ -161,52 +164,109 @@ public class PerformanceConfigService {
         }
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         String level = userInfo.getLevel();
-        Map<String, Object> config = this.getPerformanceConfig();
-        //根据等级获取当前销售员的定额
-        BigDecimal quota = new BigDecimal(config.get(level).toString());
-        //获取配置（提成百分比）
-        BigDecimal r1 = new BigDecimal(config.get("R1").toString());
-        BigDecimal r2 = new BigDecimal(config.get("R2").toString());
-        BigDecimal r3 = new BigDecimal(config.get("R3").toString());
-        BigDecimal r6 = new BigDecimal(config.get("R6").toString());
+        PerformanceConfigV1 performanceConfigV1 = new PerformanceConfigV1();
+        performanceConfigV1.setLevel(level);
+        PerformanceConfigV1 performanceConfigData = performanceConfigV1Mapper.selectOne(performanceConfigV1);
+        BigDecimal kpi = new BigDecimal(Double.toString(performanceConfigData.getKpi())).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal deathLine = new BigDecimal(Double.toString(performanceConfigData.getDeathLine())).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        if (Objects.isNull(performanceConfigData)) {
+            log.info("performanceConfigData 信息查询异常！");
+            throw new BizRuntimeException("performanceConfigData 信息查询异常!");
+        }
         //计算当前日期所在周的上一周日期区间
         Map<String, String> dtV1 = this.getDt(getWeekDays(-1));
         //计算当前用户上一周的总业绩
-        BigDecimal performanceV1 = new BigDecimal(userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end")));
-        if (performanceV1.compareTo(BigDecimal.ZERO) == -1) {
-            log.info("数据信息异常!");
-            throw new BizRuntimeException("数据信息异常!");
-        }
-        //上周的业绩小于定额
-        if (performanceV1.compareTo(quota) == -1) {
-            return performanceV1.multiply(r1).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
-        }
-        BigDecimal performanceV2;
-        if (this.validNew(userId, new Date())) {
-            performanceV2 = quota;
-        } else {
-            //计算当前日期所在周的上上周日期区间
-            Map<String, String> dtV2 = this.getDt(getWeekDays(-2));
-            //计算上上周的总业绩
-            performanceV2 = new BigDecimal(userPerformanceMapper.getPerformance(userId, dtV2.get("begin"), dtV2.get("end")));
-        }
-        if ((performanceV1.compareTo(quota) == 1 || performanceV1.compareTo(quota) == 0)
-                && (performanceV1.compareTo(performanceV2) == -1 || performanceV1.compareTo(performanceV2) == 0)) {
-            return (quota.multiply(r2).add(performanceV1.subtract(quota).multiply(r3))).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
-        }
-        BigDecimal r4 = r2.multiply(new BigDecimal(1).add((performanceV1.subtract(quota)).divide(performanceV1, 2, BigDecimal.ROUND_HALF_DOWN)));
-        BigDecimal r5 = r3.multiply(new BigDecimal(1).add((performanceV1.subtract(quota)).divide(performanceV1, 2, BigDecimal.ROUND_HALF_DOWN)));
-        if ((performanceV1.compareTo(quota) == 1 || performanceV1.compareTo(quota) == 0)
-                && performanceV1.compareTo(performanceV2) == 1) {
-            BigDecimal dft = quota.multiply(r4).add((performanceV1.subtract(quota)).multiply(r5));
-            if (performanceV2.compareTo(quota) == 1) {
-                return dft.add((performanceV1.subtract(performanceV2)).multiply(r6)).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+        BigDecimal performanceV1 = new BigDecimal(userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end")).toString()).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        //上周业绩 < 生死线
+        if (performanceV1.compareTo(deathLine) == -1) {
+            Integer remove = userInfoMapper.remove(userId);
+            if (1 != remove) {
+                log.info("信息移除异常！");
+                throw new BizRuntimeException("信息移除异常!");
             }
-            return dft.setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+            return Double.parseDouble("-1");
         }
-        return Double.parseDouble("0");
+        //上周业绩 >= 生死线 && 上周业绩 < kpi
+        if ((performanceV1.compareTo(deathLine) == 1 || performanceV1.compareTo(deathLine) == 0)
+                && performanceV1.compareTo(kpi) == -1) {
+            return performanceV1.multiply(new BigDecimal("0.05")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+        }
+        //上周业绩 >= kpi && 上周业绩 < 150%kpi
+        if ((performanceV1.compareTo(kpi) == 1 || performanceV1.compareTo(kpi) == 0)
+                && performanceV1.compareTo(kpi.multiply(new BigDecimal("1.5")).setScale(2, BigDecimal.ROUND_HALF_DOWN)) == -1) {
+            return performanceV1.multiply(new BigDecimal("0.1")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+        }
+        //上周业绩 >= 150%kpi && 上周业绩 < 200%kpi
+        BigDecimal v1 = kpi.multiply(new BigDecimal("1.5")).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal v2 = kpi.multiply(new BigDecimal("2")).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        if ((performanceV1.compareTo(v1) == 1 || performanceV1.compareTo(v1) == 0)
+                && performanceV1.compareTo(v2) == -1) {
+            return performanceV1.multiply(new BigDecimal("0.12")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+        }
+        //上周业绩 >= 200%kpi
+        if (performanceV1.compareTo(v2) == 1 || performanceV1.compareTo(v2) == 0) {
+            return performanceV1.multiply(new BigDecimal("0.15")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+        }
+        return null;
     }
 
+//    /**
+//     * 计算用户的提成（浮动比例算法）
+//     */
+//    public Double calUserCommission(Integer userId) {
+//        if (StringUtils.isEmpty(userId.toString().trim()) || userId <= 0) {
+//            log.info("userId 参数异常!");
+//            throw new BizRuntimeException("userId 参数异常!");
+//        }
+//        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+//        String level = userInfo.getLevel();
+//        Map<String, Object> config = this.getPerformanceConfig();
+//        //根据等级获取当前销售员的定额
+//        BigDecimal quota = new BigDecimal(config.get(level).toString());
+//        //获取配置（提成百分比）
+//        BigDecimal r1 = new BigDecimal(config.get("R1").toString());
+//        BigDecimal r2 = new BigDecimal(config.get("R2").toString());
+//        BigDecimal r3 = new BigDecimal(config.get("R3").toString());
+//        BigDecimal r6 = new BigDecimal(config.get("R6").toString());
+//        //计算当前日期所在周的上一周日期区间
+//        Map<String, String> dtV1 = this.getDt(getWeekDays(-1));
+//        //计算当前用户上一周的总业绩
+//        BigDecimal performanceV1 = new BigDecimal(userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end")));
+//        if (performanceV1.compareTo(BigDecimal.ZERO) == -1) {
+//            log.info("数据信息异常!");
+//            throw new BizRuntimeException("数据信息异常!");
+//        }
+//        //上周的业绩小于定额
+//        if (performanceV1.compareTo(quota) == -1) {
+//            return performanceV1.multiply(r1).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+//        }
+//        BigDecimal performanceV2;
+//        if (this.validNew(userId, new Date())) {
+//            performanceV2 = quota;
+//        } else {
+//            //计算当前日期所在周的上上周日期区间
+//            Map<String, String> dtV2 = this.getDt(getWeekDays(-2));
+//            //计算上上周的总业绩
+//            performanceV2 = new BigDecimal(userPerformanceMapper.getPerformance(userId, dtV2.get("begin"), dtV2.get("end")));
+//        }
+//        if ((performanceV1.compareTo(quota) == 1 || performanceV1.compareTo(quota) == 0)
+//                && (performanceV1.compareTo(performanceV2) == -1 || performanceV1.compareTo(performanceV2) == 0)) {
+//            return (quota.multiply(r2).add(performanceV1.subtract(quota).multiply(r3))).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+//        }
+//        BigDecimal r4 = r2.multiply(new BigDecimal(1).add((performanceV1.subtract(quota)).divide(performanceV1, 2, BigDecimal.ROUND_HALF_DOWN)));
+//        BigDecimal r5 = r3.multiply(new BigDecimal(1).add((performanceV1.subtract(quota)).divide(performanceV1, 2, BigDecimal.ROUND_HALF_DOWN)));
+//        if ((performanceV1.compareTo(quota) == 1 || performanceV1.compareTo(quota) == 0)
+//                && performanceV1.compareTo(performanceV2) == 1) {
+//            BigDecimal dft = quota.multiply(r4).add((performanceV1.subtract(quota)).multiply(r5));
+//            if (performanceV2.compareTo(quota) == 1) {
+//                return dft.add((performanceV1.subtract(performanceV2)).multiply(r6)).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+//            }
+//            return dft.setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+//        }
+//        return Double.parseDouble("0");
+//    }
+
+    //计算用户提成并保存到数据库
     public void saveUserCommission(Integer userId) {
         Double commission = this.calUserCommission(userId);
         UserCommissions userCommissions = new UserCommissions();
@@ -227,6 +287,7 @@ public class PerformanceConfigService {
         }
     }
 
+    //计算提成（用户自己进行调用的接口）
     public MessageInfo<Double> calCommission(Integer userId, Integer preWeekPerformanceV1, Integer preWeekPerformanceV2) {
         MessageInfo<Double> messageInfo = new MessageInfo<>();
         if (preWeekPerformanceV1 < 0 || preWeekPerformanceV2 < 0) {

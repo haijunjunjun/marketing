@@ -25,4 +25,10 @@ public class UserInfoMapperTest {
         Integer integer = userInfoMapper.validNew(1, "20180709", DateUtil.dateStrV1(new Date()));
         log.info("result is :" + integer);
     }
+
+    @Test
+    public void removeTest() {
+        Integer remove = userInfoMapper.remove(3);
+        log.info("remove info is :" + remove);
+    }
 }

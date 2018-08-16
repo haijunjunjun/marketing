@@ -74,6 +74,12 @@ public class UserInfo {
     private String level;
 
     /**
+     * 登陆次数
+     */
+    @Column(name = "login_count")
+    private Integer loginCount;
+
+    /**
      * 获取用户id
      *
      * @return id - 用户id
@@ -287,5 +293,23 @@ public class UserInfo {
      */
     public void setLevel(String level) {
         this.level = level == null ? null : level.trim();
+    }
+
+    /**
+     * 获取登陆次数
+     *
+     * @return login_count - 登陆次数
+     */
+    public Integer getLoginCount() {
+        return loginCount;
+    }
+
+    /**
+     * 设置登陆次数
+     *
+     * @param loginCount 登陆次数
+     */
+    public void setLoginCount(Integer loginCount) {
+        this.loginCount = loginCount;
     }
 }

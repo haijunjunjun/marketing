@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dal.mapper.PerformanceConfigV1Mapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.dal.model.PerformanceConfigV1">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="base_balary" jdbcType="DOUBLE" property="baseBalary" />
+    <result column="kpi" jdbcType="DOUBLE" property="kpi" />
+    <result column="death_line" jdbcType="DOUBLE" property="deathLine" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+</mapper>

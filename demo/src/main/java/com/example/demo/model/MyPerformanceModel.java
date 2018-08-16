@@ -13,5 +13,5 @@ public class MyPerformanceModel implements Serializable {
     private String custName;
     private String custPhone;
     private Date time;
-    private Integer performance;
+    private double performance;
 }

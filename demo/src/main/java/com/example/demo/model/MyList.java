@@ -31,7 +31,7 @@ public class MyList implements Serializable {
     /**
      * 业绩
      */
-    private Integer performance;
+    private double performances;
     /**
      * 金豆数量
      */

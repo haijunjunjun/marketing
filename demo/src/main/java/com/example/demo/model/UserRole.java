@@ -13,5 +13,7 @@ public class UserRole implements Serializable {
     private Integer id;
     private String roleName;
     private List<String> authInfo;
-    private AuthToken authToken;
+    private String authToken;
+    private String imageUrl;
+    private String realName;
 }

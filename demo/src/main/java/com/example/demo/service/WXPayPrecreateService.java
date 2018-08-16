@@ -2,9 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.dal.mapper.CustomerInfoMapper;
 import com.example.demo.dal.mapper.PayRecordMapper;
+import com.example.demo.dal.mapper.UserPerformanceMapper;
 import com.example.demo.dal.model.CustomerInfo;
 import com.example.demo.dal.model.PayRecord;
+import com.example.demo.dal.model.UserPerformance;
 import com.example.demo.util.BizRuntimeException;
+import com.example.demo.util.MessageInfoV1;
 import com.example.demo.util.PayUtil;
 import com.example.demo.wxPay.WXPayClient;
 import com.github.wxpay.sdk.WXPay;
@@ -13,11 +16,15 @@ import com.github.wxpay.sdk.WXPayUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -34,14 +41,16 @@ public class WXPayPrecreateService {
     private PayRecordMapper payRecordMapper;
     @Autowired
     private CustomerInfoMapper customerInfoMapper;
+    @Autowired
+    private UserPerformanceMapper userPerformanceMapper;
 
     /**
-     * 扫码支付 - 统一下单
+     * 扫码支付 - 统一下单e
      * 相当于支付的电脑网站支付
      *
      * <a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_1">扫码支付API</a>
      */
-    public void precreate(HttpServletRequest request, HttpServletResponse response, Integer custId) throws Exception {
+    public MessageInfoV1 precreate(HttpServletRequest request, HttpServletResponse response, Integer custId) throws Exception {
         PayRecord payRecord = new PayRecord();
         CustomerInfo customerInfo = customerInfoMapper.selectByPrimaryKey(custId);
         if (Objects.isNull(customerInfo)) {
@@ -51,10 +60,10 @@ public class WXPayPrecreateService {
         Map<String, String> reqData = new HashMap<>();
         reqData.put("out_trade_no", String.valueOf(System.nanoTime()) + custId);
         reqData.put("trade_type", "NATIVE");
-        reqData.put("product_id", "66");
-        reqData.put("body", customerInfo.getCustName() + "客户下单");
+        reqData.put("product_id", "001");
+        reqData.put("body", customerInfo.getCustName() + "向云加工付款");
         // 订单总金额，单位为分
-        reqData.put("total_fee", customerInfo.getPrice().toString());
+        reqData.put("total_fee", new BigDecimal(customerInfo.getPrice().toString()).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_DOWN).toString());
         // APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
         reqData.put("spbill_create_ip", "192.168.105.75");
         // 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
@@ -69,7 +78,7 @@ public class WXPayPrecreateService {
          * trade_type=NATIVE,
          * return_msg=OK,
          * result_code=SUCCESS,
-         * return_code=SUCCESS,
+         *  return_code=SUCCESS,
          * prepay_id=wx18111952823301d9fa53ab8e1414642725
          * }
          */
@@ -88,22 +97,33 @@ public class WXPayPrecreateService {
         payRecord.setReturnCode(returnCode);
         payRecord.setResultCode(resultCode);
 
+        MessageInfoV1 messageInfoV1 = new MessageInfoV1();
+        String png_base64 = "";
         if (WXPayConstants.SUCCESS.equals(returnCode) && WXPayConstants.SUCCESS.equals(resultCode)) {
             String prepayId = responseMap.get("prepay_id");
             String codeUrl = responseMap.get("code_url");
 
             BufferedImage image = PayUtil.getQRCodeImge(codeUrl);
 
-            response.setContentType("image/jpeg");
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setIntHeader("Expires", -1);
-            ImageIO.write(image, "JPEG", response.getOutputStream());
+//            response.setContentType("image/jpg");
+//            response.setHeader("Pragma", "no-cache");
+//            response.setHeader("Cache-Control", "no-cache");
+//            response.setIntHeader("Expires", -1);
+//            ImageIO.write(image, "JPG", response.getOutputStream());
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();//io流
+            ImageIO.write(image, "png", baos);//写入流中
+            byte[] bytes = baos.toByteArray();//转换成字节
+            BASE64Encoder encoder = new BASE64Encoder();
+            png_base64 = encoder.encodeBuffer(bytes).trim();//转换成base64串
+            png_base64 = png_base64.replaceAll("\n", "").replaceAll("\r", "");//删除 \r\n
 
             payRecord.setCodeUrl(codeUrl);
             payRecord.setPrepayId(prepayId);
         }
         payRecordMapper.insert(payRecord);
+        messageInfoV1.setContent(png_base64);
+        return messageInfoV1;
     }
 
     public void precreateNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -151,6 +171,21 @@ public class WXPayPrecreateService {
             customerInfo.setIsMoney(1);
             customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
 
+            String total_fee = reqData.get("total_fee");
+            UserPerformance userPerformance = new UserPerformance();
+            CustomerInfo customerInfoV1 = new CustomerInfo();
+            customerInfoV1.setId(payRecord1.getCustId());
+            CustomerInfo customerInfoV2 = customerInfoMapper.selectOne(customerInfoV1);
+            userPerformance.setCustId(customerInfoV2.getId());
+            userPerformance.setUserId(customerInfoV2.getUserId());
+            userPerformance.setCreateTime(new Date());
+            userPerformance.setModifyTime(new Date());
+            userPerformance.setPerformance(Double.parseDouble(total_fee));
+            int insert = userPerformanceMapper.insert(userPerformance);
+            if (1 != insert) {
+                log.info("业绩保存异常！");
+                throw new BizRuntimeException("业绩保存异常！");
+            }
             Map<String, String> responseMap = new HashMap<>(2);
             responseMap.put("return_code", "SUCCESS");
             responseMap.put("return_msg", "OK");

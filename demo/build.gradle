@@ -98,4 +98,9 @@ dependencies {
 	compile group: 'com.google.zxing', name: 'core', version: '3.3.3'
 	compile group: 'com.github.wxpay', name: 'wxpay-sdk', version: '0.0.3'
 
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.0.3.RELEASE'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+
+	compile group: 'com.github.pagehelper', name: 'pagehelper', version: '4.2.1'
 }

@@ -1,15 +1,14 @@
 package com.example.demo.service;
 
-import com.example.demo.config.annotation.CurrentUser;
+import com.example.demo.config.token.JwtHelper;
+import com.example.demo.config.token.JwtInfo;
 import com.example.demo.dal.mapper.*;
 import com.example.demo.dal.model.*;
-import com.example.demo.model.AuthToken;
+import com.example.demo.model.CurOperator;
 import com.example.demo.model.UserRole;
 import com.example.demo.util.BizRuntimeException;
 import com.example.demo.util.MessageInfo;
-import com.example.demo.util.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -35,6 +34,9 @@ public class UserInfoService {
     private UserAccountMapper userAccountMapper;
     private UserGoldBeansMapper userGoldBeansMapper;
     private AccountBankMapper accountBankMapper;
+    private DefaultResourceMapper defaultResourceMapper;
+    private JwtInfo jwtInfo;
+    private JwtHelper jwtHelper;
 
     @Autowired
     public UserInfoService(UserInfoMapper userInfoMapper,
@@ -43,7 +45,10 @@ public class UserInfoService {
                            TokenInfoMapper tokenInfoMapper,
                            UserAccountMapper userAccountMapper,
                            UserGoldBeansMapper userGoldBeansMapper,
-                           AccountBankMapper accountBankMapper) {
+                           AccountBankMapper accountBankMapper,
+                           DefaultResourceMapper defaultResourceMapper,
+                           JwtInfo jwtInfo,
+                           JwtHelper jwtHelper) {
         this.userInfoMapper = userInfoMapper;
         this.roleInfoMapper = roleInfoMapper;
         this.roleAuthMapper = roleAuthMapper;
@@ -51,6 +56,9 @@ public class UserInfoService {
         this.userAccountMapper = userAccountMapper;
         this.userGoldBeansMapper = userGoldBeansMapper;
         this.accountBankMapper = accountBankMapper;
+        this.defaultResourceMapper = defaultResourceMapper;
+        this.jwtInfo = jwtInfo;
+        this.jwtHelper = jwtHelper;
     }
 
     public List<UserInfo> getUserInfo() {
@@ -95,26 +103,22 @@ public class UserInfoService {
         userRole.setRoleName(roleInfo);
         List<String> authInfo = this.getAuthInfo(user.getRoleId());
         userRole.setAuthInfo(authInfo);
-
-        TokenInfo tokenInfo = this.getTokenInfo(user.getId());
-        //token信息
-        if (Objects.isNull(tokenInfo)) {
-            AuthToken authToken = this.authToken(user.getId());
-            userRole.setAuthToken(authToken);
+        if (Objects.isNull(user.getLoginCount()) || user.getLoginCount() <= 0) {
             //初始化银行账户数据
             initAccountBank(user.getId());
             //初始化金豆数量
             initGoldBeans(user.getId());
         }
-        if (!Objects.isNull(tokenInfo) && System.currentTimeMillis() - tokenInfo.getExpiredTime().getTime() > 0) {
-            AuthToken authToken = this.updateTokenInfo(user.getId());
-            userRole.setAuthToken(authToken);
-        } else {
-            TokenInfo tokenInfoV1 = this.getTokenInfo(user.getId());
-            AuthToken authToken = new AuthToken();
-            BeanUtils.copyProperties(tokenInfoV1, authToken);
-            userRole.setAuthToken(authToken);
-        }
+        addLoginCount(user.getId(), user.getLoginCount() == null ? 1 : user.getLoginCount());
+
+        DefaultResource defaultResource = new DefaultResource();
+        defaultResource.setName("default_awater");
+        DefaultResource defaultResourceInfo = defaultResourceMapper.selectOne(defaultResource);
+        userRole.setImageUrl(user.getImageUrl() == null ? defaultResourceInfo.getResourceUrl() : user.getImageUrl());
+        userRole.setRealName(user.getRealName());
+
+        String jwt = jwtHelper.createJwt(jwtInfo.getName(), user.getId(), roleInfo, authInfo, "niule", "niule", Long.parseLong(jwtInfo.getExpiresSecond()), jwtInfo.getBase64Secret());
+        userRole.setAuthToken(jwt);
         userRoleMessageInfo.setData(userRole);
         userRoleMessageInfo.setContent("success");
 
@@ -178,36 +182,36 @@ public class UserInfoService {
         return flag;
     }
 
-    /**
-     * token信息
-     */
-    public AuthToken authToken(Integer userId) {
-        AuthToken authToken = new AuthToken();
-        TokenInfo tokenInfo = new TokenInfo();
-        Date expiredTime = new Date();
-        expiredTime.setTime(3600 * 24 * 100 + new Date().getTime());
-        tokenInfo.setUserId(userId);
-        tokenInfo.setExpiredTime(expiredTime);
-        tokenInfo.setStatus(0);
-        tokenInfo.setToken(TokenUtils.createJwtToken(userId));
-        int i = tokenInfoMapper.insert(tokenInfo);
-        if (i != 1) {
-            log.info("token 存入失败！");
-            throw new BizRuntimeException("token 存入失败！");
-        }
-        BeanUtils.copyProperties(tokenInfo, authToken);
-        return authToken;
-    }
-
-    /**
-     * 通过userId 获取token信息
-     */
-    public TokenInfo getTokenInfo(Integer userId) {
-        TokenInfo tokenInfo = new TokenInfo();
-        tokenInfo.setUserId(userId);
-        TokenInfo token = tokenInfoMapper.selectOne(tokenInfo);
-        return token;
-    }
+//    /**
+//     * token信息
+//     */
+//    public AuthToken authToken(Integer userId) {
+//        AuthToken authToken = new AuthToken();
+//        TokenInfo tokenInfo = new TokenInfo();
+//        Date expiredTime = new Date();
+//        expiredTime.setTime(3600 * 24 * 100 + new Date().getTime());
+//        tokenInfo.setUserId(userId);
+//        tokenInfo.setExpiredTime(expiredTime);
+//        tokenInfo.setStatus(0);
+//        tokenInfo.setToken(TokenUtils.createJwtToken(userId));
+//        int i = tokenInfoMapper.insert(tokenInfo);
+//        if (i != 1) {
+//            log.info("token 存入失败！");
+//            throw new BizRuntimeException("token 存入失败！");
+//        }
+//        BeanUtils.copyProperties(tokenInfo, authToken);
+//        return authToken;
+//    }
+//
+//    /**
+//     * 通过userId 获取token信息
+//     */
+//    public TokenInfo getTokenInfo(Integer userId) {
+//        TokenInfo tokenInfo = new TokenInfo();
+//        tokenInfo.setUserId(userId);
+//        TokenInfo token = tokenInfoMapper.selectOne(tokenInfo);
+//        return token;
+//    }
 
     /**
      * 初始化用户银行相关数据
@@ -235,55 +239,62 @@ public class UserInfoService {
         userGoldBeansMapper.insert(userGoldBeans);
     }
 
-    /**
-     * token 信息更新
-     */
-    public AuthToken updateTokenInfo(Integer userId) {
-        AuthToken authToken = new AuthToken();
-        TokenInfo tokenInfo = new TokenInfo();
-        Date expiredTime = new Date();
-        expiredTime.setTime(3600 * 24 * 100 + new Date().getTime());
-        tokenInfo.setUserId(userId);
-        tokenInfo.setExpiredTime(expiredTime);
-        tokenInfo.setToken(TokenUtils.createJwtToken(userId));
+//    /**
+//     * token 信息更新
+//     */
+//    public AuthToken updateTokenInfo(Integer userId) {
+//        AuthToken authToken = new AuthToken();
+//        TokenInfo tokenInfo = new TokenInfo();
+//        Date expiredTime = new Date();
+//        expiredTime.setTime(3600 * 24 * 100 + new Date().getTime());
+//        tokenInfo.setUserId(userId);
+//        tokenInfo.setExpiredTime(expiredTime);
+//        tokenInfo.setToken(TokenUtils.createJwtToken(userId));
+//
+//        TokenInfo t = new TokenInfo();
+//        t.setUserId(userId);
+//        TokenInfo tokenInfo1 = tokenInfoMapper.selectOne(t);
+//        tokenInfo.setStatus(tokenInfo1.getStatus());
+//        tokenInfo.setId(tokenInfo1.getId());
+//
+//        tokenInfoMapper.updateByPrimaryKeySelective(tokenInfo);
+//        BeanUtils.copyProperties(tokenInfo, authToken);
+//        return authToken;
+//    }
 
-        TokenInfo t = new TokenInfo();
-        t.setUserId(userId);
-        TokenInfo tokenInfo1 = tokenInfoMapper.selectOne(t);
-        tokenInfo.setStatus(tokenInfo1.getStatus());
-        tokenInfo.setId(tokenInfo1.getId());
+//    /**
+//     * 通过token 获取userInfo
+//     */
+//    public UserInfo getUserInfo(String token) {
+//        TokenInfo tokenInfo = new TokenInfo();
+//        tokenInfo.setToken(token);
+//        TokenInfo tokenInfos = tokenInfoMapper.selectOne(tokenInfo);
+//        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(tokenInfos.getUserId());
+//        return userInfo;
+//    }
 
-        tokenInfoMapper.updateByPrimaryKeySelective(tokenInfo);
-        BeanUtils.copyProperties(tokenInfo, authToken);
-        return authToken;
-    }
+//    /**
+//     * 通过token 获取TokenInfo
+//     */
+//    public TokenInfo getTokenInfo(String token) {
+//        TokenInfo tokenInfo = new TokenInfo();
+//        tokenInfo.setToken(token);
+//        TokenInfo tokenInfos = tokenInfoMapper.selectOne(tokenInfo);
+//        return tokenInfos;
+//    }
 
-    /**
-     * 通过token 获取userInfo
-     */
-    public UserInfo getUserInfo(String token) {
-        TokenInfo tokenInfo = new TokenInfo();
-        tokenInfo.setToken(token);
-        TokenInfo tokenInfos = tokenInfoMapper.selectOne(tokenInfo);
-        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(tokenInfos.getUserId());
-        return userInfo;
-    }
-
-    /**
-     * 通过token 获取TokenInfo
-     */
-    public TokenInfo getTokenInfo(String token) {
-        TokenInfo tokenInfo = new TokenInfo();
-        tokenInfo.setToken(token);
-        TokenInfo tokenInfos = tokenInfoMapper.selectOne(tokenInfo);
-        return tokenInfos;
+    public void addLoginCount(Integer userId, Integer loginCount) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(userId);
+        userInfo.setLoginCount(loginCount + 1);
+        userInfoMapper.updateByPrimaryKeySelective(userInfo);
     }
 
     /**
      * 测试方法
      */
-    public String getOpeator(@CurrentUser UserInfo userInfo) {
-        return "用户" + userInfo.getRealName() + "不需要重复登录";
+    public String getOpeator(CurOperator curOperator) {
+        return "用户" + curOperator.getId() + "不需要重复登录";
     }
 
 }

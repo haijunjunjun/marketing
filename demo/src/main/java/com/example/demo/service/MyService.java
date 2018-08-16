@@ -3,14 +3,13 @@ package com.example.demo.service;
 import com.example.demo.dal.mapper.*;
 import com.example.demo.dal.model.*;
 import com.example.demo.model.*;
-import com.example.demo.util.BizRuntimeException;
-import com.example.demo.util.MessageInfo;
-import com.example.demo.util.PerformanceMessageInfo;
+import com.example.demo.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +27,7 @@ public class MyService {
     private CustomerInfoMapper customerInfoMapper;
     private GoldBeansApplyMapper goldBeansApplyMapper;
     private UserCommissionsMapper userCommissionsMapper;
+    private SumArrangeMapper sumArrangeMapper;
 
     @Autowired
     public MyService(UserInfoMapper userInfoMapper,
@@ -37,7 +37,8 @@ public class MyService {
                      CashDetailMapper cashDetailMapper,
                      CustomerInfoMapper customerInfoMapper,
                      GoldBeansApplyMapper goldBeansApplyMapper,
-                     UserCommissionsMapper userCommissionsMapper) {
+                     UserCommissionsMapper userCommissionsMapper,
+                     SumArrangeMapper sumArrangeMapper) {
         this.userInfoMapper = userInfoMapper;
         this.userAccountMapper = userAccountMapper;
         this.userPerformanceMapper = userPerformanceMapper;
@@ -46,6 +47,7 @@ public class MyService {
         this.customerInfoMapper = customerInfoMapper;
         this.goldBeansApplyMapper = goldBeansApplyMapper;
         this.userCommissionsMapper = userCommissionsMapper;
+        this.sumArrangeMapper = sumArrangeMapper;
     }
 
     public MessageInfo<MyList> getMyListInfo(Integer userId) {
@@ -76,11 +78,11 @@ public class MyService {
         UserPerformance userPerformance = new UserPerformance();
         userPerformance.setUserId(userId);
         List<UserPerformance> userPerformanceList = userPerformanceMapper.select(userPerformance);
-        Integer totalPerformance = 0;
+        double totalPerformance = 0.00;
         for (UserPerformance u : userPerformanceList) {
-            totalPerformance += u.getPerformance();
+            totalPerformance = new BigDecimal(totalPerformance).add(new BigDecimal(u.getPerformance())).doubleValue();
         }
-        myList.setPerformance(totalPerformance);
+        myList.setPerformances(totalPerformance);
 
         UserGoldBeans userGoldBeans = new UserGoldBeans();
         userGoldBeans.setUserId(userId);
@@ -131,25 +133,25 @@ public class MyService {
         }
     }
 
-    public PerformanceMessageInfo<List<MyPerformanceModel>> getMyPerformanceInfo(Integer userId, Date date) {
+    public PerformanceMessageInfo<List<MyPerformanceModel>> getMyPerformanceInfo(Integer userId, String date) {
         PerformanceMessageInfo<List<MyPerformanceModel>> listPerformanceMessageInfo = new PerformanceMessageInfo<>();
         List<MyPerformanceModel> myPerformanceModelList = new ArrayList<>();
-        MyPerformanceModel myPerformanceModel = new MyPerformanceModel();
-        if (Objects.isNull(userId) || Objects.isNull(date)) {
+
+        if (Objects.isNull(userId) || StringUtils.isEmpty(date)) {
             log.info("参数信息异常！");
             throw new BizRuntimeException("参数信息异常!");
         }
-        UserPerformance userPerformance = new UserPerformance();
-        userPerformance.setUserId(userId);
-        List<UserPerformance> userPerformanceList = userPerformanceMapper.select(userPerformance);
-        if (Objects.isNull(userPerformanceList)) {
-            log.info("查询信息异常!");
-            throw new BizRuntimeException("查询信息异常!");
-        }
-        int performance = 0;
+        List<UserPerformance> userPerformanceList = userPerformanceMapper.getUserPerformanceListV1(userId, date);
+
+        listPerformanceMessageInfo.setHasComunication(customerInfoMapper.getHasComunication(userId));
+        listPerformanceMessageInfo.setHasInterest(customerInfoMapper.getHasInterest(userId));
+        listPerformanceMessageInfo.setHasCompact(customerInfoMapper.getHasCompact(userId));
+
+        double performance = 0;
         for (UserPerformance u : userPerformanceList) {
+            MyPerformanceModel myPerformanceModel = new MyPerformanceModel();
             myPerformanceModel.setTime(u.getCreateTime());
-            performance += u.getPerformance();
+            performance = new BigDecimal(performance).add(new BigDecimal(u.getPerformance())).doubleValue();
             myPerformanceModel.setPerformance(u.getPerformance());
             CustomerInfo customerInfo = customerInfoMapper.selectByPrimaryKey(u.getCustId());
             if (Objects.isNull(customerInfo)) {
@@ -167,7 +169,8 @@ public class MyService {
         return listPerformanceMessageInfo;
     }
 
-    public List<GoldBeansApply> getGoldBeansApplyInfo(Integer userId) {
+    public GoldBeansMessageInfo<List<GoldBeansApply>> getGoldBeansApplyInfo(Integer userId) {
+        GoldBeansMessageInfo<List<GoldBeansApply>> listGoldBeansMessageInfo = new GoldBeansMessageInfo<>();
         if (StringUtils.isEmpty(userId.toString())) {
             log.info("userid 参数信息异常!");
             throw new BizRuntimeException("参数信息异常!");
@@ -179,10 +182,16 @@ public class MyService {
             log.info("用户金豆申请列表信息获取异常!");
             throw new BizRuntimeException("用户金豆申请列表信息获取异常!");
         }
-        return goldBeansApplyList;
+        listGoldBeansMessageInfo.setData(goldBeansApplyList);
+        UserGoldBeans userGoldBeans = new UserGoldBeans();
+        userGoldBeans.setUserId(userId);
+        UserGoldBeans userGoldBeansInfo = userGoldBeansMapper.selectOne(userGoldBeans);
+        listGoldBeansMessageInfo.setTotalGoldBeans(userGoldBeansInfo.getGoldBeansNum());
+        return listGoldBeansMessageInfo;
     }
 
-    public void goldBeanApply(Integer userId, Integer applyNum) {
+    public MessageInfoV1 goldBeanApply(Integer userId, Integer applyNum) {
+        MessageInfoV1 messageInfoV1 = new MessageInfoV1();
         if (StringUtils.isEmpty(userId.toString()) || StringUtils.isEmpty(applyNum)) {
             log.info("参数信息获取异常!");
             throw new BizRuntimeException("参数信息获取异常");
@@ -193,10 +202,18 @@ public class MyService {
         goldBeansApply.setGoldBeansApplyNum(applyNum);
         goldBeansApply.setStatus(1);
         goldBeansApply.setType(1);
-        goldBeansApplyMapper.insert(goldBeansApply);
+        int i = goldBeansApplyMapper.insert(goldBeansApply);
+        if (1 != i) {
+            messageInfoV1.setContent("申请失败");
+            return messageInfoV1;
+        }
+        messageInfoV1.setContent("申请成功");
+        return messageInfoV1;
     }
 
     public Balance getBalanceList(Integer userId) {
+        double totalCash = 0.00;
+        double commission = 0.00;
         Balance balance = new Balance();
         List<BalanceCommission> balanceCommissionList = new ArrayList<>();
         List<BalanceCash> balanceCashList = new ArrayList<>();
@@ -206,14 +223,15 @@ public class MyService {
         }
         CashDetail cashDetail = new CashDetail();
         cashDetail.setUserId(userId);
-        cashDetail.setCheckStatus(1);
+//        cashDetail.setCheckStatus(1);
         List<CashDetail> cashDetailList = cashDetailMapper.select(cashDetail);
         for (CashDetail c : cashDetailList) {
             BalanceCash balanceCash = new BalanceCash();
             balanceCash.setType("cash");
             balanceCash.setCash(-c.getCash());
-            balanceCash.setDate(c.getModifyTime() == null ? c.getCreateTime() : c.getModifyTime());
+            balanceCash.setDates(c.getModifyTime() == null ? c.getCreateTime() : c.getModifyTime());
             balanceCashList.add(balanceCash);
+            totalCash = new BigDecimal(Double.toString(totalCash).toString()).add(new BigDecimal(c.getCash().toString())).doubleValue();
         }
         UserCommissions userCommissions = new UserCommissions();
         userCommissions.setUserId(userId);
@@ -222,12 +240,63 @@ public class MyService {
             BalanceCommission balanceCommission = new BalanceCommission();
             balanceCommission.setType("commission");
             balanceCommission.setCommission(u.getCommission());
-            balanceCommission.setDate(u.getModifyTime() == null ? u.getCreateTime() : u.getModifyTime());
+            balanceCommission.setDates(u.getModifyTime() == null ? u.getCreateTime() : u.getModifyTime());
             balanceCommissionList.add(balanceCommission);
+            commission += u.getCommission();
         }
         balance.setBalanceCashList(balanceCashList);
         balance.setBalanceCommissionList(balanceCommissionList);
+
+        UserAccount userAccount = new UserAccount();
+        userAccount.setUserId(userId);
+        UserAccount userAccountInfo = userAccountMapper.selectOne(userAccount);
+        if (Objects.isNull(userAccountInfo)) {
+            log.info("数据查询异常!");
+            throw new BizRuntimeException("数据查询异常！");
+        }
+//        double balanceInfo = new BigDecimal(userAccountInfo.getBalance().toString())
+//                .add(new BigDecimal(Double.toString(commission)))
+//                .subtract(new BigDecimal(Double.toString(totalCash))).doubleValue();
+        balance.setBalance(userAccountInfo.getBalance());
         return balance;
     }
 
+    public MessageInfo saveSumArrangeList(Integer userId, SumArranModel sumArranModel) {
+        MessageInfo listMessageInfo = new MessageInfo<>();
+        if (Objects.isNull(sumArranModel.getTodaySum())) {
+            log.info("今日总结不能为空!");
+            listMessageInfo.setContent("今日总结不能为空!");
+        }
+        if (Objects.isNull(sumArranModel.getTomorrowArra())) {
+            log.info("明日安排不能为空!");
+            listMessageInfo.setContent("明日安排不能为空!");
+        }
+        SumArrange sumArrange = new SumArrange();
+        sumArrange.setUserId(userId);
+        sumArrange.setTodaySum(sumArranModel.getTodaySum());
+        sumArrange.setTomorrowArrange(sumArranModel.getTomorrowArra());
+        sumArrange.setCreateTime(new Date());
+        int insert = sumArrangeMapper.insert(sumArrange);
+        if (1 != insert) {
+            log.info("保存失败!");
+            listMessageInfo.setContent("保存失败!");
+            return listMessageInfo;
+        }
+        listMessageInfo.setContent("保存成功!");
+        return listMessageInfo;
+    }
+
+    public MessageInfo<List<SumArrange>> getSumArraListInfo(Integer userId) {
+        MessageInfo<List<SumArrange>> listMessageInfo = new MessageInfo<>();
+        SumArrange sumArrange = new SumArrange();
+        sumArrange.setUserId(userId);
+        List<SumArrange> sumArrangeList = sumArrangeMapper.select(sumArrange);
+        if (Objects.isNull(sumArrangeList)) {
+            listMessageInfo.setContent("获取信息失败");
+            return listMessageInfo;
+        }
+        listMessageInfo.setData(sumArrangeList);
+        listMessageInfo.setContent("获取信息成功");
+        return listMessageInfo;
+    }
 }

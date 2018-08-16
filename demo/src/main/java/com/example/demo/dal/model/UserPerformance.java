@@ -24,7 +24,7 @@ public class UserPerformance {
     /**
      * 业绩
      */
-    private Integer performance;
+    private Double performance;
 
     /**
      * 创建时间
@@ -89,20 +89,20 @@ public class UserPerformance {
     }
 
     /**
-     * 获取业绩提成
+     * 获取业绩
      *
-     * @return performance - 业绩提成
+     * @return performance - 业绩
      */
-    public Integer getPerformance() {
+    public Double getPerformance() {
         return performance;
     }
 
     /**
-     * 设置业绩提成
+     * 设置业绩
      *
-     * @param performance 业绩提成
+     * @param performance 业绩
      */
-    public void setPerformance(Integer performance) {
+    public void setPerformance(Double performance) {
         this.performance = performance;
     }
 

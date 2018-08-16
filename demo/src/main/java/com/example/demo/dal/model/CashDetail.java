@@ -21,7 +21,7 @@ public class CashDetail {
     /**
      * 提现金额
      */
-    private Integer cash;
+    private Double cash;
 
     /**
      * 后台审核状态 0：待审核 1：审核通过
@@ -88,7 +88,7 @@ public class CashDetail {
      *
      * @return cash - 提现金额
      */
-    public Integer getCash() {
+    public Double getCash() {
         return cash;
     }
 
@@ -97,7 +97,7 @@ public class CashDetail {
      *
      * @param cash 提现金额
      */
-    public void setCash(Integer cash) {
+    public void setCash(Double cash) {
         this.cash = cash;
     }
 

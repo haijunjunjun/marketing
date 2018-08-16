@@ -31,7 +31,7 @@ public class CustomerInfo {
     private String companyType;
 
     /**
-     * 状态 （1：待跟进 2：已签约 3：已放弃）
+     * 状态 （1：待跟进 2：已签约 3：已放弃 4：已删除）
      */
     private Integer status;
 
@@ -58,6 +58,30 @@ public class CustomerInfo {
      */
     @Column(name = "repo_time")
     private Date repoTime;
+
+    /**
+     * 审核时间
+     */
+    @Column(name = "check_time")
+    private Date checkTime;
+
+    /**
+     * 签约时间
+     */
+    @Column(name = "compact_time")
+    private Date compactTime;
+
+    /**
+     * 放弃时间
+     */
+    @Column(name = "abandon_time")
+    private Date abandonTime;
+
+    /**
+     * 删除时间
+     */
+    @Column(name = "delete_time")
+    private Date deleteTime;
 
     /**
      * 修改时间
@@ -90,7 +114,7 @@ public class CustomerInfo {
     private Integer isCompact;
 
     /**
-     * 合同是否后台审核（1：审核 0：未审核）
+     * 合同是否后台审核（1：审核成功 0：审核失败）
      */
     @Column(name = "is_compact_check")
     private Integer isCompactCheck;
@@ -100,6 +124,12 @@ public class CustomerInfo {
      */
     @Column(name = "is_money")
     private Integer isMoney;
+
+    /**
+     * 是否意向客户(0：有意向 1：无意向)
+     */
+    @Column(name = "is_interest_cust")
+    private Integer isInterestCust;
 
     /**
      * 合同图片
@@ -115,7 +145,7 @@ public class CustomerInfo {
     /**
      * 签约价格字段
      */
-    private Integer price;
+    private Double price;
 
     /**
      * 放弃原因
@@ -124,10 +154,28 @@ public class CustomerInfo {
     private String abandonReason;
 
     /**
+     * 删除原因
+     */
+    @Column(name = "delete_reason")
+    private String deleteReason;
+
+    /**
      * 审核失败原因
      */
     @Column(name = "check_refuse_reason")
     private String checkRefuseReason;
+
+    /**
+     * 赠送用户的金豆数（后台自定义）
+     */
+    @Column(name = "donate_gold_beans")
+    private Integer donateGoldBeans;
+
+    /**
+     * 关联字段（可用于判断手机号是否为同一个人）
+     */
+    @Column(name = "relative_id")
+    private Integer relativeId;
 
     /**
      * 获取客户id
@@ -202,18 +250,18 @@ public class CustomerInfo {
     }
 
     /**
-     * 获取状态 （1：待跟进 2：已签约 3：已放弃）
+     * 获取状态 （1：待跟进 2：已签约 3：已放弃 4：已删除）
      *
-     * @return status - 状态 （1：待跟进 2：已签约 3：已放弃）
+     * @return status - 状态 （1：待跟进 2：已签约 3：已放弃 4：已删除）
      */
     public Integer getStatus() {
         return status;
     }
 
     /**
-     * 设置状态 （1：待跟进 2：已签约 3：已放弃）
+     * 设置状态 （1：待跟进 2：已签约 3：已放弃 4：已删除）
      *
-     * @param status 状态 （1：待跟进 2：已签约 3：已放弃）
+     * @param status 状态 （1：待跟进 2：已签约 3：已放弃 4：已删除）
      */
     public void setStatus(Integer status) {
         this.status = status;
@@ -289,6 +337,78 @@ public class CustomerInfo {
      */
     public void setRepoTime(Date repoTime) {
         this.repoTime = repoTime;
+    }
+
+    /**
+     * 获取审核时间
+     *
+     * @return check_time - 审核时间
+     */
+    public Date getCheckTime() {
+        return checkTime;
+    }
+
+    /**
+     * 设置审核时间
+     *
+     * @param checkTime 审核时间
+     */
+    public void setCheckTime(Date checkTime) {
+        this.checkTime = checkTime;
+    }
+
+    /**
+     * 获取签约时间
+     *
+     * @return compact_time - 签约时间
+     */
+    public Date getCompactTime() {
+        return compactTime;
+    }
+
+    /**
+     * 设置签约时间
+     *
+     * @param compactTime 签约时间
+     */
+    public void setCompactTime(Date compactTime) {
+        this.compactTime = compactTime;
+    }
+
+    /**
+     * 获取放弃时间
+     *
+     * @return abandon_time - 放弃时间
+     */
+    public Date getAbandonTime() {
+        return abandonTime;
+    }
+
+    /**
+     * 设置放弃时间
+     *
+     * @param abandonTime 放弃时间
+     */
+    public void setAbandonTime(Date abandonTime) {
+        this.abandonTime = abandonTime;
+    }
+
+    /**
+     * 获取删除时间
+     *
+     * @return delete_time - 删除时间
+     */
+    public Date getDeleteTime() {
+        return deleteTime;
+    }
+
+    /**
+     * 设置删除时间
+     *
+     * @param deleteTime 删除时间
+     */
+    public void setDeleteTime(Date deleteTime) {
+        this.deleteTime = deleteTime;
     }
 
     /**
@@ -382,18 +502,18 @@ public class CustomerInfo {
     }
 
     /**
-     * 获取合同是否后台审核（1：审核 0：未审核）
+     * 获取合同是否后台审核（1：审核成功 0：审核失败）
      *
-     * @return is_compact_check - 合同是否后台审核（1：审核 0：未审核）
+     * @return is_compact_check - 合同是否后台审核（1：审核成功 0：审核失败）
      */
     public Integer getIsCompactCheck() {
         return isCompactCheck;
     }
 
     /**
-     * 设置合同是否后台审核（1：审核 0：未审核）
+     * 设置合同是否后台审核（1：审核成功 0：审核失败）
      *
-     * @param isCompactCheck 合同是否后台审核（1：审核 0：未审核）
+     * @param isCompactCheck 合同是否后台审核（1：审核成功 0：审核失败）
      */
     public void setIsCompactCheck(Integer isCompactCheck) {
         this.isCompactCheck = isCompactCheck;
@@ -415,6 +535,24 @@ public class CustomerInfo {
      */
     public void setIsMoney(Integer isMoney) {
         this.isMoney = isMoney;
+    }
+
+    /**
+     * 获取是否意向客户(0：有意向 1：无意向)
+     *
+     * @return is_interest_cust - 是否意向客户(0：有意向 1：无意向)
+     */
+    public Integer getIsInterestCust() {
+        return isInterestCust;
+    }
+
+    /**
+     * 设置是否意向客户(0：有意向 1：无意向)
+     *
+     * @param isInterestCust 是否意向客户(0：有意向 1：无意向)
+     */
+    public void setIsInterestCust(Integer isInterestCust) {
+        this.isInterestCust = isInterestCust;
     }
 
     /**
@@ -458,7 +596,7 @@ public class CustomerInfo {
      *
      * @return price - 签约价格字段
      */
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -467,7 +605,7 @@ public class CustomerInfo {
      *
      * @param price 签约价格字段
      */
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -490,6 +628,24 @@ public class CustomerInfo {
     }
 
     /**
+     * 获取删除原因
+     *
+     * @return delete_reason - 删除原因
+     */
+    public String getDeleteReason() {
+        return deleteReason;
+    }
+
+    /**
+     * 设置删除原因
+     *
+     * @param deleteReason 删除原因
+     */
+    public void setDeleteReason(String deleteReason) {
+        this.deleteReason = deleteReason == null ? null : deleteReason.trim();
+    }
+
+    /**
      * 获取审核失败原因
      *
      * @return check_refuse_reason - 审核失败原因
@@ -505,5 +661,41 @@ public class CustomerInfo {
      */
     public void setCheckRefuseReason(String checkRefuseReason) {
         this.checkRefuseReason = checkRefuseReason == null ? null : checkRefuseReason.trim();
+    }
+
+    /**
+     * 获取赠送用户的金豆数（后台自定义）
+     *
+     * @return donate_gold_beans - 赠送用户的金豆数（后台自定义）
+     */
+    public Integer getDonateGoldBeans() {
+        return donateGoldBeans;
+    }
+
+    /**
+     * 设置赠送用户的金豆数（后台自定义）
+     *
+     * @param donateGoldBeans 赠送用户的金豆数（后台自定义）
+     */
+    public void setDonateGoldBeans(Integer donateGoldBeans) {
+        this.donateGoldBeans = donateGoldBeans;
+    }
+
+    /**
+     * 获取关联字段（可用于判断手机号是否为同一个人）
+     *
+     * @return relative_id - 关联字段（可用于判断手机号是否为同一个人）
+     */
+    public Integer getRelativeId() {
+        return relativeId;
+    }
+
+    /**
+     * 设置关联字段（可用于判断手机号是否为同一个人）
+     *
+     * @param relativeId 关联字段（可用于判断手机号是否为同一个人）
+     */
+    public void setRelativeId(Integer relativeId) {
+        this.relativeId = relativeId;
     }
 }

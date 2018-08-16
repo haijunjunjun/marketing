@@ -25,7 +25,7 @@ public class UserAccountMapperTest {
 
     @Test
     public void updateBankNoTest() {
-        int i = userAccountMapper.updateBankNo(1, "6217000340000351365");
+        int i = userAccountMapper.updateBankNo(1, "6217");
         log.info("info is :" + i);
     }
 }

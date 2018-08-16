@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.annotation.Operator;
+import com.example.demo.model.CurOperator;
 import com.example.demo.model.GoldBeansCheck;
 import com.example.demo.model.SaleList;
 import com.example.demo.service.ManageService;
@@ -22,17 +24,17 @@ public class ManageController {
     private ManageService manageService;
 
     @RequestMapping(value = "/marketing/sale/list", method = RequestMethod.GET)
-    public ResponseEntity<List<SaleList>> getSaleList(@Valid @NotNull @RequestParam("id") Integer manageId) {
-        return ResponseEntity.ok(manageService.getSaleListInfo(manageId));
+    public ResponseEntity<List<SaleList>> getSaleList(@Valid @NotNull @Operator CurOperator curOperator) {
+        return ResponseEntity.ok(manageService.getSaleListInfo(curOperator.getId()));
     }
 
     @RequestMapping(value = "/marketing/gold/beans/check/list", method = RequestMethod.GET)
-    public ResponseEntity<List<GoldBeansCheck>> getGoldBeansCheckList(@Valid @NotNull @RequestParam("id") Integer manageId) {
-        return ResponseEntity.ok(manageService.getGoldBeansCheckList(manageId));
+    public ResponseEntity<List<GoldBeansCheck>> getGoldBeansCheckList(@Valid @NotNull @Operator CurOperator curOperator) {
+        return ResponseEntity.ok(manageService.getGoldBeansCheckList(curOperator.getId()));
     }
 
     @RequestMapping(value = "/marketing/gold/beans/check", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo> goldBeansCheck(@Valid @NotNull @RequestParam("id") Integer applyId,
+    public ResponseEntity<MessageInfo> goldBeansCheck(@Valid @NotNull @RequestParam("applyId") Integer applyId,
                                                       @Valid @NotNull @RequestParam("status") Integer status,
                                                       @Valid @RequestParam("reason") String refuseReason) {
         return ResponseEntity.ok(manageService.goldBeansCheck(applyId, status, refuseReason));

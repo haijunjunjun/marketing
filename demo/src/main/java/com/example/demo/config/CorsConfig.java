@@ -1,4 +1,4 @@
-package com.niule.yunjiagong.yunjiagong.config;
+package com.example.demo.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -16,6 +16,7 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH")
-                .allowCredentials(true).maxAge(3600);
+                .allowCredentials(false)
+                .maxAge(3600);
     }
 }

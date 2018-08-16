@@ -1,4 +1,4 @@
-package com.niule.yunjiagong.yunjiagong.token;
+package com.example.demo.config.token;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

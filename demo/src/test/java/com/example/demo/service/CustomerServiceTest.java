@@ -29,23 +29,23 @@ public class CustomerServiceTest {
 //        log.info("cunstomerInfo is :" + cunstomerInfo);
     }
 
-    @Test
-    public void updateCustomerInfoTest() {
-        CustomerInfo customerInfo = new CustomerInfo();
-        customerInfo.setId(1);
-        customerInfo.setUserId(1);
-        customerInfo.setCustName("海军-Test");
-        MessageInfo messageInfo = customerService.editCustomerInfo(customerInfo);
-        log.info("messageInfo is :" + messageInfo);
-    }
+//    @Test
+//    public void updateCustomerInfoTest() {
+//        CustomerInfo customerInfo = new CustomerInfo();
+//        customerInfo.setId(1);
+//        customerInfo.setUserId(1);
+//        customerInfo.setCustName("海军-Test");
+//        MessageInfo messageInfo = customerService.editCustomerInfo(customerInfo);
+//        log.info("messageInfo is :" + messageInfo);
+//    }
 
-    @Test
-    public void removeCustomerInfoTest() {
-        Integer custId = 1;
-        String reason = "不满意";
-        MessageInfo messageInfo = customerService.removeCustomerInfo(custId, reason);
-        log.info("messageInfo is :" + messageInfo);
-    }
+//    @Test
+//    public void removeCustomerInfoTest() {
+//        Integer custId = 1;
+//        String reason = "不满意";
+//        MessageInfo messageInfo = customerService.removeCustomerInfo(custId, reason);
+//        log.info("messageInfo is :" + messageInfo);
+//    }
 
     @Test
     public void saveCustomerInfo() {

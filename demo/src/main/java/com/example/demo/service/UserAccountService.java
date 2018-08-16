@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -54,14 +55,16 @@ public class UserAccountService {
         return listMessageInfo;
     }
 
-    public String cashApply(Integer userId, Integer money) {
+    public MessageInfo cashApply(Integer userId, double money) {
+        MessageInfo messageInfo = new MessageInfo();
         if (StringUtils.isEmpty(userId.toString()) || userId <= 0) {
             log.info("用户id 参数异常!");
             throw new BizRuntimeException("用户id参数异常!");
         }
-        if (StringUtils.isEmpty(money.toString()) || money <= 0) {
+        if (StringUtils.isEmpty(Double.toString(money).toString()) || money <= 0) {
             log.info("申请的金额必须大于0");
-            return "申请的金额必须大于0";
+            messageInfo.setContent("申请的金额必须大于0");
+            return messageInfo;
         }
         UserAccount userAccount = new UserAccount();
         userAccount.setUserId(userId);
@@ -70,9 +73,10 @@ public class UserAccountService {
             log.info("数据查询异常!");
             throw new BizRuntimeException("数据查询异常!");
         }
-        if (money > userAccountInfo.getBalance()) {
+        if (new BigDecimal(Double.toString(money)).compareTo(new BigDecimal(userAccountInfo.getBalance().toString())) == 1) {
             log.info("取现金额不能大于可用余额!");
-            return "取现金额不能大于可用余额!";
+            messageInfo.setContent("取现金额不能大于可用余额!");
+            return messageInfo;
         }
         CashDetail cashDetail = new CashDetail();
         cashDetail.setUserId(userId);
@@ -84,7 +88,19 @@ public class UserAccountService {
             log.info("数据信息更新异常!");
             throw new BizRuntimeException("数据更新异常!");
         }
-        return "您的提现申请已经成功，请等待后台审核，审核完成会显示在余额列表里边!";
+
+        //更新用户账户信息
+        UserAccount userAccountV1 = new UserAccount();
+        userAccountV1.setId(userAccountInfo.getId());
+        double balance = new BigDecimal(userAccountInfo.getBalance().toString()).subtract(new BigDecimal(Double.toString(money))).doubleValue();
+        userAccountV1.setBalance(balance);
+        int i1 = userAccountMapper.updateByPrimaryKeySelective(userAccountV1);
+        if (1 != i1) {
+            log.info("更新失败");
+            throw new BizRuntimeException("更新失败");
+        }
+        messageInfo.setContent("您的提现申请已经成功，请等待后台审核，审核完成会显示在余额列表里边!");
+        return messageInfo;
     }
 
     // 提现审核
@@ -106,6 +122,13 @@ public class UserAccountService {
             if (Objects.isNull(cashDetailInfo)) {
                 log.info("数据信息查询异常!");
                 throw new BizRuntimeException("数据信息查询异常!");
+            }
+            UserAccount userAccount = new UserAccount();
+            userAccount.setUserId(cashDetailInfo.getUserId());
+            UserAccount userAccountInfo = userAccountMapper.selectOne(userAccount);
+            if (new BigDecimal(userAccountInfo.getBalance().toString()).compareTo(new BigDecimal(cashDetailInfo.getCash().toString())) == -1
+                    || new BigDecimal(userAccountInfo.getBalance().toString()).compareTo(new BigDecimal(cashDetailInfo.getCash().toString())) == 0) {
+                return "目前可用余额小于申请金额，无法进行提现审核操作！请确认余额以及申请金额!";
             }
             int info = userAccountMapper.updateUserAccount(cashDetailInfo.getUserId(), -cashDetailInfo.getCash());
             if (1 != info) {
@@ -135,8 +158,8 @@ public class UserAccountService {
         accountBank.setUserId(userId);
         AccountBank accountBankInfo = accountBankMapper.selectOne(accountBank);
         if (Objects.isNull(accountBankInfo)) {
-            log.info("用户银行信息查询异常!");
-            throw new BizRuntimeException("用户银行信息查询异常！");
+            log.info("用户银行信息为空!");
+            return new BankInfoModel();
         }
         bankInfoModel.setAccountHolder(accountBankInfo.getAccountHolder());
         bankInfoModel.setAccountBankName(accountBankInfo.getAccountBankName());
@@ -171,12 +194,36 @@ public class UserAccountService {
             log.info("用户" + userId + "的账户信息更新异常!");
             throw new BizRuntimeException("用户" + userId + "的账户信息更新异常!");
         }
-        int updateInfo = accountBankMapper.updateBankInfo(userId, bindCardModel.getAccountBankNo(), bindCardModel.getAccountHolder(), bindCardModel.getAccountBankName());
-        if (1 != updateInfo) {
-            log.info("用户" + userId + "的账户相关-银行卡信息更新异常!");
-            throw new BizRuntimeException("用户" + userId + "的账户相关-银行卡信息更新异常!");
+        AccountBank accountBank = new AccountBank();
+        accountBank.setUserId(userId);
+        AccountBank accountBankInfo = accountBankMapper.selectOne(accountBank);
+        if (Objects.isNull(accountBankInfo)) {
+            AccountBank accountBankV1 = new AccountBank();
+            accountBankV1.setUserId(userId);
+            accountBankV1.setAccountBankName(bindCardModel.getAccountBankName());
+            accountBankV1.setAccountHolder(bindCardModel.getAccountHolder());
+            accountBankV1.setBankNo(bindCardModel.getAccountBankNo());
+            accountBankV1.setCreateTime(new Date());
+            accountBankMapper.insert(accountBankV1);
+        } else {
+            int updateInfo = accountBankMapper.updateBankInfo(userId, bindCardModel.getAccountBankNo(), bindCardModel.getAccountHolder(), bindCardModel.getAccountBankName());
+            if (1 != updateInfo) {
+                log.info("用户" + userId + "的账户相关-银行卡信息更新异常!");
+                throw new BizRuntimeException("用户" + userId + "的账户相关-银行卡信息更新异常!");
+            }
         }
         messageInfo.setContent("success");
         return messageInfo;
+    }
+
+    public Double getAvailavleMoney(Integer userId) {
+        UserAccount userAccount = new UserAccount();
+        userAccount.setUserId(userId);
+        UserAccount userAccountInfo = userAccountMapper.selectOne(userAccount);
+        if (Objects.isNull(userAccountInfo)) {
+            log.info("userAccountInfo is null");
+            throw new BizRuntimeException("userAccountInfo is null");
+        }
+        return userAccountInfo.getBalance();
     }
 }

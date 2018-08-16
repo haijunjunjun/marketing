@@ -1,4 +1,4 @@
-package com.niule.yunjiagong.yunjiagong.config.annotation;
+package com.example.demo.config.annotation;
 
 import java.lang.annotation.*;
 

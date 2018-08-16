@@ -3,6 +3,7 @@ package com.example.demo.model;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author haijun
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Data
 public class CurOperator implements Serializable {
     private static final long serialVersionUID = -2239030833148332733L;
-    private Integer userId;
-    private Integer userType;
+    private Integer id;
+    private String roleInfo;
+    private List<String> authInfo;
 }

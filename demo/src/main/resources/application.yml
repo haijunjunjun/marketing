@@ -1,7 +1,21 @@
 server:
   port: 8089
+#  port: 8090
 
 spring:
+  mvc:
+    dispatch-options-request: true
+  redis:
+    host: localhost
+#    host: 106.15.37.191
+    password:
+    port: 6379
+    jedis:
+      pool:
+        max-wait: 1ms
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
   datasource:
     hikari:
       maximum-pool-size: 20
@@ -12,7 +26,10 @@ spring:
       readwrite:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/marketing?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
+#        url: jdbc:mysql://106.15.37.191:3356/marketing?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8
+#        username: root
+#        password: 123456
+        url: jdbc:mysql://localhost:3306/marketing?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8
         username:
         password:
 # 下面为连接池的补充设置，应用到上面所有数据源中
@@ -41,4 +58,5 @@ pay:
     sandboxKey:
     certPath: classpath:apiclient_cert.p12
     useSandbox: false
+
 

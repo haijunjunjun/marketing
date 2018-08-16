@@ -1,6 +1,6 @@
-package com.niule.yunjiagong.yunjiagong.token;
+package com.example.demo.config.token;
 
-import com.niule.yunjiagong.yunjiagong.config.OperatorMethodArgumentResover;
+import com.example.demo.config.OperatorMethodArgumentResover;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class JwtConfig extends WebMvcConfigurerAdapter {
         registrationBean.setFilter(filter);
 
         List<String> urlPatterns = new ArrayList<>();
-        urlPatterns.add("/user/*");
+        urlPatterns.add("/marketing/*");
 
         registrationBean.setUrlPatterns(urlPatterns);
         return registrationBean;

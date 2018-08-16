@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Param;
 public interface UserInfoMapper extends MyMapper<UserInfo> {
 
     Integer validNew(@Param("userId") Integer userId, @Param("endDt") String endDt, @Param("now") String now);
+
+    Integer remove(@Param("userId") Integer userId);
 }

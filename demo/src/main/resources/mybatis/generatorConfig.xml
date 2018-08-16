@@ -43,9 +43,9 @@
         <!--<table tableName="%">-->
         <!--<generatedKey column="epa_id" sqlStatement="Mysql" identity="true" />-->
         <!--</table>-->
-        <table tableName="user_account">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+        <!--<table tableName="user_account">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
         <!--<table tableName="role_info">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
@@ -55,9 +55,9 @@
         <!--<table tableName="user_gold_beans">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <!--<table tableName="customer_info">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="customer_info">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
         <!--<table tableName="cust_gold_beans">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
