@@ -11,12 +11,12 @@ public class AddressInfo {
     /**
      * 大写首字母
      */
-    private String key;
+    private String code;
 
     /**
      * 值
      */
-    private String value;
+    private String name;
 
     /**
      * @return id
@@ -35,36 +35,36 @@ public class AddressInfo {
     /**
      * 获取大写首字母
      *
-     * @return key - 大写首字母
+     * @return code - 大写首字母
      */
-    public String getKey() {
-        return key;
+    public String getCode() {
+        return code;
     }
 
     /**
      * 设置大写首字母
      *
-     * @param key 大写首字母
+     * @param code 大写首字母
      */
-    public void setKey(String key) {
-        this.key = key == null ? null : key.trim();
+    public void setCode(String code) {
+        this.code = code == null ? null : code.trim();
     }
 
     /**
      * 获取值
      *
-     * @return value - 值
+     * @return name - 值
      */
-    public String getValue() {
-        return value;
+    public String getName() {
+        return name;
     }
 
     /**
      * 设置值
      *
-     * @param value 值
+     * @param name 值
      */
-    public void setValue(String value) {
-        this.value = value == null ? null : value.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 }

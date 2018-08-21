@@ -20,4 +20,8 @@ public class IndustryService {
     public List<Industry> getIndustryInfo() {
         return industryMapper.getIndustryInfo();
     }
+
+    public List<Industry> getAllIndustryInfo() {
+        return industryMapper.getAllIndustryInfo();
+    }
 }

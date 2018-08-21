@@ -94,7 +94,7 @@
         <!--<table tableName="complaint">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="subscribe">
+        <table tableName="industry">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
     </context>

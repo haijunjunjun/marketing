@@ -1,5 +1,6 @@
 package com.niule.yunjiagong.yunjiagong.controller;
 
+import com.niule.yunjiagong.yunjiagong.dal.model.Address;
 import com.niule.yunjiagong.yunjiagong.model.CityModel;
 import com.niule.yunjiagong.yunjiagong.model.PageParamModel;
 import com.niule.yunjiagong.yunjiagong.model.ProvinceModel;
@@ -32,6 +33,12 @@ public class AddressController {
         return DataResponse.success(addressService.getAddressList(pageParamModel.getPageSize(), pageParamModel.getPageNum()));
     }
 
+    @Description("城市列表信息添加")
+    @RequestMapping(value = "/user/address/add", method = RequestMethod.POST)
+    public DataResponse addAddressInfo(@Valid @RequestBody(required = true) Address address) {
+        return addressService.addAddress(address);
+    }
+
     @Description("获取省份信息")
     @RequestMapping(value = "/user/province", method = RequestMethod.GET)
     public DataResponse getProvince() {
@@ -49,4 +56,6 @@ public class AddressController {
     public DataResponse getArea(@Valid @NotNull @RequestBody(required = true) CityModel cityModel) {
         return DataResponse.success(addressService.getArea(cityModel.getCityId()));
     }
+
+
 }

@@ -41,7 +41,7 @@ public class Industry {
     /**
      * 分类
      */
-    private String sort;
+    private Integer sort;
 
     /**
      * 是否展示（1：展示 0：不展示）
@@ -172,7 +172,7 @@ public class Industry {
      *
      * @return sort - 分类
      */
-    public String getSort() {
+    public Integer getSort() {
         return sort;
     }
 
@@ -181,8 +181,8 @@ public class Industry {
      *
      * @param sort 分类
      */
-    public void setSort(String sort) {
-        this.sort = sort == null ? null : sort.trim();
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 
     /**

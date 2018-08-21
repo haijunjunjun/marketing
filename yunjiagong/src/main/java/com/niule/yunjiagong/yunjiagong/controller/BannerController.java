@@ -26,6 +26,7 @@ public class BannerController {
     @Autowired
     private BannerService bannerService;
 
+    // TODO: 2018/8/10 1 、添加缓存  2 、后端编辑时更新
     @Description("获取banner信息")
     @RequestMapping(value = "/user/banner", method = RequestMethod.POST)
     public DataResponse getBanner(@Valid @NotNull @RequestBody(required = true) BannerModel bannerModel) {

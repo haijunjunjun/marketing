@@ -8,4 +8,6 @@ import java.util.List;
 public interface IndustryMapper extends MyMapper<Industry> {
 
     List<Industry> getIndustryInfo();
+
+    List<Industry> getAllIndustryInfo();
 }

@@ -13,11 +13,13 @@ import com.niule.yunjiagong.yunjiagong.dal.model.Province;
 import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
 import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
+import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +51,32 @@ public class AddressService {
         List<Address> addresses = addressMapper.getAddressList(userBaseInfo.getId().intValue(), 1);
         PageInfo<Address> addressPageInfo = new PageInfo<>(addresses);
         return addressPageInfo;
+    }
+
+    public DataResponse addAddress(Address address) {
+        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
+        if (Objects.isNull(userBaseInfo)) {
+            throw new BizRuntimeException("系統信息異常！");
+        }
+        DataResponse dataResponse = new DataResponse();
+        if (Objects.isNull(address)) {
+            log.info("地址信息不能为空");
+            dataResponse.setMessage("地址信息不能为空");
+            return dataResponse;
+        }
+        address.setUserId(userBaseInfo.getId().intValue());
+        address.setUserType(1);
+        address.setCreateTime(new Date());
+        address.setUpdateTime(new Date());
+        int i = addressMapper.insert(address);
+        if (1 != i) {
+            log.info("地址信息插入失败");
+            dataResponse.setMessage("地址信息插入失败");
+            return dataResponse;
+        }
+        log.info("地址信息插入成功");
+        dataResponse.setMessage("地址信息插入成功");
+        return dataResponse;
     }
 
     public List<Province> getProvince() {
