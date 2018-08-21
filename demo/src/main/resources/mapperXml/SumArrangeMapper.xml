@@ -11,4 +11,7 @@
     <result column="tomorrow_arrange" jdbcType="VARCHAR" property="tomorrowArrange" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  <select id="getSumArrangeList" resultMap="BaseResultMap">
+    select * from sum_arrange where user_id = #{userId} order by create_time desc
+  </select>
 </mapper>

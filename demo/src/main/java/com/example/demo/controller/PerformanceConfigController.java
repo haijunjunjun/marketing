@@ -21,13 +21,13 @@ public class PerformanceConfigController {
     @Autowired
     private PerformanceConfigService performanceConfigService;
 
-    @Description("用户自己计算提成(老算法)")
-    @RequestMapping(value = "/marketing/commission/cal", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo<Double>> calCommission(@Valid @NotNull @Operator CurOperator curOperator,
-                                                             @Valid @NotNull @RequestParam("preWeekPerformanceV1") Integer preWeekPerformanceV1,
-                                                             @Valid @NotNull @RequestParam("preWeekPerformanceV2") Integer preWeekPerformanceV2) {
-        return ResponseEntity.ok(performanceConfigService.calCommission(curOperator.getId(), preWeekPerformanceV1, preWeekPerformanceV2));
-    }
+//    @Description("用户自己计算提成(老算法)")
+//    @RequestMapping(value = "/marketing/commission/cal", method = RequestMethod.POST)
+//    public ResponseEntity<MessageInfo<Double>> calCommission(@Valid @NotNull @Operator CurOperator curOperator,
+//                                                             @Valid @NotNull @RequestParam("preWeekPerformanceV1") Integer preWeekPerformanceV1,
+//                                                             @Valid @NotNull @RequestParam("preWeekPerformanceV2") Integer preWeekPerformanceV2) {
+//        return ResponseEntity.ok(performanceConfigService.calCommission(curOperator.getId(), preWeekPerformanceV1, preWeekPerformanceV2));
+//    }
 
     @Description("提成测试接口")
     @RequestMapping(value = "/marketing/commission", method = RequestMethod.POST)

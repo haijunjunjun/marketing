@@ -1,19 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.constant.CustomerStatus;
-import com.example.demo.dal.mapper.ConfigMapper;
-import com.example.demo.dal.mapper.CustGoldBeansMapper;
-import com.example.demo.dal.mapper.CustomerInfoMapper;
-import com.example.demo.dal.mapper.UserGoldBeansMapper;
-import com.example.demo.dal.model.Config;
-import com.example.demo.dal.model.CustGoldBeans;
-import com.example.demo.dal.model.CustomerInfo;
-import com.example.demo.dal.model.UserGoldBeans;
+import com.example.demo.dal.mapper.*;
+import com.example.demo.dal.model.*;
 import com.example.demo.model.CustInfoModel;
-import com.example.demo.util.BizRuntimeException;
-import com.example.demo.util.CustomerUtil;
-import com.example.demo.util.MessageInfo;
-import com.example.demo.util.MessageInfoV1;
+import com.example.demo.model.CustRespModel;
+import com.example.demo.util.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -34,20 +28,23 @@ public class CustomerService {
     private CustGoldBeansMapper custGoldBeansMapper;
     private UserGoldBeansMapper userGoldBeansMapper;
     private ConfigMapper configMapper;
+    private UserActionMapper userActionMapper;
 
     @Autowired
     public CustomerService(CustomerInfoMapper customerInfoMapper,
                            CustGoldBeansMapper custGoldBeansMapper,
                            UserGoldBeansMapper userGoldBeansMapper,
-                           ConfigMapper configMapper) {
+                           ConfigMapper configMapper,
+                           UserActionMapper userActionMapper) {
         this.customerInfoMapper = customerInfoMapper;
         this.custGoldBeansMapper = custGoldBeansMapper;
         this.userGoldBeansMapper = userGoldBeansMapper;
         this.configMapper = configMapper;
+        this.userActionMapper = userActionMapper;
     }
 
-    public MessageInfo<PageInfo<CustomerInfo>> getCunstomerInfo(Integer userId, Integer status, Integer pageNum, Integer pageSize) {
-        MessageInfo<PageInfo<CustomerInfo>> customerInfoMessageInfo = new MessageInfo<>();
+    public MessageInfo<PageInfo<CustRespModel>> getCunstomerInfo(Integer userId, Integer status, Integer pageNum, Integer pageSize) {
+        MessageInfo<PageInfo<CustRespModel>> customerInfoMessageInfo = new MessageInfo<>();
         if (Objects.isNull(userId) || Objects.isNull(status)) {
             log.info("参数信息有误！");
             customerInfoMessageInfo.setContent("参数信息有误！");
@@ -64,7 +61,25 @@ public class CustomerService {
             return customerInfoMessageInfo;
         }
         PageInfo<CustomerInfo> customerInfoPageInfo = new PageInfo<>(customerInfoList);
-        customerInfoMessageInfo.setData(customerInfoPageInfo);
+
+        PageInfo<CustRespModel> custRespModelPageInfo = new PageInfo<>();
+        List<CustRespModel> custRespModelList = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (CustomerInfo c : customerInfoList) {
+            CustRespModel custRespModel = new CustRespModel();
+            BeanUtils.copyProperties(c, custRespModel);
+            custRespModel.setRepoTimeV1(sdf.format(c.getRepoTime() == null ? c.getModifyTime() : c.getRepoTime()));
+            custRespModel.setModifyTimeV1(sdf.format(c.getModifyTime()));
+            custRespModel.setCheckTimeV1(sdf.format(c.getCheckTime() == null ? c.getModifyTime() : c.getCheckTime()));
+            custRespModel.setCompactTimeV1(sdf.format(c.getCompactTime() == null ? c.getModifyTime() : c.getCompactTime()));
+            custRespModel.setAbandonTimeV1(sdf.format(c.getAbandonTime() == null ? c.getModifyTime() : c.getAbandonTime()));
+            custRespModel.setDeleteTimeV1(sdf.format(c.getDeleteTime() == null ? c.getModifyTime() : c.getDeleteTime()));
+            custRespModelList.add(custRespModel);
+        }
+        BeanUtils.copyProperties(customerInfoPageInfo, custRespModelPageInfo);
+        custRespModelPageInfo.setList(custRespModelList);
+
+        customerInfoMessageInfo.setData(custRespModelPageInfo);
         customerInfoMessageInfo.setContent("success");
         return customerInfoMessageInfo;
     }
@@ -73,30 +88,80 @@ public class CustomerService {
         MessageInfo messageInfo = new MessageInfo();
         if (Objects.isNull(customerInfo)) {
             log.info("系统异常!");
-            throw new BizRuntimeException("系统异常!");
         }
+
+        customerInfo.setUserId(customerInfoMapper.selectByPrimaryKey(customerInfo.getId()).getUserId());
+        //添加用户操作动作
+        CustomerInfo customerInfoV2 = new CustomerInfo();
+        customerInfoV2.setId(customerInfo.getId());
+        CustomerInfo customerInfoData = customerInfoMapper.selectOne(customerInfoV2);
+        addUserAction(customerInfoData, customerInfo);
+
         customerInfo.setModifyTime(new Date());
         int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
         if (i != 1) {
-            log.info("更新失败！");
-            throw new BizRuntimeException("更新失败！");
+            log.info("数据库更新失败！");
         }
-        if (1 == customerInfo.getIsCompact()) {
-            CustomerInfo customerInfoV1 = new CustomerInfo();
-            customerInfoV1.setId(customerInfo.getId());
-            customerInfoV1.setStatus(CustomerStatus.FINISH.getStatus());
-            customerInfoMapper.updateByPrimaryKeySelective(customerInfoV1);
-        }
+//        if (1 == customerInfo.getIsCompact()) {
+//            CustomerInfo customerInfoV1 = new CustomerInfo();
+//            customerInfoV1.setId(customerInfo.getId());
+//            customerInfoV1.setStatus(CustomerStatus.FINISH.getStatus());
+//            customerInfoMapper.updateByPrimaryKeySelective(customerInfoV1);
+//        }
         messageInfo.setContent("更新成功!");
         return messageInfo;
     }
 
+    private void addUserAction(CustomerInfo customerInfoOrigin, CustomerInfo customerInfoUpdate) {
+        if (customerInfoOrigin.getIsVisit() != customerInfoUpdate.getIsVisit()) {
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "visit");
+        }
+        if (customerInfoOrigin.getIsPhone() != customerInfoUpdate.getIsPhone()) {
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "phone");
+        }
+        if (customerInfoOrigin.getIsMoney() != customerInfoUpdate.getIsMoney()) {
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "money");
+        }
+        if (customerInfoOrigin.getIsInterestCust() != customerInfoUpdate.getIsInterestCust()) {
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "interest");
+        }
+        if (customerInfoOrigin.getIsGoldBeans() != customerInfoUpdate.getIsInterestCust()) {
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "beans");
+        }
+        if (customerInfoOrigin.getIsCompact() != customerInfoUpdate.getIsCompact()) {
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "compact");
+        }
+    }
+
+    //保存用户操作动作
+    private Integer saveUserAction(Integer custId, Integer userId, String str) {
+        UserAction userAction = new UserAction();
+        userAction.setCustId(custId);
+        userAction.setUserId(userId);
+        if ("visit".equals(str)) {
+            userAction.setAction("已拜访");
+        }
+        if ("compact".equals(str)) {
+            userAction.setAction("已签合同");
+        }
+        if ("beans".equals(str)) {
+            userAction.setAction("已赠送金豆");
+        }
+        if ("interest".equals(str)) {
+            userAction.setAction("有意向客户");
+        }
+        if ("money".equals(str)) {
+            userAction.setAction("已付款");
+        }
+        if ("phone".equals(str)) {
+            userAction.setAction("已打电话");
+        }
+        userAction.setCreateTime(new Date());
+        return userActionMapper.insert(userAction);
+    }
+
     public MessageInfo removeCustomerInfo(Integer cusId, Integer status, String reason) {
         MessageInfo messageInfo = new MessageInfo();
-        if (StringUtils.isEmpty(cusId.toString()) || StringUtils.isEmpty(reason)) {
-            log.info("获取数据异常！");
-            throw new BizRuntimeException("获取数据异常！");
-        }
         CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setId(cusId);
         if (status == CustomerStatus.ABANDON.getStatus()) {
@@ -161,7 +226,7 @@ public class CustomerService {
             messageInfo.setContent("更新失败!");
             return messageInfo;
         }
-        userGoldBeansMapper.updateGoldBeansNum(-goldBeansNum, userId);
+        userGoldBeansMapper.updateGoldBeansNum(-goldBeansNum, userId, new Date());
         CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setId(custId);
         customerInfo.setIsGoldBeans(1);
@@ -174,15 +239,15 @@ public class CustomerService {
         return messageInfo;
     }
 
-    public MessageInfo saveCustomerInfo(Integer userId, CustomerInfo customerInfo) {
-        MessageInfo messageInfo = new MessageInfo();
+    public MessageInfoV2 saveCustomerInfo(Integer userId, CustomerInfo customerInfo) {
+        MessageInfoV2 messageInfo = new MessageInfoV2();
         if (StringUtils.isEmpty(userId.toString())) {
             log.info("userId 参数信息异常!");
             throw new BizRuntimeException("userId 参数信息异常!");
         }
         if (Objects.isNull(customerInfo)) {
             log.info("报备信息异常!");
-            messageInfo.setContent("报备信息异常!");
+            messageInfo.setFailContent("报备信息异常!");
             return messageInfo;
         }
 
@@ -192,10 +257,10 @@ public class CustomerService {
         List<CustomerInfo> customerInfoList = customerInfoMapper.select(customerInfoV1);
         for (CustomerInfo customerInfo1 : customerInfoList) {
             if (customerInfo1.getStatus() == 1) {
-                messageInfo.setContent("报备失败!该客户目前处于待跟进状态中!");
+                messageInfo.setFailContent("报备失败!该客户目前处于待跟进状态中!");
                 return messageInfo;
             } else if (customerInfo1.getStatus() == 2) {
-                messageInfo.setContent("报备失败!该客户目前已经签约!!");
+                messageInfo.setFailContent("报备失败!该客户目前已经签约!!");
                 return messageInfo;
             }
         }
@@ -213,7 +278,7 @@ public class CustomerService {
         int i = customerInfoMapper.insert(customerInfo);
         if (i != 1) {
             log.info("报备失败！");
-            messageInfo.setContent("报备失败!");
+            messageInfo.setFailContent("报备失败!");
             return messageInfo;
         }
         CustGoldBeans custGoldBeans = new CustGoldBeans();
@@ -223,11 +288,29 @@ public class CustomerService {
         int insert = custGoldBeansMapper.insert(custGoldBeans);
         if (1 != insert) {
             log.info("客户金豆初始化失败");
-            throw new BizRuntimeException("客户金豆初始化失败！");
+        }
+
+        if (1 == customerInfo.getIsPhone()){
+            saveUserAction(customerInfo.getId(),userId,"phone");
+        }
+        if (1 == customerInfo.getIsVisit()){
+            saveUserAction(customerInfo.getId(),userId,"visit");
+        }
+        if (1 == customerInfo.getIsCompact()){
+            saveUserAction(customerInfo.getId(),userId,"compact");
+        }
+        if (1 == customerInfo.getIsInterestCust()){
+            saveUserAction(customerInfo.getId(),userId,"interest");
+        }
+        if (1 == customerInfo.getIsGoldBeans()){
+            saveUserAction(customerInfo.getId(),userId,"beans");
+        }
+        if (1 == customerInfo.getIsMoney()){
+            saveUserAction(customerInfo.getId(),userId,"money");
         }
 
         log.info("报备成功");
-        messageInfo.setContent("报备成功!");
+        messageInfo.setSuccessContent("报备成功!");
         return messageInfo;
     }
 
@@ -250,12 +333,10 @@ public class CustomerService {
         MessageInfo<CustInfoModel> messageInfo = new MessageInfo<>();
         if (Objects.isNull(custId)) {
             log.info("参数信息异常!");
-            throw new BizRuntimeException("参数信息异常！");
         }
         CustomerInfo customerInfo = customerInfoMapper.selectByPrimaryKey(custId);
         if (Objects.isNull(customerInfo)) {
             log.info("数据库信息异常！");
-            throw new BizRuntimeException("数据库信息异常！");
         }
         CustInfoModel custInfoModel = new CustInfoModel();
         BeanUtils.copyProperties(customerInfo, custInfoModel);

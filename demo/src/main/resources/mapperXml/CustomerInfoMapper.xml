@@ -50,13 +50,13 @@
   </select>
 
   <select id="getHasComunication" resultType="java.lang.Integer">
-    select COUNT(*) from customer_info where user_id = #{userId} and (is_phone = 1 or is_visit = 1)
+    select COUNT(*) from customer_info where user_id = #{userId} and (is_phone = 1 or is_visit = 1) and status in (1,2,3) AND date_format(modify_time,"%Y%m%d") = #{dt}
   </select>
   <select id="getHasInterest" resultType="java.lang.Integer">
-    select COUNT(*) from customer_info where user_id = #{userId} and is_interest_cust = 1
+    select COUNT(*) from customer_info where user_id = #{userId} and is_interest_cust = 1 and status in (1,2,3) AND date_format(modify_time,"%Y%m%d") = #{dt}
   </select>
   <select id="getHasCompact" resultType="java.lang.Integer">
-    select count(*) from customer_info where user_id = #{userId} and is_compact = 1
+    select count(*) from customer_info where user_id = #{userId} and is_compact = 1 and status = 2 AND date_format(modify_time,"%Y%m%d") = #{dt}
   </select>
   <select id="getCustomerInfoList" resultMap="BaseResultMap">
     select * from customer_info where user_id = #{userId} and status = #{status} order by modify_time desc

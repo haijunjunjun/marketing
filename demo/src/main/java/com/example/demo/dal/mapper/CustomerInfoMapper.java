@@ -12,11 +12,11 @@ public interface CustomerInfoMapper extends MyMapper<CustomerInfo> {
 
     Integer getWeekNum(@Param("userId") Integer userId, @Param("dt1") String begin, @Param("dt2") String end);
 
-    Integer getHasComunication(@Param("userId") Integer userId);
+    Integer getHasComunication(@Param("userId") Integer userId,@Param("dt") String dt);
 
-    Integer getHasInterest(@Param("userId") Integer userId);
+    Integer getHasInterest(@Param("userId") Integer userId,@Param("dt") String dt);
 
-    Integer getHasCompact(@Param("userId") Integer userId);
+    Integer getHasCompact(@Param("userId") Integer userId,@Param("dt") String dt);
 
     List<CustomerInfo> getCustomerInfoList(@Param("userId") Integer userId, @Param("status") Integer status);
 

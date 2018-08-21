@@ -44,7 +44,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/marketing/gold/beans/apply/info", method = RequestMethod.GET)
-    public ResponseEntity<GoldBeansMessageInfo<List<GoldBeansApply>>> getGoldBeansApplyInfo(@Valid @NotNull @Operator CurOperator curOperator) {
+    public ResponseEntity<GoldBeansMessageInfo<List<GoldBeansApplyModel>>> getGoldBeansApplyInfo(@Valid @NotNull @Operator CurOperator curOperator) {
         return ResponseEntity.ok(myService.getGoldBeansApplyInfo(curOperator.getId()));
     }
 
@@ -67,7 +67,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/marketing/sum/info", method = RequestMethod.GET)
-    public ResponseEntity<MessageInfo<List<SumArrange>>> getSumArrangeList(@Valid @NotNull @Operator CurOperator curOperator) {
+    public ResponseEntity<MessageInfo<List<SumArrangeModel>>> getSumArrangeList(@Valid @NotNull @Operator CurOperator curOperator) {
         return ResponseEntity.ok(myService.getSumArraListInfo(curOperator.getId()));
     }
 

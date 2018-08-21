@@ -19,5 +19,7 @@
     <result column="result_code" jdbcType="VARCHAR" property="resultCode" />
     <result column="return_msg" jdbcType="VARCHAR" property="returnMsg" />
     <result column="pay_result" jdbcType="VARCHAR" property="payResult" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
 </mapper>

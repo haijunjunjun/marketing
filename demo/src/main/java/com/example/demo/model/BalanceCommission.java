@@ -11,4 +11,5 @@ public class BalanceCommission implements Serializable {
     private String type;
     private double commission;
     private Date dates;
+    private String datesV2;
 }

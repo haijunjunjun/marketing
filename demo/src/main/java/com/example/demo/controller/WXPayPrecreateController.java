@@ -27,7 +27,7 @@ public class WXPayPrecreateController {
         return wxPayPrecreateService.precreate(request, response, custPriceModel.getId());
     }
 
-    @RequestMapping(value = "/marketing/wx/pay/notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/market/wx/pay/notify", method = RequestMethod.POST)
     public void precreateNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
         wxPayPrecreateService.precreateNotify(request, response);
     }

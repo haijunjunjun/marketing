@@ -47,7 +47,8 @@ public class JwtAuthorizeFilter implements Filter {
             rep.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
             // Access-Control-Max-Age 用于 CORS 相关配置的缓存
             rep.setHeader("Access-Control-Max-Age", "3600");
-            rep.setHeader("Access-Control-Allow-Headers", "*");
+//            rep.setHeader("Access-Control-Allow-Headers", "*");
+            rep.setHeader("Access-Control-Allow-Headers", "ACCESS_TOKEN,Content-Type,");
             chain.doFilter(request, response);
             return;
         }
@@ -60,7 +61,7 @@ public class JwtAuthorizeFilter implements Filter {
                 Claims claims = JwtHelper.parseJwt(auth, jwtInfo.getBase64Secret());
                 if (claims != null) {
                     Integer userId = Integer.parseInt(claims.get("userId").toString());
-                    if (redisService.exists("token:user_" + userId)) {
+                    if (redisService.exists("token:user_" + userId)&&auth.equals(redisService.get("token:user_"+userId))) {
                         CurOperator operator = new CurOperator();
                         operator.setId(userId);
                         operator.setRoleInfo(claims.get("roleInfo").toString());
@@ -77,7 +78,7 @@ public class JwtAuthorizeFilter implements Filter {
                 httpResponse.setCharacterEncoding("UTF-8");
                 httpResponse.setContentType("application/json; charset=utf-8");
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
+                httpResponse.setHeader("Access-Control-Allow-Origin", "*");
                 resultInfo.setCode(ResultStatus.FAIL.getCode());
                 resultInfo.setMessage(ResultStatus.FAIL.getMessage());
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -92,7 +93,7 @@ public class JwtAuthorizeFilter implements Filter {
         httpResponse.setCharacterEncoding("UTF-8");
         httpResponse.setContentType("application/json; charset=utf-8");
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
+        httpResponse.setHeader("Access-Control-Allow-Origin", "*");
         resultInfo.setCode(ResultStatus.FAIL.getCode());
         resultInfo.setMessage(ResultStatus.FAIL.getMessage());
         ObjectMapper objectMapper = new ObjectMapper();

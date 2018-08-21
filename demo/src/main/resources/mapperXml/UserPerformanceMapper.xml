@@ -29,5 +29,6 @@
         select * from user_performance
         WHERE user_id = #{userId}
           AND date_format(create_time,"%Y%m%d") = #{dt}
+          order by create_time desc
     </select>
 </mapper>

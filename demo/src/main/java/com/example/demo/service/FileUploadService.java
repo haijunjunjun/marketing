@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -37,7 +38,9 @@ public class FileUploadService {
     public MessageInfoV1 uploadFileV1(Integer custId, String base64) {
         MessageInfoV1 messageInfoV1 = new MessageInfoV1();
         MultipartFile multipartFile = MultipartFileV1.base64ToMultipart(base64);
-        String uploadPath = "D://path/compact/";
+//        String uploadPath = "D://path/compact/";
+        //http://106.15.37.191/
+        String uploadPath = "/home/www/upload/images/compact/";
         if (StringUtils.isEmpty(custId.toString()) || custId <= 0) {
             log.info("custId 参数传递异常!");
             throw new BizRuntimeException("userId 参数传递异常!");
@@ -50,11 +53,11 @@ public class FileUploadService {
             log.info("上传路径为空！");
             throw new BizRuntimeException("上传路径为空!");
         }
-        String filename = multipartFile.getOriginalFilename();
-        log.info("上传的文件名为:" + filename);
-        String suffixName = filename.substring(filename.lastIndexOf("."));
-        log.info("上传文件的后缀名为:" + suffixName);
-        String realPath = uploadPath + "_" + custId + "/" + filename;
+        String originName = multipartFile.getOriginalFilename();
+        String suffixName = originName.substring(originName.lastIndexOf("."));
+        String filename = UUID.randomUUID().toString()+suffixName;
+        String realPath = uploadPath + custId + "/" + filename;
+        String url = "http://106.15.37.191/images/compact/"+custId+"/"+filename;
         File dest = new File(realPath);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
@@ -63,7 +66,7 @@ public class FileUploadService {
             multipartFile.transferTo(dest);
             CustomerInfo customerInfo = new CustomerInfo();
             customerInfo.setId(custId);
-            customerInfo.setCompactImg(realPath);
+            customerInfo.setCompactImg(url);
             customerInfo.setIsCompact(1);
             customerInfo.setIsCompactCheck(2);
             int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
@@ -84,7 +87,8 @@ public class FileUploadService {
     public MessageInfoV1 uploadFileV2(Integer userId, MultipartFile multipartFile) {
         //http://106.15.37.191/images/awater/_1/user_1.jpeg
         MessageInfoV1 messageInfoV1 = new MessageInfoV1();
-        String uploadPath = "D://path/awater/";
+//        String uploadPath = "D://path/awater/";
+        String uploadPath = "/home/www/upload/images/awater/";
         if (StringUtils.isEmpty(userId.toString()) || userId <= 0) {
             log.info("userId 参数传递异常!");
             throw new BizRuntimeException("userId 参数传递异常!");
@@ -97,11 +101,11 @@ public class FileUploadService {
             log.info("上传路径为空！");
             throw new BizRuntimeException("上传路径为空!");
         }
-        String filename = multipartFile.getOriginalFilename();
-        log.info("上传的文件名为:" + filename);
-        String suffixName = filename.substring(filename.lastIndexOf("."));
-        log.info("上传文件的后缀名为:" + suffixName);
-        String realPath = uploadPath + "_" + userId + "/" + filename;
+        String originName = multipartFile.getOriginalFilename();
+        String suffixName = originName.substring(originName.lastIndexOf("."));
+        String filename = UUID.randomUUID().toString()+suffixName;
+        String realPath = uploadPath + userId + "/" + filename;
+        String url = "http://106.15.37.191/images/awater/"+userId+"/"+filename;
         File dest = new File(realPath);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
@@ -110,7 +114,7 @@ public class FileUploadService {
             multipartFile.transferTo(dest);
             UserInfo userInfo = new UserInfo();
             userInfo.setId(userId);
-            userInfo.setImageUrl(realPath);
+            userInfo.setImageUrl(url);
             int i = userInfoMapper.updateByPrimaryKeySelective(userInfo);
             if (1 != i) {
                 log.info("数据库更新失败!");

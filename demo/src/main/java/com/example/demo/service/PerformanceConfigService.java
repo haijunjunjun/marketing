@@ -176,7 +176,8 @@ public class PerformanceConfigService {
         //计算当前日期所在周的上一周日期区间
         Map<String, String> dtV1 = this.getDt(getWeekDays(-1));
         //计算当前用户上一周的总业绩
-        BigDecimal performanceV1 = new BigDecimal(userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end")).toString()).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        Integer data = userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end")) == null ? 0 : userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end"));
+        BigDecimal performanceV1 = new BigDecimal(data.toString()).setScale(2, BigDecimal.ROUND_HALF_DOWN);
         //上周业绩 < 生死线
         if (performanceV1.compareTo(deathLine) == -1) {
             Integer remove = userInfoMapper.remove(userId);
@@ -269,6 +270,11 @@ public class PerformanceConfigService {
     //计算用户提成并保存到数据库
     public void saveUserCommission(Integer userId) {
         Double commission = this.calUserCommission(userId);
+        double v = Double.parseDouble("-1");
+        if (new BigDecimal(commission.toString()).compareTo(new BigDecimal(Double.toString(v))) == 0) {
+            log.info("该用户已被禁用");
+            return;
+        }
         UserCommissions userCommissions = new UserCommissions();
         userCommissions.setUserId(userId);
         userCommissions.setCommission(commission);
@@ -276,14 +282,14 @@ public class PerformanceConfigService {
         int i = userCommissionsMapper.insert(userCommissions);
         if (1 != i) {
             log.info("用户" + userId + "提成数据保存异常!");
-            throw new BizRuntimeException("用户" + userId + "提成数据保存异常!");
+//            throw new BizRuntimeException("用户" + userId + "提成数据保存异常!");
         }
-        log.info("用户提成数据保存成功!");
+//        log.info("用户提成数据保存成功!");
         //更新用户账户信息
         int updateInfo = userAccountMapper.updateUserAccount(userId, commission);
         if (1 != updateInfo) {
             log.info("用户" + userId + "更新信息异常！");
-            throw new BizRuntimeException("用户" + userId + "更新信息异常!");
+//            throw new BizRuntimeException("用户" + userId + "更新信息异常!");
         }
     }
 

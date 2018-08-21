@@ -74,7 +74,7 @@ public class CustomerInfoMapperTest {
     public void test1() {
         CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setId(76);
-        customerInfo.setCompanyName("哈哈哈哈哈哈哈哈");
+        customerInfo.setCompanyName("啊啊啊啊啊啊啊啊啊啊啊啊");
         customerInfo.setModifyTime(new Date());
         int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
         log.info("info is :" + i);

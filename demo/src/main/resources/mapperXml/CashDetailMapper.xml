@@ -13,4 +13,7 @@
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="refuse_reason" jdbcType="VARCHAR" property="refuseReason" />
   </resultMap>
+  <select id="getCashDetailListInfo" resultMap="BaseResultMap">
+    select * from cash_detail where user_id = #{userId} order by create_time desc
+  </select>
 </mapper>

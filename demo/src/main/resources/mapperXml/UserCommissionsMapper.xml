@@ -11,4 +11,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
+  <select id="getUserCommissions" resultMap="BaseResultMap">
+    select * from user_commissions where user_id = #{userId} order by create_time desc
+  </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.example.demo.model.*;
 import com.example.demo.service.CustomerService;
 import com.example.demo.util.MessageInfo;
 import com.example.demo.util.MessageInfoV1;
+import com.example.demo.util.MessageInfoV2;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class CustomerController {
      * 获取客户信息
      */
     @RequestMapping(value = "/marketing/customer/info", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo<PageInfo<CustomerInfo>>> getCustomerInfo(@Valid @NotNull @Operator CurOperator curOperator,
+    public ResponseEntity<MessageInfo<PageInfo<CustRespModel>>> getCustomerInfo(@Valid @NotNull @Operator CurOperator curOperator,
                                                                                @Valid @NotNull @RequestParam("status") Integer status,
                                                                                @Valid @NotNull @RequestParam("pageSize") Integer pageSize,
                                                                                @Valid @NotNull @RequestParam("pageNum") Integer pageNum) {
@@ -74,8 +75,8 @@ public class CustomerController {
      * 客户信息报备
      */
     @RequestMapping(value = "/marketing/customer/save", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo> saveCustomerInfo(@Valid @NotNull @Operator CurOperator curOperator,
-                                                        @Valid @RequestBody(required = true) CustomerInfo customerInfo) {
+    public ResponseEntity<MessageInfoV2> saveCustomerInfo(@Valid @NotNull @Operator CurOperator curOperator,
+                                                          @Valid @RequestBody(required = true) CustomerInfo customerInfo) {
         return ResponseEntity.ok(customerService.saveCustomerInfo(curOperator.getId(), customerInfo));
     }
 

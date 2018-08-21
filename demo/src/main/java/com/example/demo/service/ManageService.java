@@ -99,7 +99,7 @@ public class ManageService {
             goldBeans.setStatus(status);
             goldBeans.setCheckTime(new Date());
             goldBeansApplyMapper.updateByPrimaryKeySelective(goldBeans);
-            userGoldBeansMapper.updateGoldBeansNum(goldBeansApply.getGoldBeansApplyNum(), goldBeansApply.getUserId());
+            userGoldBeansMapper.updateGoldBeansNum(goldBeansApply.getGoldBeansApplyNum(), goldBeansApply.getUserId(), new Date());
             messageInfo.setContent("success");
             return messageInfo;
         }

@@ -67,7 +67,7 @@ public class WXPayPrecreateService {
         // APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
         reqData.put("spbill_create_ip", "192.168.105.75");
         // 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
-        reqData.put("notify_url", "http://localhost:8089/wxpay/precreate/marketing/wx/pay/notify");
+        reqData.put("notify_url", "http://crm.yunjg.net:8090/market/wx/pay/notify");
         // 自定义参数, 可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"
         reqData.put("device_info", "device");
         // 附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用。
@@ -92,10 +92,11 @@ public class WXPayPrecreateService {
         payRecord.setTradeType(reqData.get("trade_type"));
         payRecord.setProductId(reqData.get("product_id"));
         payRecord.setBody(reqData.get("body"));
-        payRecord.setTotalFee(reqData.get("total_fee"));
+        payRecord.setTotalFee(new BigDecimal(reqData.get("total_fee")).divide(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_HALF_DOWN).toString());
         payRecord.setSpbillCreateIp(reqData.get("spbill_create_ip"));
         payRecord.setReturnCode(returnCode);
         payRecord.setResultCode(resultCode);
+        payRecord.setCreateTime(new Date());
 
         MessageInfoV1 messageInfoV1 = new MessageInfoV1();
         String png_base64 = "";
@@ -127,6 +128,7 @@ public class WXPayPrecreateService {
     }
 
     public void precreateNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        log.info("正在发起回调···");
         Map<String, String> reqData = wxPayClient.getNotifyParameter(request);
         /**
          * {
@@ -150,6 +152,7 @@ public class WXPayPrecreateService {
          */
         log.info("支付结果异步通知响应信息：" + reqData.toString());
         boolean signatureValid = wxPay.isPayResultNotifySignatureValid(reqData);
+        log.info("回调信息判断······");
         if (signatureValid) {
             /**
              * 注意：同样的通知可能会多次发送给商户系统。商户系统必须能够正确处理重复的通知。
@@ -165,6 +168,7 @@ public class WXPayPrecreateService {
             payRecord2.setId(payRecord1.getId());
             payRecord2.setReturnMsg("success_pay");
             payRecord2.setPayResult("success");
+            payRecord2.setModifyTime(new Date());
             payRecordMapper.updateByPrimaryKeySelective(payRecord2);
             CustomerInfo customerInfo = new CustomerInfo();
             customerInfo.setId(payRecord1.getCustId());
@@ -180,12 +184,12 @@ public class WXPayPrecreateService {
             userPerformance.setUserId(customerInfoV2.getUserId());
             userPerformance.setCreateTime(new Date());
             userPerformance.setModifyTime(new Date());
-            userPerformance.setPerformance(Double.parseDouble(total_fee));
+            userPerformance.setPerformance(new BigDecimal(reqData.get("total_fee")).divide(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue());
             int insert = userPerformanceMapper.insert(userPerformance);
             if (1 != insert) {
                 log.info("业绩保存异常！");
-                throw new BizRuntimeException("业绩保存异常！");
             }
+            log.info("回调成功···");
             Map<String, String> responseMap = new HashMap<>(2);
             responseMap.put("return_code", "SUCCESS");
             responseMap.put("return_msg", "OK");

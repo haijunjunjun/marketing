@@ -6,7 +6,9 @@ import com.example.demo.dal.mapper.*;
 import com.example.demo.dal.model.*;
 import com.example.demo.model.CurOperator;
 import com.example.demo.model.UserRole;
+import com.example.demo.redis.RedisService;
 import com.example.demo.util.BizRuntimeException;
+import com.example.demo.util.DataResponse;
 import com.example.demo.util.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ public class UserInfoService {
     private DefaultResourceMapper defaultResourceMapper;
     private JwtInfo jwtInfo;
     private JwtHelper jwtHelper;
+    private RedisService redisService;
 
     @Autowired
     public UserInfoService(UserInfoMapper userInfoMapper,
@@ -48,7 +51,8 @@ public class UserInfoService {
                            AccountBankMapper accountBankMapper,
                            DefaultResourceMapper defaultResourceMapper,
                            JwtInfo jwtInfo,
-                           JwtHelper jwtHelper) {
+                           JwtHelper jwtHelper,
+                           RedisService redisService) {
         this.userInfoMapper = userInfoMapper;
         this.roleInfoMapper = roleInfoMapper;
         this.roleAuthMapper = roleAuthMapper;
@@ -59,6 +63,7 @@ public class UserInfoService {
         this.defaultResourceMapper = defaultResourceMapper;
         this.jwtInfo = jwtInfo;
         this.jwtHelper = jwtHelper;
+        this.redisService = redisService;
     }
 
     public List<UserInfo> getUserInfo() {
@@ -97,6 +102,10 @@ public class UserInfoService {
             userRoleMessageInfo.setContent("密码不正确!");
             return userRoleMessageInfo;
         }
+        if (0 == user.getStatus()) {
+            userRoleMessageInfo.setContent("该用户已被禁用,请联系管理员!");
+            return userRoleMessageInfo;
+        }
         UserRole userRole = new UserRole();
         userRole.setId(user.getId());
         String roleInfo = this.getRoleInfo(user.getRoleId());
@@ -121,7 +130,7 @@ public class UserInfoService {
         userRole.setAuthToken(jwt);
         userRoleMessageInfo.setData(userRole);
         userRoleMessageInfo.setContent("success");
-
+        log.info(user.getRealName() + "登陆成功!");
         return userRoleMessageInfo;
     }
 
@@ -288,6 +297,21 @@ public class UserInfoService {
         userInfo.setId(userId);
         userInfo.setLoginCount(loginCount + 1);
         userInfoMapper.updateByPrimaryKeySelective(userInfo);
+    }
+
+    public DataResponse logout(Integer userId) {
+        log.info("客户点击退出按钮");
+        DataResponse dataResponse = new DataResponse();
+        try {
+            redisService.remove("token:user_" + userId.toString());
+            dataResponse.setCode("200");
+            dataResponse.setMessage("登出成功");
+        } catch (Exception e) {
+            log.info("客户退出成功");
+            dataResponse.setCode("500");
+            dataResponse.setMessage("登出失败");
+        }
+        return dataResponse;
     }
 
     /**

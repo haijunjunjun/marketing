@@ -6,8 +6,8 @@ spring:
   mvc:
     dispatch-options-request: true
   redis:
-    host: localhost
-#    host: 106.15.37.191
+#    host: localhost
+    host: 106.15.37.191
     password:
     port: 6379
     jedis:
@@ -26,12 +26,12 @@ spring:
       readwrite:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-#        url: jdbc:mysql://106.15.37.191:3356/marketing?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8
-#        username: root
-#        password: 123456
-        url: jdbc:mysql://localhost:3306/marketing?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8
-        username:
-        password:
+        url: jdbc:mysql://106.15.37.191:3356/marketing?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=UTF-8
+        username: root
+        password: 123456
+#        url: jdbc:mysql://localhost:3306/marketing?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8
+#        username:
+#        password:
 # 下面为连接池的补充设置，应用到上面所有数据源中
 # 初始化大小，最小，最大
         initialSize: 1
