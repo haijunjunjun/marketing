@@ -6,6 +6,7 @@ import com.example.demo.dal.mapper.UserPerformanceMapper;
 import com.example.demo.dal.model.CustomerInfo;
 import com.example.demo.dal.model.PayRecord;
 import com.example.demo.dal.model.UserPerformance;
+import com.example.demo.model.WxPayResponseModel;
 import com.example.demo.util.BizRuntimeException;
 import com.example.demo.util.MessageInfoV1;
 import com.example.demo.util.PayUtil;
@@ -16,6 +17,7 @@ import com.github.wxpay.sdk.WXPayUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
@@ -124,6 +126,7 @@ public class WXPayPrecreateService {
         }
         payRecordMapper.insert(payRecord);
         messageInfoV1.setContent(png_base64);
+        messageInfoV1.setTradeNo(reqData.get("out_trade_no"));
         return messageInfoV1;
     }
 
@@ -199,5 +202,35 @@ public class WXPayPrecreateService {
             response.getWriter().write(responseXml);
             response.flushBuffer();
         }
+//        else {
+//            String tradeNo = reqData.get("out_trade_no");
+//            PayRecord payRecord = new PayRecord();
+//            payRecord.setOutTradeNo(tradeNo);
+//            PayRecord payRecord1 = payRecordMapper.selectOne(payRecord);
+//            PayRecord payRecord2 = new PayRecord();
+//            payRecord2.setId(payRecord1.getId());
+//            payRecord2.setReturnMsg("签名验证失败");
+//            payRecord2.setPayResult("fail");
+//            payRecord2.setModifyTime(new Date());
+//            payRecordMapper.updateByPrimaryKeySelective(payRecord2);
+//        }
+    }
+
+    public WxPayResponseModel response (String tradeNo){
+        WxPayResponseModel wxPayResponseModel = new WxPayResponseModel();
+        if (StringUtils.isEmpty(tradeNo)){
+            log.info("tradeNo   参数信息异常!");
+            throw new BizRuntimeException("tradeNo   参数信息异常!");
+        }
+        PayRecord payRecord = new PayRecord();
+        payRecord.setOutTradeNo(tradeNo);
+        PayRecord payRecordInfo = payRecordMapper.selectOne(payRecord);
+        if (!StringUtils.isEmpty(payRecordInfo.getPayResult())){
+            wxPayResponseModel.setPayResult(payRecordInfo.getPayResult().trim());
+        }
+        if (!StringUtils.isEmpty(payRecordInfo.getReturnMsg())){
+            wxPayResponseModel.setReturnMessage(payRecordInfo.getReturnMsg());
+        }
+        return wxPayResponseModel;
     }
 }

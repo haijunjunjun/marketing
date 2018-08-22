@@ -68,6 +68,11 @@ public class MyController {
 
     @RequestMapping(value = "/marketing/sum/info", method = RequestMethod.GET)
     public ResponseEntity<MessageInfo<List<SumArrangeModel>>> getSumArrangeList(@Valid @NotNull @Operator CurOperator curOperator) {
+        return ResponseEntity.ok(myService.getSumArraInfo(curOperator.getId()));
+    }
+
+    @RequestMapping(value = "/marketing/sum/info/single", method = RequestMethod.GET)
+    public ResponseEntity<MessageInfo<SumArrangeModel>> getSumArrangeInfo(@Valid @NotNull @Operator CurOperator curOperator) {
         return ResponseEntity.ok(myService.getSumArraListInfo(curOperator.getId()));
     }
 

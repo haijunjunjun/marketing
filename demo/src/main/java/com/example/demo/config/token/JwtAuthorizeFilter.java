@@ -6,6 +6,7 @@ import com.example.demo.redis.RedisService;
 import com.example.demo.util.ResultStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 /**
  * @author haijun
@@ -37,22 +39,38 @@ public class JwtAuthorizeFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         ResultInfo resultInfo = new ResultInfo();
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+//        Enumeration enumeration = httpServletRequest.getHeaderNames();
+//        while (enumeration.hasMoreElements()) {
+//            String name = (String) enumeration.nextElement();
+//            String value = httpServletRequest.getHeader(name);
+//            System.out.println(name);
+//            System.out.println(value);
+//        }
+//        System.out.println("*******************");
+//        enumeration = httpServletRequest.getAttributeNames();
+//        while (enumeration.hasMoreElements()) {
+//            String name = (String) enumeration.nextElement();
+//            String value = httpServletRequest.getHeader(name);
+//            System.out.println(name);
+//            System.out.println(value);
+//        }
+        HttpServletResponse rep = (HttpServletResponse) response;
+        //设置允许跨域的配置
+        // 这里填写你允许进行跨域的主机ip（正式上线时可以动态配置具体允许的域名和IP）
+        rep.setHeader("Access-Control-Allow-Origin", "*");
+        // 允许的访问方法
+        rep.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
+        // Access-Control-Max-Age 用于 CORS 相关配置的缓存
+        rep.setHeader("Access-Control-Max-Age", "3600");
+//            rep.setHeader("Access-Control-Allow-Headers", "*");
+        rep.setHeader("Access-Control-Allow-Headers", "token,Content-Type");
         if ("OPTIONS".equals(httpServletRequest.getMethod())) {
             System.out.println("OPTIONS");
-            HttpServletResponse rep = (HttpServletResponse) response;
-            //设置允许跨域的配置
-            // 这里填写你允许进行跨域的主机ip（正式上线时可以动态配置具体允许的域名和IP）
-            rep.setHeader("Access-Control-Allow-Origin", "*");
-            // 允许的访问方法
-            rep.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
-            // Access-Control-Max-Age 用于 CORS 相关配置的缓存
-            rep.setHeader("Access-Control-Max-Age", "3600");
-//            rep.setHeader("Access-Control-Allow-Headers", "*");
-            rep.setHeader("Access-Control-Allow-Headers", "ACCESS_TOKEN,Content-Type,");
             chain.doFilter(request, response);
             return;
         }
-        String auth = httpServletRequest.getHeader("ACCESS_TOKEN");
+        String auth = httpServletRequest.getHeader("token");
+        System.out.println("auth ="+auth);
         if (auth != null && auth.length() > 7) {
 //            String headStr = auth.substring(0, 6).toLowerCase();
 //            if (headStr.compareTo("bearer") == 0) {
@@ -72,7 +90,7 @@ public class JwtAuthorizeFilter implements Filter {
                         return;
                     }
                 }
-            } catch (Exception e) {
+            } catch (JwtException e) {
                 //验证不通过
                 HttpServletResponse httpResponse = (HttpServletResponse) response;
                 httpResponse.setCharacterEncoding("UTF-8");

@@ -12,4 +12,5 @@ import java.io.Serializable;
 public class MessageInfoV1 implements Serializable {
     private static final long serialVersionUID = -7250555521926862991L;
     private String content;
+    private String tradeNo;
 }

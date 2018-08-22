@@ -303,7 +303,7 @@ public class MyService {
         return listMessageInfo;
     }
 
-    public MessageInfo<List<SumArrangeModel>> getSumArraListInfo(Integer userId) {
+    public MessageInfo<List<SumArrangeModel>> getSumArraInfo(Integer userId) {
         MessageInfo<List<SumArrangeModel>> listMessageInfo = new MessageInfo<>();
         List<SumArrange> sumArrangeList = sumArrangeMapper.getSumArrangeList(userId);
         if (Objects.isNull(sumArrangeList)) {
@@ -315,10 +315,38 @@ public class MyService {
         for (SumArrange s : sumArrangeList) {
             SumArrangeModel sumArrangeModel = new SumArrangeModel();
             BeanUtils.copyProperties(s, sumArrangeModel);
-            sumArrangeModel.setCreateTimeV1(sdf.format(s.getCreateTime()));
+            if (!Objects.isNull(s.getCreateTime())) {
+                sumArrangeModel.setCreateTimeV1(sdf.format(s.getCreateTime()));
+            }
             sumArranModelList.add(sumArrangeModel);
         }
         listMessageInfo.setData(sumArranModelList);
+        listMessageInfo.setContent("获取信息成功");
+        return listMessageInfo;
+    }
+
+    public MessageInfo<SumArrangeModel> getSumArraListInfo(Integer userId) {
+        MessageInfo<SumArrangeModel> listMessageInfo = new MessageInfo<>();
+        List<SumArrange> sumArrangeList = sumArrangeMapper.getSumArrangeList(userId);
+        if (Objects.isNull(sumArrangeList)) {
+            listMessageInfo.setContent("获取信息失败");
+            return listMessageInfo;
+        }
+//        List<SumArrangeModel> sumArranModelList = new ArrayList<>();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        for (SumArrange s : sumArrangeList) {
+//            SumArrangeModel sumArrangeModel = new SumArrangeModel();
+//            BeanUtils.copyProperties(s, sumArrangeModel);
+//            sumArrangeModel.setCreateTimeV1(sdf.format(s.getCreateTime()));
+//            sumArranModelList.add(sumArrangeModel);
+//        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SumArrangeModel sumArrangeModel = new SumArrangeModel();
+        BeanUtils.copyProperties(sumArrangeList.get(0), sumArrangeModel);
+        if (!Objects.isNull(sumArrangeModel.getCreateTime())) {
+            sumArrangeModel.setCreateTimeV1(sdf.format(sumArrangeModel.getCreateTime()));
+        }
+        listMessageInfo.setData(sumArrangeModel);
         listMessageInfo.setContent("获取信息成功");
         return listMessageInfo;
     }
