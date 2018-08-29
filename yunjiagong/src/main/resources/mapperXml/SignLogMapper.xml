@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.SignLogMapper">
-  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.SignLog">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
-    <result column="source" jdbcType="VARCHAR" property="source" />
-    <result column="beans" jdbcType="VARCHAR" property="beans" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.SignLog">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="source" jdbcType="VARCHAR" property="source"/>
+        <result column="beans" jdbcType="VARCHAR" property="beans"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
     <insert id="saveSignLog">
         insert into sign_log (user_id,beans,source,create_time) values (#{userId},#{beans},#{source},#{createTime})
     </insert>

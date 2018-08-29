@@ -7,9 +7,12 @@
         -->
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="province" jdbcType="VARCHAR" property="province"/>
-        <result column="sort" jdbcType="VARCHAR" property="sort"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
     </resultMap>
     <select id="getProvince" resultMap="BaseResultMap">
-        select * from province order by sort asc ,id desc
+        select * from province order by sort asc ,id asc
+    </select>
+    <select id="getProvinceByName" resultMap="BaseResultMap">
+        select * from province where province like concat('%',#{name},'%') order by sort asc ,id asc
     </select>
 </mapper>

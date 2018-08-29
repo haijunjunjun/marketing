@@ -21,7 +21,7 @@ public class City {
     /**
      * 排序
      */
-    private String sort;
+    private Integer sort;
 
     /**
      * 获取城市名字
@@ -78,7 +78,7 @@ public class City {
      *
      * @return sort - 排序
      */
-    public String getSort() {
+    public Integer getSort() {
         return sort;
     }
 
@@ -87,7 +87,7 @@ public class City {
      *
      * @param sort 排序
      */
-    public void setSort(String sort) {
-        this.sort = sort == null ? null : sort.trim();
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }

@@ -16,6 +16,6 @@
         <result column="sort" jdbcType="VARCHAR" property="sort"/>
     </resultMap>
     <select id="getBanner" resultMap="BaseResultMap">
-        select * from  banner where banner_type = #{type} order by sort asc ,id desc
+        select * from banner where banner_type = #{type} order by sort asc ,id desc
     </select>
 </mapper>

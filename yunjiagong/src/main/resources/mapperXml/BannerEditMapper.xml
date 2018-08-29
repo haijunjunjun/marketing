@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.BannerEditMapper">
+    <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.BannerEdit">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="edit_info" jdbcType="VARCHAR" property="editInfo"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+    </resultMap>
+    <select id="countBannerEdit" resultType="java.lang.Integer">
+        select count(*) from banner_edit where user_id = #{userId}
+    </select>
+    <update id="updateBannerEdit">
+        update banner_edit set edit_info = #{editInfo},modify_time = now() where user_id = #{userId}
+    </update>
+</mapper>

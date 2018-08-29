@@ -9,4 +9,6 @@ import java.util.List;
 public interface CityMapper extends MyMapper<City> {
 
     List<City> getCity(@Param("provinceId") Integer provinceId);
+
+    City getCityByName(@Param("name") String name);
 }

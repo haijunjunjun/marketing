@@ -1,8 +1,8 @@
 server:
-  port: 8088
+  port: 8087
 spring:
   profiles:
     active:
       - dev
   application:
-    name: haijun-service
+    name: cloud-common-service

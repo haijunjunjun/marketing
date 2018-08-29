@@ -15,4 +15,5 @@ public class AddressInfoModel implements Serializable {
     private static final long serialVersionUID = 5858359624808138878L;
     private List<String> hotCity;
     private Map<String, List<String>> keyCity;
+    private List<String> allCity;
 }

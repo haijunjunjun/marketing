@@ -9,4 +9,6 @@ import java.util.List;
 public interface AddressMapper extends MyMapper<Address> {
 
     List<Address> getAddressList(@Param("userId") Integer userId, @Param("userType") Integer userType);
+
+    Integer updateDefaultAddress(@Param("id") Integer id);
 }

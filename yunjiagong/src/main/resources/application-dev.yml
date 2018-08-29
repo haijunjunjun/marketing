@@ -1,7 +1,7 @@
 spring:
   redis:
-#    host: 106.15.37.191
-    host: localhost
+    host: 106.15.37.191
+#    host: localhost
     password:
     port: 6379
     jedis:
@@ -10,6 +10,9 @@ spring:
         max-active: 8
         min-idle: 0
         max-idle: 8
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
   datasource:
     hikari:
       maximum-pool-size: 20
@@ -20,9 +23,12 @@ spring:
       readwrite:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/yunjiagong?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8
-        username:
-        password:
+#        username:
+#        password:
+#        url: jdbc:mysql://localhost:3306/yunjiagong?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=UTF-8
+        url: jdbc:mysql://106.15.37.191:3346/cfactory_commonapi?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=UTF-8
+        username: root
+        password: 123456
 # 下面为连接池的补充设置，应用到上面所有数据源中
 # 初始化大小，最小，最大
         initialSize: 1
@@ -43,7 +49,7 @@ eureka:
     serviceUrl:
       defaultZone: http://106.15.37.191:8761/eureka/
 #      default-zone: http://localhost:8761/eureka/
-#  instance:
-#    prefer-ip-address: true
-#    ip-address: 106.15.37.191
+  instance:
+    prefer-ip-address: true
+    ip-address: 106.15.37.191
 

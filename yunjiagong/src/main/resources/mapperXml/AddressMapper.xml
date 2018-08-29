@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.AddressMapper">
-  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.Address">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="user_type" jdbcType="INTEGER" property="userType" />
-    <result column="addr" jdbcType="VARCHAR" property="addr" />
-    <result column="real_name" jdbcType="VARCHAR" property="realName" />
-    <result column="address_detail" jdbcType="VARCHAR" property="addressDetail" />
-    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="is_default_address" jdbcType="VARCHAR" property="isDefaultAddress" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.Address">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="user_type" jdbcType="INTEGER" property="userType"/>
+        <result column="addr" jdbcType="VARCHAR" property="addr"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="address_detail" jdbcType="VARCHAR" property="addressDetail"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="is_default_address" jdbcType="INTEGER" property="isDefaultAddress"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
     <select id="getAddressList" resultMap="BaseResultMap">
         select * from address where user_id = #{userId} and user_type = #{userType}
     </select>
+    <update id="updateDefaultAddress">
+        update address set is_default_address = 0 where id = #{id}
+    </update>
 </mapper>

@@ -4,10 +4,8 @@ import com.niule.yunjiagong.yunjiagong.constants.Enum.TemplateEnum;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.SignInfoMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.SignLogMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.SignTemplateMapper;
-import com.niule.yunjiagong.yunjiagong.dal.mapper.UserInfoMapper;
 import com.niule.yunjiagong.yunjiagong.dal.model.SignInfo;
 import com.niule.yunjiagong.yunjiagong.dal.model.SignTemplate;
-import com.niule.yunjiagong.yunjiagong.dal.model.UserInfo;
 import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
 import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
@@ -37,8 +35,6 @@ public class SignService {
     @Autowired
     private SignLogMapper signLogMapper;
     @Autowired
-    private UserInfoMapper userInfoMapper;
-    @Autowired
     private UserInfoFeginService userInfoFeginService;
 
     public MessageInfo doSign(String signDateV1) throws ParseException {
@@ -67,9 +63,8 @@ public class SignService {
             realDuration = signInfoV1.getDuration() + 1;
             if (realDuration % signTemplate.getCycles() == 0) {
                 signLogMapper.saveSignLog(userId, signTemplate.getBeans() + "", "用户签到", new Date());
-                UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
-                userInfo.setGoldBeans(userInfo.getGoldBeans() + signTemplate.getBeans());
-                userInfoMapper.updateByPrimaryKey(userInfo);
+                // TODO: 2018/8/29 更新用户的金豆
+
             }
         }
         if (realDuration % signTemplate.getCycles() == 0) {

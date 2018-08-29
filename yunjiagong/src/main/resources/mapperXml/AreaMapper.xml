@@ -9,8 +9,22 @@
         <result column="area" jdbcType="VARCHAR" property="area"/>
         <result column="city_id" jdbcType="INTEGER" property="cityId"/>
         <result column="is_show" jdbcType="VARCHAR" property="isShow"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
     </resultMap>
     <select id="getArea" resultMap="BaseResultMap">
-        select * from area where city_id = #{cityId} and is_show = 1 order by id desc
+        select * from area where city_id = #{cityId} and is_show = 1 order by sort asc, id asc
+    </select>
+    <select id="getAreaByCityIds" resultType="java.lang.Integer">
+        select count(*) from area
+        where city_id in
+        <foreach collection="cityIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and area not like concat('%',#{name},'%')
+    </select>
+    <select id="getAreaByCityId" resultType="java.lang.Integer">
+        select count(*) from area
+        where city_id = #{cityId}
+        and area not like concat('%',#{name},'%')
     </select>
 </mapper>

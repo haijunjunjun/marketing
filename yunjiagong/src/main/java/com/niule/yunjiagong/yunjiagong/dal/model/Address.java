@@ -49,7 +49,7 @@ public class Address {
      * 是否默认地址（1：是 0：不是）
      */
     @Column(name = "is_default_address")
-    private String isDefaultAddress;
+    private Integer isDefaultAddress;
 
     /**
      * 创建时间
@@ -194,7 +194,7 @@ public class Address {
      *
      * @return is_default_address - 是否默认地址（1：是 0：不是）
      */
-    public String getIsDefaultAddress() {
+    public Integer getIsDefaultAddress() {
         return isDefaultAddress;
     }
 
@@ -203,8 +203,8 @@ public class Address {
      *
      * @param isDefaultAddress 是否默认地址（1：是 0：不是）
      */
-    public void setIsDefaultAddress(String isDefaultAddress) {
-        this.isDefaultAddress = isDefaultAddress == null ? null : isDefaultAddress.trim();
+    public void setIsDefaultAddress(Integer isDefaultAddress) {
+        this.isDefaultAddress = isDefaultAddress;
     }
 
     /**

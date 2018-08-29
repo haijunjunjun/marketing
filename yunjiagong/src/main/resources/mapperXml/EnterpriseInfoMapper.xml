@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.EnterpriseInfoMapper">
-  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.EnterpriseInfo">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="logo" jdbcType="VARCHAR" property="logo" />
-    <result column="worker_cnt" jdbcType="INTEGER" property="workerCnt" />
-    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
-    <result column="company_type" jdbcType="VARCHAR" property="companyType" />
-    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
-    <result column="company_phone" jdbcType="VARCHAR" property="companyPhone" />
-    <result column="company_desc" jdbcType="VARCHAR" property="companyDesc" />
-    <result column="product_imgs" jdbcType="VARCHAR" property="productImgs" />
-    <result column="work_shop_imgs" jdbcType="VARCHAR" property="workShopImgs" />
-    <result column="office_imgs" jdbcType="VARCHAR" property="officeImgs" />
-    <result column="simple_room_imgs" jdbcType="VARCHAR" property="simpleRoomImgs" />
-    <result column="qualification_imgs" jdbcType="VARCHAR" property="qualificationImgs" />
-    <result column="business_imgs" jdbcType="VARCHAR" property="businessImgs" />
-    <result column="switches" jdbcType="INTEGER" property="switches" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="boss_img" jdbcType="VARCHAR" property="bossImg" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.EnterpriseInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="logo" jdbcType="VARCHAR" property="logo"/>
+        <result column="worker_cnt" jdbcType="INTEGER" property="workerCnt"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="company_type" jdbcType="VARCHAR" property="companyType"/>
+        <result column="company_address" jdbcType="VARCHAR" property="companyAddress"/>
+        <result column="company_phone" jdbcType="VARCHAR" property="companyPhone"/>
+        <result column="company_desc" jdbcType="VARCHAR" property="companyDesc"/>
+        <result column="product_imgs" jdbcType="VARCHAR" property="productImgs"/>
+        <result column="work_shop_imgs" jdbcType="VARCHAR" property="workShopImgs"/>
+        <result column="office_imgs" jdbcType="VARCHAR" property="officeImgs"/>
+        <result column="simple_room_imgs" jdbcType="VARCHAR" property="simpleRoomImgs"/>
+        <result column="qualification_imgs" jdbcType="VARCHAR" property="qualificationImgs"/>
+        <result column="business_imgs" jdbcType="VARCHAR" property="businessImgs"/>
+        <result column="switches" jdbcType="INTEGER" property="switches"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="boss_img" jdbcType="VARCHAR" property="bossImg"/>
+    </resultMap>
 </mapper>

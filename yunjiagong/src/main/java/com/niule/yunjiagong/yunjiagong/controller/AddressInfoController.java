@@ -19,8 +19,14 @@ public class AddressInfoController {
     private AddressInfoService addressInfoService;
 
     @Description("获取城市信息列表(热门城市等)")
-    @RequestMapping(value = "/market/address/info/list",method = RequestMethod.POST)
+    @RequestMapping(value = "/market/address/info/list", method = RequestMethod.POST)
     public DataResponse getAddressInfo() {
         return DataResponse.success(addressInfoService.getAddressInfo());
+    }
+
+    @Description("判断城市信息列表是否发生改变")
+    @RequestMapping(value = "/market/address/info/change", method = RequestMethod.GET)
+    public DataResponse getIsChange() {
+        return DataResponse.success(addressInfoService.getIsChange());
     }
 }

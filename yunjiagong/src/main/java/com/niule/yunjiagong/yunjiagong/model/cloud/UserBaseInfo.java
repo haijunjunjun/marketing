@@ -22,4 +22,6 @@ public class UserBaseInfo implements Serializable {
 
     private Date updatetime;
 
+    private Integer status;
+
 }

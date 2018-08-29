@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.SignInfoMapper">
-  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.SignInfo">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="sign_date" jdbcType="DATE" property="signDate" />
-    <result column="update_time" jdbcType="DATE" property="updateTime" />
-    <result column="duration" jdbcType="INTEGER" property="duration" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.SignInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="sign_date" jdbcType="DATE" property="signDate"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+        <result column="duration" jdbcType="INTEGER" property="duration"/>
+    </resultMap>
     <insert id="saveSignInfo">
         insert into sign_info (user_id,sign_date,duration) values (#{userId},#{signDate},#{duration})
     </insert>
 
     <update id="updateSignInfo">
-        update sign_info set sign_date = #{signDate},update_time = #{updateTime},duration = #{duration} where user_id = #{userId}
+        update sign_info set sign_date = #{signDate},update_time = #{updateTime},duration = #{duration} where user_id =
+        #{userId}
     </update>
 
 </mapper>

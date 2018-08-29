@@ -1,13 +1,11 @@
 package com.niule.yunjiagong.yunjiagong.controller;
 
+import com.niule.yunjiagong.yunjiagong.model.SignModel;
 import com.niule.yunjiagong.yunjiagong.service.SignService;
 import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -25,13 +23,13 @@ public class SignController {
 
     @Description("用户签到")
     @RequestMapping(value = "/user/sign", method = RequestMethod.POST)
-    public DataResponse doSign(@Valid @NotNull @RequestParam("signDate") String signDate) throws ParseException {
+    public DataResponse doSign(@Valid @NotNull @RequestBody(required = true)SignModel signModel) throws ParseException {
 
-        return DataResponse.success(signService.doSign(signDate));
+        return DataResponse.success(signService.doSign(signModel.getSignDate()));
     }
 
     @RequestMapping(value = "/user/check/sign", method = RequestMethod.POST)
-    public DataResponse checkSign(@Valid @NotNull @RequestParam("signDate") String signDate) throws ParseException {
-        return DataResponse.success(signService.checkSign(signDate));
+    public DataResponse checkSign(@Valid @NotNull @RequestBody(required = true)SignModel signModel) throws ParseException {
+        return DataResponse.success(signService.checkSign(signModel.getSignDate()));
     }
 }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.NoticeTypeMapper">
-  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.NoticeType">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="impression" jdbcType="VARCHAR" property="impression" />
-    <result column="standard" jdbcType="INTEGER" property="standard" />
-    <result column="source" jdbcType="VARCHAR" property="source" />
-    <result column="template" jdbcType="VARCHAR" property="template" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.NoticeType">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="impression" jdbcType="VARCHAR" property="impression"/>
+        <result column="standard" jdbcType="INTEGER" property="standard"/>
+        <result column="source" jdbcType="VARCHAR" property="source"/>
+        <result column="template" jdbcType="VARCHAR" property="template"/>
+    </resultMap>
 </mapper>

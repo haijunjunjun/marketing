@@ -2,10 +2,10 @@ package com.niule.yunjiagong.yunjiagong.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.niule.yunjiagong.yunjiagong.config.enums.ActionType;
+import com.niule.yunjiagong.yunjiagong.dal.mapper.ConfigTemplateMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.SubscribeMapper;
-import com.niule.yunjiagong.yunjiagong.dal.mapper.UserInfoMapper;
 import com.niule.yunjiagong.yunjiagong.dal.model.Subscribe;
-import com.niule.yunjiagong.yunjiagong.dal.model.UserInfo;
 import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
 import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
@@ -30,9 +30,9 @@ public class SubscribeService {
     @Autowired
     private SubscribeMapper subscribeMapper;
     @Autowired
-    private UserInfoMapper userInfoMapper;
-    @Autowired
     private UserInfoFeginService userInfoFeginService;
+    @Autowired
+    private ConfigTemplateMapper configTemplateMapper;
 
     public PageInfo<Subscribe> getSubscribe(Integer pageNum, Integer pageSize) {
         UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
@@ -65,30 +65,26 @@ public class SubscribeService {
             log.info("订阅名称不能为空!");
             throw new BizRuntimeException("订阅名称不能为空！");
         }
-        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
-        if (Objects.isNull(userInfo)) {
+        List<Integer> changeCountBytypeAndUserstatus = configTemplateMapper.getChangeCountBytypeAndUserstatus(ActionType.WORK_INFO_SUBSCRIBE.getType(), userBaseInfo.getStatus());
+        if (Objects.isNull(changeCountBytypeAndUserstatus)) {
             log.info("数据库信息异常！");
             throw new BizRuntimeException("数据库信息异常!");
         }
-        int subscribeCount = userInfo.getSubscribeCount().intValue();
-        if (subscribeCount == 0) {
+        Integer subNum = changeCountBytypeAndUserstatus.get(0);
+
+        Subscribe subscribeV1 = new Subscribe();
+        subscribeV1.setUserId(userBaseInfo.getId().intValue());
+        int userSubCount = subscribeMapper.selectCount(subscribeV1);
+        if (subNum - userSubCount == 0) {
             log.info("已达关键词订阅次数上限");
             messageInfo.setContent("已达关键词订阅次数上限");
             return messageInfo;
-        }
-        UserInfo userInfoV1 = new UserInfo();
-        userInfoV1.setId(userId);
-        userInfoV1.setSubscribeCount(userInfo.getSubscribeCount() - 1);
-        int i = userInfoMapper.updateByPrimaryKey(userInfoV1);
-        if (1 != i) {
-            log.info("数据库信息异常!");
-            throw new BizRuntimeException("数据库信息异常!");
         }
         Subscribe subscribe = new Subscribe();
         subscribe.setUserId(userId);
         subscribe.setCreateTime(new Date());
         subscribe.setSubscribeName(subscribeName);
-        int info = subscribeMapper.insertSelective(subscribe);
+        int info = subscribeMapper.insert(subscribe);
         if (1 != info) {
             log.info("数据库信息异常!");
             throw new BizRuntimeException("数据库信息异常!");
@@ -98,15 +94,10 @@ public class SubscribeService {
     }
 
     public boolean deleteSubscribe(Integer subscribeId) {
-        UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
-        int userId = userBaseInfo.getId().intValue();
         if (Objects.isNull(subscribeId)) {
             log.info("参数信息异常!");
             throw new BizRuntimeException("参数信息异常！");
         }
-        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
-        userInfo.setSubscribeCount(userInfo.getSubscribeCount() + 1);
-        userInfoMapper.updateByPrimaryKey(userInfo);
         subscribeMapper.deleteByPrimaryKey(subscribeId);
         return true;
     }

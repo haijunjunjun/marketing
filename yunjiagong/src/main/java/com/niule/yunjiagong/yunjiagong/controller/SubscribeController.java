@@ -1,5 +1,7 @@
 package com.niule.yunjiagong.yunjiagong.controller;
 
+import com.niule.yunjiagong.yunjiagong.model.PageModel;
+import com.niule.yunjiagong.yunjiagong.model.SubModel;
 import com.niule.yunjiagong.yunjiagong.service.SubscribeService;
 import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import com.niule.yunjiagong.yunjiagong.util.MessageInfo;
@@ -7,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,19 +26,17 @@ public class SubscribeController {
     private SubscribeService subscribeService;
 
     @RequestMapping(value = "/market/get/subscribe", method = RequestMethod.GET)
-    public DataResponse getSubscribe(@Valid @RequestParam("pageNum") Integer pageNum,
-                                     @Valid @RequestParam("pageSize") Integer pageSize) {
-        return DataResponse.success(subscribeService.getSubscribe(pageNum, pageSize));
+    public DataResponse getSubscribe(@Valid @NotNull @RequestBody(required = true)PageModel pageModel) {
+        return DataResponse.success(subscribeService.getSubscribe(pageModel.getPageNum(), pageModel.getPageSize()));
     }
 
     @RequestMapping(value = "/market/add/subscribe", method = RequestMethod.POST)
-    public DataResponse addSubscribe(@Valid @NotNull @RequestParam("mobile") String mobile,
-                                                    @Valid @NotNull @RequestParam("subscribeName") String subscribeName) {
-        return DataResponse.success(subscribeService.addSubscribe(mobile, subscribeName));
+    public DataResponse addSubscribe(@Valid @NotNull @RequestBody(required = true)SubModel subModel) {
+        return DataResponse.success(subscribeService.addSubscribe(subModel.getMobile(), subModel.getSubscribeName()));
     }
 
     @RequestMapping(value = "/market/delete/subscribe", method = RequestMethod.POST)
-    public DataResponse deleteSubscribe(@Valid @NotNull @RequestParam("subscribeId") Integer subscribeId) {
-        return DataResponse.success(subscribeService.deleteSubscribe(subscribeId));
+    public DataResponse deleteSubscribe(@Valid @NotNull @RequestBody(required = true) SubModel subModel) {
+        return DataResponse.success(subscribeService.deleteSubscribe(subModel.getSubscribeId()));
     }
 }

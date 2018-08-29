@@ -2,7 +2,7 @@ package com.niule.yunjiagong.yunjiagong.constants.Enum;
 
 public enum BannerTypeEnum {
 
-    HOME_PAGE("首页","1");
+    HOME_PAGE("首页", "1");
 
     private String name;
     private String code;

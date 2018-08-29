@@ -1,6 +1,7 @@
 package com.niule.yunjiagong.yunjiagong.controller;
 
 import com.niule.yunjiagong.yunjiagong.dal.model.Address;
+import com.niule.yunjiagong.yunjiagong.model.AddrModel;
 import com.niule.yunjiagong.yunjiagong.model.CityModel;
 import com.niule.yunjiagong.yunjiagong.model.PageParamModel;
 import com.niule.yunjiagong.yunjiagong.model.ProvinceModel;
@@ -30,13 +31,25 @@ public class AddressController {
     @Description("城市列表信息获取")
     @RequestMapping(value = "/user/address", method = RequestMethod.POST)
     public DataResponse getAddressPageInfo(@Valid @RequestBody(required = true) PageParamModel pageParamModel) {
-        return DataResponse.success(addressService.getAddressList(pageParamModel.getPageSize(), pageParamModel.getPageNum()));
+        return DataResponse.success(addressService.getAddressList(pageParamModel.getPageNum(), pageParamModel.getPageSize()));
     }
 
     @Description("城市列表信息添加")
     @RequestMapping(value = "/user/address/add", method = RequestMethod.POST)
     public DataResponse addAddressInfo(@Valid @RequestBody(required = true) Address address) {
         return addressService.addAddress(address);
+    }
+
+    @Description("城市列表信息删除")
+    @RequestMapping(value = "/user/address/delete", method = RequestMethod.POST)
+    public DataResponse deleteAddressInfo(@Valid @RequestBody(required = true) AddrModel addrModel) {
+        return addressService.deleteAddress(addrModel.getAddrId());
+    }
+
+    @Description("城市列表信息编辑")
+    @RequestMapping(value = "/user/address/edit", method = RequestMethod.POST)
+    public DataResponse editAddressInfo(@Valid @RequestBody(required = true) Address address) {
+        return addressService.editAddress(address);
     }
 
     @Description("获取省份信息")

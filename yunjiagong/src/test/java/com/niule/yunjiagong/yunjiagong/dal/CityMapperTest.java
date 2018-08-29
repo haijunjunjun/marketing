@@ -29,4 +29,10 @@ public class CityMapperTest {
         List<City> city = cityMapper.getCity(1);
         log.info("info si :" + city.size());
     }
+
+    @Test
+    public void getCityByNameTest() {
+        City city = cityMapper.getCityByName("临汾");
+        log.info("city is :" + city.getCity());
+    }
 }

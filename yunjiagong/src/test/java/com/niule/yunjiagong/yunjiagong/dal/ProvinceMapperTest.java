@@ -29,4 +29,10 @@ public class ProvinceMapperTest {
         List<Province> province = provinceMapper.getProvince();
         log.info("info is :" + province.size());
     }
+
+    @Test
+    public void getProvinceByNameTest() {
+        Province province = provinceMapper.getProvinceByName("陕西");
+        log.info("province is :" + province.getProvince());
+    }
 }

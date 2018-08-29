@@ -9,4 +9,8 @@ import java.util.List;
 public interface AreaMapper extends MyMapper<Area> {
 
     List<Area> getArea(@Param("cityId") Integer cityId);
+
+    Integer getAreaByCityIds(@Param("cityIds") List<Integer> cityIds, @Param("name") String name);
+
+    Integer getAreaByCityId(@Param("cityId") Integer cityId, @Param("name") String name);
 }

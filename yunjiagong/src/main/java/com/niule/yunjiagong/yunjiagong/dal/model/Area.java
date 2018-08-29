@@ -28,6 +28,11 @@ public class Area {
     private String isShow;
 
     /**
+     * 排序
+     */
+    private Integer sort;
+
+    /**
      * 获取城市id
      *
      * @return id - 城市id
@@ -97,5 +102,23 @@ public class Area {
      */
     public void setIsShow(String isShow) {
         this.isShow = isShow == null ? null : isShow.trim();
+    }
+
+    /**
+     * 获取排序
+     *
+     * @return sort - 排序
+     */
+    public Integer getSort() {
+        return sort;
+    }
+
+    /**
+     * 设置排序
+     *
+     * @param sort 排序
+     */
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }

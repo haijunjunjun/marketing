@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.ConfigTemplateMapper">
+  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.ConfigTemplate">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="change_count" jdbcType="INTEGER" property="changeCount" />
+    <result column="action" jdbcType="VARCHAR" property="action" />
+  </resultMap>
+  <select id="getChangeCountBytypeAndUserstatus" resultType="java.lang.Integer">
+    select change_count from config_template where type = #{type} and user_status = #{userStatus}
+  </select>
+</mapper>
