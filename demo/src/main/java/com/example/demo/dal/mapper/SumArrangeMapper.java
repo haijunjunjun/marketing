@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface SumArrangeMapper extends MyMapper<SumArrange> {
 
-    List<SumArrange> getSumArrangeList (@Param("userId") Integer userId);
+    List<SumArrange> getSumArrangeList(@Param("userId") Integer userId);
 }

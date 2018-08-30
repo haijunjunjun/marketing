@@ -52,7 +52,7 @@ public class CustomerControllerTest {
 
         MockHttpServletRequestBuilder post = MockMvcRequestBuilders.post("/marketing/customer/remove")
                 .content(objectMapper.writeValueAsString(customerInfo))
-                .header("ACCESS_TOKEN","eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwiaWF0IjoxNTMwODU4ODA1LCJzdWIiOiJtYXJrZXRpbmciLCJpc3MiOiJ3d3cubml1bGUuY29tIiwiZXhwIjozMDYxNzE3NjExfQ.0U4YUK673aJ1SV5UFBz9ygfqMTobdxP8Xy6x3SLlSQs");
+                .header("ACCESS_TOKEN", "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwiaWF0IjoxNTMwODU4ODA1LCJzdWIiOiJtYXJrZXRpbmciLCJpc3MiOiJ3d3cubml1bGUuY29tIiwiZXhwIjozMDYxNzE3NjExfQ.0U4YUK673aJ1SV5UFBz9ygfqMTobdxP8Xy6x3SLlSQs");
         MvcResult mvcResult = mockMvc.perform(post).andReturn();
         Assert.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
     }

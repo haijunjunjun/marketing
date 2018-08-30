@@ -290,23 +290,23 @@ public class CustomerService {
             log.info("客户金豆初始化失败");
         }
 
-        if (1 == customerInfo.getIsPhone()){
-            saveUserAction(customerInfo.getId(),userId,"phone");
+        if (1 == customerInfo.getIsPhone()) {
+            saveUserAction(customerInfo.getId(), userId, "phone");
         }
-        if (1 == customerInfo.getIsVisit()){
-            saveUserAction(customerInfo.getId(),userId,"visit");
+        if (1 == customerInfo.getIsVisit()) {
+            saveUserAction(customerInfo.getId(), userId, "visit");
         }
-        if (1 == customerInfo.getIsCompact()){
-            saveUserAction(customerInfo.getId(),userId,"compact");
+        if (1 == customerInfo.getIsCompact()) {
+            saveUserAction(customerInfo.getId(), userId, "compact");
         }
-        if (1 == customerInfo.getIsInterestCust()){
-            saveUserAction(customerInfo.getId(),userId,"interest");
+        if (1 == customerInfo.getIsInterestCust()) {
+            saveUserAction(customerInfo.getId(), userId, "interest");
         }
-        if (1 == customerInfo.getIsGoldBeans()){
-            saveUserAction(customerInfo.getId(),userId,"beans");
+        if (1 == customerInfo.getIsGoldBeans()) {
+            saveUserAction(customerInfo.getId(), userId, "beans");
         }
-        if (1 == customerInfo.getIsMoney()){
-            saveUserAction(customerInfo.getId(),userId,"money");
+        if (1 == customerInfo.getIsMoney()) {
+            saveUserAction(customerInfo.getId(), userId, "money");
         }
 
         log.info("报备成功");

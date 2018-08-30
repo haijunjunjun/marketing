@@ -14,17 +14,27 @@ import java.util.Map;
 @Slf4j
 public class WXPayClient extends WXPay {
 
-    /** 密钥算法 */
+    /**
+     * 密钥算法
+     */
     private static final String ALGORITHM = "AES";
-    /** 加解密算法/工作模式/填充方式 */
+    /**
+     * 加解密算法/工作模式/填充方式
+     */
     private static final String ALGORITHM_MODE_PADDING = "AES/ECB/PKCS5Padding";
-    /** 用户支付中，需要输入密码 */
+    /**
+     * 用户支付中，需要输入密码
+     */
     private static final String ERR_CODE_USERPAYING = "USERPAYING";
     private static final String ERR_CODE_AUTHCODEEXPIRE = "AUTHCODEEXPIRE";
-    /** 交易状态: 未支付 */
+    /**
+     * 交易状态: 未支付
+     */
     private static final String TRADE_STATE_NOTPAY = "NOTPAY";
 
-    /** 用户输入密码，尝试30秒内去查询支付结果 */
+    /**
+     * 用户输入密码，尝试30秒内去查询支付结果
+     */
     private static Integer remainingTimeMs = 10000;
 
     private WXPayConfig config;
@@ -35,6 +45,7 @@ public class WXPayClient extends WXPay {
 
     /**
      * 从request的inputStream中获取参数
+     *
      * @param request
      * @return
      * @throws Exception

@@ -20,10 +20,11 @@ public class TokenUtils {
 
     /**
      * 生成token
+     *
      * @param id 一般传入userName
      * @return
      */
-    public static String createJwtToken(Integer id){
+    public static String createJwtToken(Integer id) {
         String issuer = "www.niule.com";
         String subject = "marketing";
         long ttlMillis = System.currentTimeMillis();
@@ -33,14 +34,10 @@ public class TokenUtils {
     /**
      * 生成Token
      *
-     * @param id
-     *            编号
-     * @param issuer
-     *            该JWT的签发者，是否使用是可选的
-     * @param subject
-     *            该JWT所面向的用户，是否使用是可选的；
-     * @param ttlMillis
-     *            签发时间
+     * @param id        编号
+     * @param issuer    该JWT的签发者，是否使用是可选的
+     * @param subject   该JWT所面向的用户，是否使用是可选的；
+     * @param ttlMillis 签发时间
      * @return token String
      */
     public static String createJwtToken(String id, String issuer, String subject, long ttlMillis) {

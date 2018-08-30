@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CashDetailMapper extends MyMapper<CashDetail> {
 
-    List<CashDetail> getCashDetailListInfo(@Param("userId")Integer userId);
+    List<CashDetail> getCashDetailListInfo(@Param("userId") Integer userId);
 }

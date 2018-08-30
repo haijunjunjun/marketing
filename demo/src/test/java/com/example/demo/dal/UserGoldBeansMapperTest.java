@@ -20,7 +20,7 @@ public class UserGoldBeansMapperTest {
     private UserGoldBeansMapper userGoldBeansMapper;
 
     @Test
-    public void updateGoldBeansNumTest (){
-        userGoldBeansMapper.updateGoldBeansNum(350,1,new Date());
+    public void updateGoldBeansNumTest() {
+        userGoldBeansMapper.updateGoldBeansNum(350, 1, new Date());
     }
 }

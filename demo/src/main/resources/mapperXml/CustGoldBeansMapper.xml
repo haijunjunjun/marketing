@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dal.mapper.CustGoldBeansMapper">
-  <resultMap id="BaseResultMap" type="com.example.demo.dal.model.CustGoldBeans">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="cust_id" jdbcType="INTEGER" property="custId" />
-    <result column="gold_beans_num" jdbcType="INTEGER" property="goldBeansNum" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.example.demo.dal.model.CustGoldBeans">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="cust_id" jdbcType="INTEGER" property="custId"/>
+        <result column="gold_beans_num" jdbcType="INTEGER" property="goldBeansNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+    </resultMap>
 
-  <update id="updateCustGoldBeans">
-      UPDATE cust_gold_beans
-         SET gold_beans_num = gold_beans_num + #{num}
-       WHERE cust_id = #{id}
-  </update>
+    <update id="updateCustGoldBeans">
+        UPDATE cust_gold_beans
+        SET gold_beans_num = gold_beans_num + #{num}
+        WHERE cust_id = #{id}
+    </update>
 </mapper>

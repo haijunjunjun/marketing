@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dal.mapper.SumArrangeMapper">
-  <resultMap id="BaseResultMap" type="com.example.demo.dal.model.SumArrange">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="today_sum" jdbcType="VARCHAR" property="todaySum" />
-    <result column="tomorrow_arrange" jdbcType="VARCHAR" property="tomorrowArrange" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  <select id="getSumArrangeList" resultMap="BaseResultMap">
-    select * from sum_arrange where user_id = #{userId} order by create_time desc
-  </select>
+    <resultMap id="BaseResultMap" type="com.example.demo.dal.model.SumArrange">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="today_sum" jdbcType="VARCHAR" property="todaySum"/>
+        <result column="tomorrow_arrange" jdbcType="VARCHAR" property="tomorrowArrange"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="getSumArrangeList" resultMap="BaseResultMap">
+        select * from sum_arrange where user_id = #{userId} order by create_time desc
+    </select>
 </mapper>

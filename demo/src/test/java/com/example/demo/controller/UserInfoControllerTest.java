@@ -34,9 +34,9 @@ public class UserInfoControllerTest {
     }
 
     @Test
-    public void login () throws Exception{
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.get("/login").param("id","18306845521").param("pass","123456");
+    public void login() throws Exception {
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.get("/login").param("id", "18306845521").param("pass", "123456");
         MvcResult mvcResult = mockMvc.perform(mockHttpServletRequestBuilder).andReturn();
-        Assert.assertEquals(HttpStatus.OK.value(),mvcResult.getResponse().getStatus());
+        Assert.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
     }
 }

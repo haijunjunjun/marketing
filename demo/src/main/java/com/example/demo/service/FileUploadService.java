@@ -55,9 +55,9 @@ public class FileUploadService {
         }
         String originName = multipartFile.getOriginalFilename();
         String suffixName = originName.substring(originName.lastIndexOf("."));
-        String filename = UUID.randomUUID().toString()+suffixName;
+        String filename = UUID.randomUUID().toString() + suffixName;
         String realPath = uploadPath + custId + "/" + filename;
-        String url = "http://106.15.37.191/images/compact/"+custId+"/"+filename;
+        String url = "http://106.15.37.191/images/compact/" + custId + "/" + filename;
         File dest = new File(realPath);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
@@ -103,9 +103,9 @@ public class FileUploadService {
         }
         String originName = multipartFile.getOriginalFilename();
         String suffixName = originName.substring(originName.lastIndexOf("."));
-        String filename = UUID.randomUUID().toString()+suffixName;
+        String filename = UUID.randomUUID().toString() + suffixName;
         String realPath = uploadPath + userId + "/" + filename;
-        String url = "http://106.15.37.191/images/awater/"+userId+"/"+filename;
+        String url = "http://106.15.37.191/images/awater/" + userId + "/" + filename;
         File dest = new File(realPath);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();

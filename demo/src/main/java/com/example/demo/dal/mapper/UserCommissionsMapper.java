@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface UserCommissionsMapper extends MyMapper<UserCommissions> {
 
-    List<UserCommissions>getUserCommissions(@Param("userId")Integer userId);
+    List<UserCommissions> getUserCommissions(@Param("userId") Integer userId);
 }

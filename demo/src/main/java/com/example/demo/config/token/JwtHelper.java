@@ -68,7 +68,7 @@ public class JwtHelper {
                 .setIssuer(issuer)
                 .setAudience(audience)
                 .signWith(signatureAlgorithm, signingKey)
-                .setExpiration(DateUtils.addSeconds(new Date(),60000));
+                .setExpiration(DateUtils.addSeconds(new Date(), 60000));
         //添加Token过期时间
         long expMillis = nowMillis + TTLMillis;
         Date exp = new Date(expMillis);
@@ -77,7 +77,7 @@ public class JwtHelper {
 ////            builder.setExpiration(exp);
 //        }
         String token = builder.compact();
-        redisService.set("token:user_"+userId.toString(), token , TTLMillis );
+        redisService.set("token:user_" + userId.toString(), token, TTLMillis);
         return token;
     }
 

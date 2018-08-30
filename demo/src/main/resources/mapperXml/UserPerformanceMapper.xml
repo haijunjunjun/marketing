@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dal.mapper.UserPerformanceMapper">
-  <resultMap id="BaseResultMap" type="com.example.demo.dal.model.UserPerformance">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="cust_id" jdbcType="INTEGER" property="custId" />
-    <result column="performance" jdbcType="DOUBLE" property="performance" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.example.demo.dal.model.UserPerformance">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="cust_id" jdbcType="INTEGER" property="custId"/>
+        <result column="performance" jdbcType="DOUBLE" property="performance"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+    </resultMap>
 
     <select id="getPerformance" resultType="java.lang.Integer">
         select SUM(performance) from user_performance
         WHERE user_id = #{userId}
-          AND date_format(create_time,"%Y%m%d") BETWEEN #{dt1} AND #{dt2}
+        AND date_format(create_time,"%Y%m%d") BETWEEN #{dt1} AND #{dt2}
     </select>
 
     <select id="getUserPerformanceList" resultMap="BaseResultMap">
         select * from user_performance
         WHERE user_id = #{userId}
-          AND date_format(create_time,"%Y%m%d") BETWEEN #{dt1} AND #{dt2}
+        AND date_format(create_time,"%Y%m%d") BETWEEN #{dt1} AND #{dt2}
     </select>
 
     <select id="getUserPerformanceListV1" resultMap="BaseResultMap">
         select * from user_performance
         WHERE user_id = #{userId}
-          AND date_format(create_time,"%Y%m%d") = #{dt}
-          order by create_time desc
+        AND date_format(create_time,"%Y%m%d") = #{dt}
+        order by create_time desc
     </select>
 </mapper>

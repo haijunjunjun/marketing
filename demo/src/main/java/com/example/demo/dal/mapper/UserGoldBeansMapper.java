@@ -8,5 +8,5 @@ import java.util.Date;
 
 public interface UserGoldBeansMapper extends MyMapper<UserGoldBeans> {
 
-    void updateGoldBeansNum(@Param("num") Integer goldBeansNum, @Param("id") Integer userId, @Param("now")Date dates);
+    void updateGoldBeansNum(@Param("num") Integer goldBeansNum, @Param("id") Integer userId, @Param("now") Date dates);
 }

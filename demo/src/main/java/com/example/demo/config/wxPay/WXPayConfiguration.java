@@ -18,11 +18,12 @@ public class WXPayConfiguration {
 
     /**
      * useSandbox 沙盒环境
+     *
      * @return
      */
     @Bean
     public WXPay wxPay() {
-        return new WXPay(wxPayConfig, WXPayConstants.SignType.MD5, wxPayConfig.getUseSandbox() );
+        return new WXPay(wxPayConfig, WXPayConstants.SignType.MD5, wxPayConfig.getUseSandbox());
     }
 
     @Bean

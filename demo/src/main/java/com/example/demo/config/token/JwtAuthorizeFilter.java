@@ -70,7 +70,7 @@ public class JwtAuthorizeFilter implements Filter {
             return;
         }
         String auth = httpServletRequest.getHeader("token");
-        System.out.println("auth ="+auth);
+        System.out.println("auth =" + auth);
         if (auth != null && auth.length() > 7) {
 //            String headStr = auth.substring(0, 6).toLowerCase();
 //            if (headStr.compareTo("bearer") == 0) {
@@ -79,7 +79,7 @@ public class JwtAuthorizeFilter implements Filter {
                 Claims claims = JwtHelper.parseJwt(auth, jwtInfo.getBase64Secret());
                 if (claims != null) {
                     Integer userId = Integer.parseInt(claims.get("userId").toString());
-                    if (redisService.exists("token:user_" + userId)&&auth.equals(redisService.get("token:user_"+userId))) {
+                    if (redisService.exists("token:user_" + userId) && auth.equals(redisService.get("token:user_" + userId))) {
                         CurOperator operator = new CurOperator();
                         operator.setId(userId);
                         operator.setRoleInfo(claims.get("roleInfo").toString());

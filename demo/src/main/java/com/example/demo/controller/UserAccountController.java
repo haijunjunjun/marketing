@@ -30,7 +30,7 @@ public class UserAccountController {
 
     @RequestMapping(value = "/marketing/my/cash/apply", method = RequestMethod.POST)
     public ResponseEntity<MessageInfo> cashApply(@Valid @NotNull @Operator CurOperator curOperator,
-                                            @Valid @NotNull @RequestParam("money") double money) {
+                                                 @Valid @NotNull @RequestParam("money") double money) {
         return ResponseEntity.ok(userAccountService.cashApply(curOperator.getId(), money));
     }
 

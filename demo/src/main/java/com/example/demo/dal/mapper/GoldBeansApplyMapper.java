@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface GoldBeansApplyMapper extends MyMapper<GoldBeansApply> {
 
-    List<GoldBeansApply> getGoldBeansApplyInfo(@Param("userId")Integer userId);
+    List<GoldBeansApply> getGoldBeansApplyInfo(@Param("userId") Integer userId);
 }

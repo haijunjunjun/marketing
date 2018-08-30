@@ -32,9 +32,9 @@ public class CustomerController {
      */
     @RequestMapping(value = "/marketing/customer/info", method = RequestMethod.POST)
     public ResponseEntity<MessageInfo<PageInfo<CustRespModel>>> getCustomerInfo(@Valid @NotNull @Operator CurOperator curOperator,
-                                                                               @Valid @NotNull @RequestParam("status") Integer status,
-                                                                               @Valid @NotNull @RequestParam("pageSize") Integer pageSize,
-                                                                               @Valid @NotNull @RequestParam("pageNum") Integer pageNum) {
+                                                                                @Valid @NotNull @RequestParam("status") Integer status,
+                                                                                @Valid @NotNull @RequestParam("pageSize") Integer pageSize,
+                                                                                @Valid @NotNull @RequestParam("pageNum") Integer pageNum) {
         return ResponseEntity.ok(customerService.getCunstomerInfo(curOperator.getId(), status, pageNum, pageSize));
     }
 

@@ -216,19 +216,19 @@ public class WXPayPrecreateService {
 //        }
     }
 
-    public WxPayResponseModel response (String tradeNo){
+    public WxPayResponseModel response(String tradeNo) {
         WxPayResponseModel wxPayResponseModel = new WxPayResponseModel();
-        if (StringUtils.isEmpty(tradeNo)){
+        if (StringUtils.isEmpty(tradeNo)) {
             log.info("tradeNo   参数信息异常!");
             throw new BizRuntimeException("tradeNo   参数信息异常!");
         }
         PayRecord payRecord = new PayRecord();
         payRecord.setOutTradeNo(tradeNo);
         PayRecord payRecordInfo = payRecordMapper.selectOne(payRecord);
-        if (!StringUtils.isEmpty(payRecordInfo.getPayResult())){
+        if (!StringUtils.isEmpty(payRecordInfo.getPayResult())) {
             wxPayResponseModel.setPayResult(payRecordInfo.getPayResult().trim());
         }
-        if (!StringUtils.isEmpty(payRecordInfo.getReturnMsg())){
+        if (!StringUtils.isEmpty(payRecordInfo.getReturnMsg())) {
             wxPayResponseModel.setReturnMessage(payRecordInfo.getReturnMsg());
         }
         return wxPayResponseModel;
