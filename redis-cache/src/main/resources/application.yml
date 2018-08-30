@@ -1,12 +1,30 @@
 spring:
-    application:
-        name: spring-boot-redis
-    redis:
-        host: 192.168.145.132
-        port: 6379
-        timeout: 20000
-        pool:
-            max-active: 8
-            min-idle: 0
-            max-idle: 8
-            max-wait: -1
+  application:
+      name: spring-boot-redis
+  redis:
+    host: localhost
+#     host: 106.15.37.191
+    password:
+    port: 6379
+    jedis:
+      pool:
+        max-wait: 1ms
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test3?useUnicode=true&characterEncoding=utf-8
+    username:
+    password:
+
+alipay:
+  appId: 2018081461021432
+  pid: 2088231281029929
+  merchantId:
+  rsaPrivate: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDqmMmEtCIP5zfD4eZp7+fER+UV9UbmixedvaKHXK15NzY4vwtkSQsqA/8AbM7y/ay/a3c+KISkkP3RQZo57ssavBpF3Xdn20MrTHMaGfR7lMFEyEHUyX5y/3qO1ZBCEUs9TW9JOCtSYNqotfmoEc5M1RRHBVTwLCAz/ZOe2e+AJYmGmMgKHqYec+NuQJOBTskBUL6GQL5u0tMolgZ+u04rieOxzMiFderCZ7uSVC5INBtr3nsE+4GTYlalBdbfwcvzkP8vHcRT+UdPXOSi9bKR7iPZbVkOTCagn3uoZrqUcLkbMWyU82N9iRDTBy2Bu6YlbFwIDnz6esAT3k3mLjBdAgMBAAECggEAZjR6Vx5DWLpbSTO5tp2WU6Ue4Roi8X3XpBliHab6zLyJGt/gjqhj/MIQ7pZ48tQh1qNzJ9lvMGMasXfrQSIPym345EdAJjcYZFzCKLT2FoEQUm8Mfy/pryAuvNu+JYpzRRnfSf72oMUhfi8JvXdEcaTDWM2x25Dd1si675HzDdh3HgOpDjxIqmIAQsl1C4VQSlohXKoRk+zmdGFwH/+Sd4N5HbLXRt03adr6f6FeScjnd+c6Z9dWhVM6uBZwExYZU875s1OPoQpPOJmO+EQglwUZT3lE+ygl13vDeGqIXRB0acBIkY3QDp9uxOzs1BNyfPiL6nql3EDdxFSrRWeT4QKBgQD7o8pH8weUS4lqfFs8r13XnDsYCle+Kpz8/cG8CWH51hly02zTpPgnGEPGETZhWIcxD8FHm2FbJOhQMarKk2Y6HXxhgUB6q8GJIXRUaYJ4jBjBKEPw5EQjgFHi/eqdF4N7+O6EAfQ7NIaZuFkEUx5X0rm5VtAUV33A9KrpRp0wnwKBgQDuqWYSVAL+0+Vtf0IDpEzv0eAbfAXaDZEN45qCQCEAD4WqvkbOjveTQYnYt70zVi7gdDoD3VtUlUQoD8kmdzI23ffNpSNXGdGZSN8ZWn1C0TSRDz8sKMQTe9CL7rd/50sL+tcUT/Hfgy+tgd1qFnB9A8TYv6yUwn0WB0sRLyRRgwKBgCPNDb5myTFD/ez0fFaJ7KP8SjwFXK5liahEwgdqnlHZMA2yHs2NrvCA90N6t23qFnHYd/skFBnPim2+Yzom9mhWQZftt6q8PPCxncdUq4dTB0KT4/alwzv5yayty29GJSLCK80EKicyNeQw4hlHag28oUfJHhmGyRFmvdoqfbqpAoGBAJNSgE6aC4tQNBSmdJKY7mEvtd5hbZ9PtpXTRMJYYcaOzl06vayuNgdxcm0T5rf04FTvigxurP0Gcx8jt3CGLboOxPPtl2Yh6u9rO0SERkRjrcZJmh5hP8AjMvXeMunCVeIcQn4oZ08oxNqfCpV9Ko0RMYb2ssrVT6+0atM9vXaPAoGAXOO4yfzXLeRvgycGH9QGaPrYtPR0R2adKxSimG6YAmxqVevHZny8DKDZhs8RK00iFig06ehv3iJY/YOmkm5P4RIkr46VqAt1zRLKrhSWFzvLf7nH9ubJwa/f8jkx9GeWR+vz7mfQgnVHjoMyORSoKOsE/dQy3v1uiE4/hm1tJQU=
+  aliPayPublic: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoe76WmAesfhMu5Z9YEx/uIOiH0iUGppqM6g5/Ln3QpVhk+lWbgWv4uEECo24EnsadwnIWOC0PF8GilXt0GN2zZ0NMZvjDrtwMaNCBrSX2anglnzha9XXDC8M0H4GyFjOHF992Xv7Uh6VASzkKneIjlwcs+FeSdV1MWKYOlv/edEyVXLooZhVA/AxXtURHNc32UL8BwhX151kejGpNcCF12oks5AQk49rvSlJPDF0w76B7praWkFwPdppnjKy5jRwhysNB0DsD8gMJ4tdZZoLfPfp0B0xpnT9NNq2ud+wozfGkv5kImkqqjO/LUgzS8OoOJY0BLBqGECZ0eX1aCAfiQIDAQAB
+  url: https://openapi.alipay.com/gateway.do
+  signType: RSA2
+  format: json
+  charset: UTF-8

@@ -1,4 +1,4 @@
-package com.alipay.demo.trade.config.base64;
+package com.example.cache.rediscache.config.base64;
 
 import sun.misc.BASE64Decoder;
 

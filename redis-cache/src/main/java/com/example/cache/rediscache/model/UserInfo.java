@@ -1,4 +1,4 @@
-package com.example.cache.rediscache;
+package com.example.cache.rediscache.model;
 
 import lombok.Data;
 
@@ -13,5 +13,5 @@ public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1384510047326482418L;
     private Integer id;
     private Integer userId;
-    private Integer userName;
+    private String userName;
 }
