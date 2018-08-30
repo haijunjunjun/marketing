@@ -25,7 +25,7 @@ public class SubscribeController {
     @Autowired
     private SubscribeService subscribeService;
 
-    @RequestMapping(value = "/market/get/subscribe", method = RequestMethod.GET)
+    @RequestMapping(value = "/market/get/subscribe", method = RequestMethod.POST)
     public DataResponse getSubscribe(@Valid @NotNull @RequestBody(required = true)PageModel pageModel) {
         return DataResponse.success(subscribeService.getSubscribe(pageModel.getPageNum(), pageModel.getPageSize()));
     }
