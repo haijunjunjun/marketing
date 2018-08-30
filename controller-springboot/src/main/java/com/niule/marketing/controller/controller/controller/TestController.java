@@ -1,5 +1,6 @@
 package com.niule.marketing.controller.controller.controller;
 
+import com.niule.marketing.controller.controller.config.DataResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String test() {
-        return "success";
+    public DataResponse test() {
+        return DataResponse.success("success");
     }
 }

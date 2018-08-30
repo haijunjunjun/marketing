@@ -1,0 +1,12 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/marketing?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=UTF-8
+    username:
+    password:
+mybatis:
+  type-aliases-package: com.niule.marketing.controller.controller.dal.model
+  mapper-locations: classpath*:mapperXml/*.xml
+  
