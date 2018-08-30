@@ -26,7 +26,7 @@ public class T2 {
         }
     }
 
-    public static void chaRuPaiXu (int a[]){
+    public static void chaRuPaiXu(int a[]) {
 
     }
 

@@ -12,7 +12,7 @@ public class Acount {
      * 13      * @param money
      * 14
      */
-    public void addAcount(String name, int money) {
+    public synchronized void addAcount(String name, int money) {
         // 存钱
         count += money;
         System.out.println(name + "...存入：" + money + "..." + Thread.currentThread().getName());
@@ -24,7 +24,7 @@ public class Acount {
      * 26      * @param money
      * 27
      */
-    public void subAcount(String name, int money) {
+    public synchronized void subAcount(String name, int money) {
         // 先判断账户现在的余额是否够取钱金额
         if (count - money < 0) {
             System.out.println("账户余额不足！");

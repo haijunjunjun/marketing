@@ -20,9 +20,9 @@ public class Snake {
         this.sf = sf;
     }
 
-    public void draw (Graphics g){
-        if (head == null){
-            return ;
+    public void draw(Graphics g) {
+        if (head == null) {
+            return;
         }
 //        for (Node node = head;node!=null;node = node){
 //            node.draw(g);

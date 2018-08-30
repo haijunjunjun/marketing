@@ -6,8 +6,8 @@ package com.example.demo.test;
  */
 public enum EnumStatus {
 
-    SUCCESS("成功","1"),
-    FAIL("失败","0");
+    SUCCESS("成功", "1"),
+    FAIL("失败", "0");
 
     private String name;
     private String value;

@@ -1,4 +1,4 @@
-//package com.example.cache.rediscache.controller;
+//package com.example.demo.controller;//package com.example.cache.rediscache.controller;
 //
 //import com.example.cache.rediscache.service.AliPayService;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,5 @@
 //    @Autowired
 //    private AliPayService aliPayService;
 //
-//    @Description("支付宝预支付接口")
-//    @RequestMapping(value = "/marketing/ali/pay/precreate", method = RequestMethod.POST)
-//    public ResponseEntity<Map<String, String>> precreate() throws Exception {
-//        return ResponseEntity.ok(aliPayService.precreate());
-//    }
 //
-//    @RequestMapping(value = "/test",method = RequestMethod.GET)
-//    public ResponseEntity<String> test (){
-//        return ResponseEntity.ok("success");
-//    }
 //}

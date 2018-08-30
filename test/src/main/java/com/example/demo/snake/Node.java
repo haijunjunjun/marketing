@@ -21,10 +21,10 @@ public class Node {
         this.dir = dir;
     }
 
-    public void draw (Graphics g){
+    public void draw(Graphics g) {
         Color color = g.getColor();
         g.setColor(Color.BLACK);
-        g.fillRect(col*BLOCK_WIDTH,row*BLOCK_HEIGHT,BLOCK_WIDTH,BLOCK_HEIGHT);
+        g.fillRect(col * BLOCK_WIDTH, row * BLOCK_HEIGHT, BLOCK_WIDTH, BLOCK_HEIGHT);
         g.setColor(color);
     }
 }

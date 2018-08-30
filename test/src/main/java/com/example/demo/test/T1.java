@@ -13,7 +13,7 @@ public class T1 {
 //        BigDecimal d2 = new BigDecimal("0.1");
 //        System.out.println("d2 is:" + d2);
 
-        BigDecimal add = new BigDecimal("0.26").add(new BigDecimal("0.256")).setScale(2,BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal add = new BigDecimal("0.26").add(new BigDecimal("0.256")).setScale(2, BigDecimal.ROUND_HALF_DOWN);
         System.out.println("info is :" + add);
     }
 }
