@@ -28,7 +28,7 @@
             <!-- 从数据库返回的值被清理前后的空格  -->
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-        <sqlMapGenerator targetPackage="mapper/*.xml"
+        <sqlMapGenerator targetPackage="mapperXml"
                          targetProject="src\main\resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
@@ -37,11 +37,11 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- tableName:用于自动生成代码的数据库表；domainObjectName:对应于数据库表的javaBean类名 -->
-        <table tableName="%">
-            <generatedKey column="epa_id" sqlStatement="Mysql" identity="true"/>
-        </table>
-        <!--<table tableName="hot_city">-->
-        <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--<table tableName="%">-->
+        <!--<generatedKey column="epa_id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
+        <table tableName="work_flow">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>

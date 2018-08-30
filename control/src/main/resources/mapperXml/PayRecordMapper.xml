@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.control.dal.mapper.PayRecordMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.control.dal.model.PayRecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cust_id" property="custId" jdbcType="INTEGER"/>
+        <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+        <result column="trade_type" property="tradeType" jdbcType="VARCHAR"/>
+        <result column="product_id" property="productId" jdbcType="VARCHAR"/>
+        <result column="body" property="body" jdbcType="VARCHAR"/>
+        <result column="total_fee" property="totalFee" jdbcType="VARCHAR"/>
+        <result column="spbill_create_ip" property="spbillCreateIp" jdbcType="VARCHAR"/>
+        <result column="code_url" property="codeUrl" jdbcType="VARCHAR"/>
+        <result column="prepay_id" property="prepayId" jdbcType="VARCHAR"/>
+        <result column="return_code" property="returnCode" jdbcType="VARCHAR"/>
+        <result column="result_code" property="resultCode" jdbcType="VARCHAR"/>
+        <result column="return_msg" property="returnMsg" jdbcType="VARCHAR"/>
+        <result column="pay_result" property="payResult" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, cust_id, out_trade_no, trade_type, product_id, body, total_fee, spbill_create_ip,
+        code_url, prepay_id, return_code, result_code, return_msg, pay_result, create_time,
+        modify_time
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.niule.marketing.control.dal.model.PayRecordExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from pay_record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from pay_record
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from pay_record
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.niule.marketing.control.dal.model.PayRecordExample">
+        delete from pay_record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.niule.marketing.control.dal.model.PayRecord">
+        insert into pay_record (id, cust_id, out_trade_no,
+        trade_type, product_id, body,
+        total_fee, spbill_create_ip, code_url,
+        prepay_id, return_code, result_code,
+        return_msg, pay_result, create_time,
+        modify_time)
+        values (#{id,jdbcType=INTEGER}, #{custId,jdbcType=INTEGER}, #{outTradeNo,jdbcType=VARCHAR},
+        #{tradeType,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{body,jdbcType=VARCHAR},
+        #{totalFee,jdbcType=VARCHAR}, #{spbillCreateIp,jdbcType=VARCHAR}, #{codeUrl,jdbcType=VARCHAR},
+        #{prepayId,jdbcType=VARCHAR}, #{returnCode,jdbcType=VARCHAR}, #{resultCode,jdbcType=VARCHAR},
+        #{returnMsg,jdbcType=VARCHAR}, #{payResult,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{modifyTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.niule.marketing.control.dal.model.PayRecord">
+        insert into pay_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="custId != null">
+                cust_id,
+            </if>
+            <if test="outTradeNo != null">
+                out_trade_no,
+            </if>
+            <if test="tradeType != null">
+                trade_type,
+            </if>
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="body != null">
+                body,
+            </if>
+            <if test="totalFee != null">
+                total_fee,
+            </if>
+            <if test="spbillCreateIp != null">
+                spbill_create_ip,
+            </if>
+            <if test="codeUrl != null">
+                code_url,
+            </if>
+            <if test="prepayId != null">
+                prepay_id,
+            </if>
+            <if test="returnCode != null">
+                return_code,
+            </if>
+            <if test="resultCode != null">
+                result_code,
+            </if>
+            <if test="returnMsg != null">
+                return_msg,
+            </if>
+            <if test="payResult != null">
+                pay_result,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="custId != null">
+                #{custId,jdbcType=INTEGER},
+            </if>
+            <if test="outTradeNo != null">
+                #{outTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeType != null">
+                #{tradeType,jdbcType=VARCHAR},
+            </if>
+            <if test="productId != null">
+                #{productId,jdbcType=VARCHAR},
+            </if>
+            <if test="body != null">
+                #{body,jdbcType=VARCHAR},
+            </if>
+            <if test="totalFee != null">
+                #{totalFee,jdbcType=VARCHAR},
+            </if>
+            <if test="spbillCreateIp != null">
+                #{spbillCreateIp,jdbcType=VARCHAR},
+            </if>
+            <if test="codeUrl != null">
+                #{codeUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="prepayId != null">
+                #{prepayId,jdbcType=VARCHAR},
+            </if>
+            <if test="returnCode != null">
+                #{returnCode,jdbcType=VARCHAR},
+            </if>
+            <if test="resultCode != null">
+                #{resultCode,jdbcType=VARCHAR},
+            </if>
+            <if test="returnMsg != null">
+                #{returnMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="payResult != null">
+                #{payResult,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.niule.marketing.control.dal.model.PayRecordExample"
+            resultType="java.lang.Integer">
+        select count(*) from pay_record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update pay_record
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.custId != null">
+                cust_id = #{record.custId,jdbcType=INTEGER},
+            </if>
+            <if test="record.outTradeNo != null">
+                out_trade_no = #{record.outTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tradeType != null">
+                trade_type = #{record.tradeType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.productId != null">
+                product_id = #{record.productId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.body != null">
+                body = #{record.body,jdbcType=VARCHAR},
+            </if>
+            <if test="record.totalFee != null">
+                total_fee = #{record.totalFee,jdbcType=VARCHAR},
+            </if>
+            <if test="record.spbillCreateIp != null">
+                spbill_create_ip = #{record.spbillCreateIp,jdbcType=VARCHAR},
+            </if>
+            <if test="record.codeUrl != null">
+                code_url = #{record.codeUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.prepayId != null">
+                prepay_id = #{record.prepayId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.returnCode != null">
+                return_code = #{record.returnCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.resultCode != null">
+                result_code = #{record.resultCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.returnMsg != null">
+                return_msg = #{record.returnMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.payResult != null">
+                pay_result = #{record.payResult,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyTime != null">
+                modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update pay_record
+        set id = #{record.id,jdbcType=INTEGER},
+        cust_id = #{record.custId,jdbcType=INTEGER},
+        out_trade_no = #{record.outTradeNo,jdbcType=VARCHAR},
+        trade_type = #{record.tradeType,jdbcType=VARCHAR},
+        product_id = #{record.productId,jdbcType=VARCHAR},
+        body = #{record.body,jdbcType=VARCHAR},
+        total_fee = #{record.totalFee,jdbcType=VARCHAR},
+        spbill_create_ip = #{record.spbillCreateIp,jdbcType=VARCHAR},
+        code_url = #{record.codeUrl,jdbcType=VARCHAR},
+        prepay_id = #{record.prepayId,jdbcType=VARCHAR},
+        return_code = #{record.returnCode,jdbcType=VARCHAR},
+        result_code = #{record.resultCode,jdbcType=VARCHAR},
+        return_msg = #{record.returnMsg,jdbcType=VARCHAR},
+        pay_result = #{record.payResult,jdbcType=VARCHAR},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        modify_time = #{record.modifyTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.niule.marketing.control.dal.model.PayRecord">
+        update pay_record
+        <set>
+            <if test="custId != null">
+                cust_id = #{custId,jdbcType=INTEGER},
+            </if>
+            <if test="outTradeNo != null">
+                out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeType != null">
+                trade_type = #{tradeType,jdbcType=VARCHAR},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId,jdbcType=VARCHAR},
+            </if>
+            <if test="body != null">
+                body = #{body,jdbcType=VARCHAR},
+            </if>
+            <if test="totalFee != null">
+                total_fee = #{totalFee,jdbcType=VARCHAR},
+            </if>
+            <if test="spbillCreateIp != null">
+                spbill_create_ip = #{spbillCreateIp,jdbcType=VARCHAR},
+            </if>
+            <if test="codeUrl != null">
+                code_url = #{codeUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="prepayId != null">
+                prepay_id = #{prepayId,jdbcType=VARCHAR},
+            </if>
+            <if test="returnCode != null">
+                return_code = #{returnCode,jdbcType=VARCHAR},
+            </if>
+            <if test="resultCode != null">
+                result_code = #{resultCode,jdbcType=VARCHAR},
+            </if>
+            <if test="returnMsg != null">
+                return_msg = #{returnMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="payResult != null">
+                pay_result = #{payResult,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.niule.marketing.control.dal.model.PayRecord">
+        update pay_record
+        set cust_id = #{custId,jdbcType=INTEGER},
+        out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+        trade_type = #{tradeType,jdbcType=VARCHAR},
+        product_id = #{productId,jdbcType=VARCHAR},
+        body = #{body,jdbcType=VARCHAR},
+        total_fee = #{totalFee,jdbcType=VARCHAR},
+        spbill_create_ip = #{spbillCreateIp,jdbcType=VARCHAR},
+        code_url = #{codeUrl,jdbcType=VARCHAR},
+        prepay_id = #{prepayId,jdbcType=VARCHAR},
+        return_code = #{returnCode,jdbcType=VARCHAR},
+        result_code = #{resultCode,jdbcType=VARCHAR},
+        return_msg = #{returnMsg,jdbcType=VARCHAR},
+        pay_result = #{payResult,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

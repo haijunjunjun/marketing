@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.control.dal.mapper.KnowRepoMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.control.dal.model.KnowRepo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="repo_id" property="repoId" jdbcType="VARCHAR"/>
+        <result column="repo_name" property="repoName" jdbcType="VARCHAR"/>
+        <result column="repo_content" property="repoContent" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, title, repo_id, repo_name, repo_content
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.niule.marketing.control.dal.model.KnowRepoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from know_repo
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from know_repo
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from know_repo
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.niule.marketing.control.dal.model.KnowRepoExample">
+        delete from know_repo
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.niule.marketing.control.dal.model.KnowRepo">
+        insert into know_repo (id, title, repo_id,
+        repo_name, repo_content)
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{repoId,jdbcType=VARCHAR},
+        #{repoName,jdbcType=VARCHAR}, #{repoContent,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.niule.marketing.control.dal.model.KnowRepo">
+        insert into know_repo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="repoId != null">
+                repo_id,
+            </if>
+            <if test="repoName != null">
+                repo_name,
+            </if>
+            <if test="repoContent != null">
+                repo_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="repoId != null">
+                #{repoId,jdbcType=VARCHAR},
+            </if>
+            <if test="repoName != null">
+                #{repoName,jdbcType=VARCHAR},
+            </if>
+            <if test="repoContent != null">
+                #{repoContent,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.niule.marketing.control.dal.model.KnowRepoExample"
+            resultType="java.lang.Integer">
+        select count(*) from know_repo
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update know_repo
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.title != null">
+                title = #{record.title,jdbcType=VARCHAR},
+            </if>
+            <if test="record.repoId != null">
+                repo_id = #{record.repoId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.repoName != null">
+                repo_name = #{record.repoName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.repoContent != null">
+                repo_content = #{record.repoContent,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update know_repo
+        set id = #{record.id,jdbcType=INTEGER},
+        title = #{record.title,jdbcType=VARCHAR},
+        repo_id = #{record.repoId,jdbcType=VARCHAR},
+        repo_name = #{record.repoName,jdbcType=VARCHAR},
+        repo_content = #{record.repoContent,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.niule.marketing.control.dal.model.KnowRepo">
+        update know_repo
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="repoId != null">
+                repo_id = #{repoId,jdbcType=VARCHAR},
+            </if>
+            <if test="repoName != null">
+                repo_name = #{repoName,jdbcType=VARCHAR},
+            </if>
+            <if test="repoContent != null">
+                repo_content = #{repoContent,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.niule.marketing.control.dal.model.KnowRepo">
+        update know_repo
+        set title = #{title,jdbcType=VARCHAR},
+        repo_id = #{repoId,jdbcType=VARCHAR},
+        repo_name = #{repoName,jdbcType=VARCHAR},
+        repo_content = #{repoContent,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

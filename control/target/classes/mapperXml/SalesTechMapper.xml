@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.control.dal.mapper.SalesTechMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.control.dal.model.SalesTech">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="tech_id" property="techId" jdbcType="VARCHAR"/>
+        <result column="tech_name" property="techName" jdbcType="VARCHAR"/>
+        <result column="tech_content" property="techContent" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, tech_id, tech_name, tech_content
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.niule.marketing.control.dal.model.SalesTechExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from sales_tech
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from sales_tech
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from sales_tech
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.niule.marketing.control.dal.model.SalesTechExample">
+        delete from sales_tech
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.niule.marketing.control.dal.model.SalesTech">
+        insert into sales_tech (id, tech_id, tech_name,
+        tech_content)
+        values (#{id,jdbcType=INTEGER}, #{techId,jdbcType=VARCHAR}, #{techName,jdbcType=VARCHAR},
+        #{techContent,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.niule.marketing.control.dal.model.SalesTech">
+        insert into sales_tech
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="techId != null">
+                tech_id,
+            </if>
+            <if test="techName != null">
+                tech_name,
+            </if>
+            <if test="techContent != null">
+                tech_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="techId != null">
+                #{techId,jdbcType=VARCHAR},
+            </if>
+            <if test="techName != null">
+                #{techName,jdbcType=VARCHAR},
+            </if>
+            <if test="techContent != null">
+                #{techContent,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.niule.marketing.control.dal.model.SalesTechExample"
+            resultType="java.lang.Integer">
+        select count(*) from sales_tech
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update sales_tech
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.techId != null">
+                tech_id = #{record.techId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.techName != null">
+                tech_name = #{record.techName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.techContent != null">
+                tech_content = #{record.techContent,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update sales_tech
+        set id = #{record.id,jdbcType=INTEGER},
+        tech_id = #{record.techId,jdbcType=VARCHAR},
+        tech_name = #{record.techName,jdbcType=VARCHAR},
+        tech_content = #{record.techContent,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.niule.marketing.control.dal.model.SalesTech">
+        update sales_tech
+        <set>
+            <if test="techId != null">
+                tech_id = #{techId,jdbcType=VARCHAR},
+            </if>
+            <if test="techName != null">
+                tech_name = #{techName,jdbcType=VARCHAR},
+            </if>
+            <if test="techContent != null">
+                tech_content = #{techContent,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.niule.marketing.control.dal.model.SalesTech">
+        update sales_tech
+        set tech_id = #{techId,jdbcType=VARCHAR},
+        tech_name = #{techName,jdbcType=VARCHAR},
+        tech_content = #{techContent,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -2,7 +2,6 @@ package dal;
 
 import com.niule.marketing.control.dal.mapper.UserInfoMapper;
 import com.niule.marketing.control.dal.model.UserInfo;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
