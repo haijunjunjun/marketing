@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.niule.market.dao.mapper.AdvertMapper">
-  <resultMap id="BaseResultMap" type="com.niule.market.dao.model.Advert">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="type" jdbcType="VARCHAR" property="type" />
-    <result column="ewm_url" jdbcType="VARCHAR" property="ewmUrl" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.niule.market.dao.model.Advert">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="ewm_url" jdbcType="VARCHAR" property="ewmUrl"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
 </mapper>

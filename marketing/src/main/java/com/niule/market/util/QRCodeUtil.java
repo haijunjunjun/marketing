@@ -37,8 +37,8 @@ public class QRCodeUtil {
      * @param content      源内容
      * @param imgPath      生成二维码保存的路径
      * @param needCompress 是否要压缩
-     * @throws Exception
      * @return 返回二维码图片
+     * @throws Exception
      */
     private static BufferedImage createImage(String content, String imgPath, boolean needCompress) throws Exception {
         Hashtable hints = new Hashtable();
@@ -156,8 +156,8 @@ public class QRCodeUtil {
      * 从二维码中，解析数据
      *
      * @param file 二维码图片文件
-     * @throws Exception
      * @return 返回从二维码中解析到的数据值
+     * @throws Exception
      */
     public static String decode(File file) throws Exception {
         BufferedImage image;

@@ -1,601 +1,614 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<!--<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />-->
-		<!--<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-		<meta http-equiv="Pragma" content="no-cache" />
-		<meta http-equiv="Expires" content="0" />-->
-		<script src="js/flexible_css.debug.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/flexible.debug.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/g.css"/>
-		<link rel="stylesheet" type="text/css" href="" />
-		<title>注册页面</title>
-		<style type="text/css">
-			/*全局样式*/
-			
-			html,
-			body,
-			div,
-			span,
-			applet,
-			object,
-			iframe,
-			h1,
-			h2,
-			h3,
-			h4,
-			h5,
-			h6,
-			p,
-			blockquote,
-			pre,
-			a,
-			abbr,
-			acronym,
-			address,
-			big,
-			cite,
-			code,
-			del,
-			dfn,
-			em,
-			img,
-			ins,
-			kbd,
-			q,
-			s,
-			samp,
-			small,
-			strike,
-			strong,
-			sub,
-			sup,
-			tt,
-			var,
-			b,
-			u,
-			i,
-			center,
-			dl,
-			dt,
-			dd,
-			ol,
-			ul,
-			li,
-			fieldset,
-			form,
-			label,
-			legend,
-			table,
-			caption,
-			tbody,
-			tfoot,
-			thead,
-			tr,
-			th,
-			td,
-			article,
-			aside,
-			canvas,
-			details,
-			embed,
-			figure,
-			figcaption,
-			footer,
-			header,
-			hgroup,
-			menu,
-			nav,
-			output,
-			ruby,
-			section,
-			summary,
-			time,
-			mark,
-			audio,
-			video {
-				margin: 0;
-				padding: 0;
-				border: 0;
-				font-size: 100%;
-				/*font: inherit;*/
-				vertical-align: baseline;
-				width: 100%;
-			}
-			
-			.yjg-page-content {
-				width: 10rem;
-				height: auto;
-				background: url("img/1.png") no-repeat left top;
-				background-size: 100%;
-			}
-			
-			
-			.yjg-input-group {
-				margin: 0 auto;
-				height: 3.2rem;
-				width: 8.66rem;
-				padding-top: 12rem;
-				
-			}
-			
-			.yjg-input-username {
-				margin: 0 auto;
-				overflow: hidden;
-				padding: 0.4725rem 0;
-				background: #FFFFFF;
-				border-radius: 0.13rem;
-				font-size: 14px;
-				margin-right: 0.66rem;
-			}
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />-->
+    <!--<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />-->
+    <script src="js/flexible_css.debug.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/flexible.debug.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="css/g.css"/>
+    <link rel="stylesheet" type="text/css" href=""/>
+    <title>注册页面</title>
+    <style type="text/css">
+        /*全局样式*/
 
-			
-			[data-dpr="2"] .yjg-input-username {
-				font-size: 28px;
-			}
-			
-			[data-dpr="3"] .yjg-input-username {
-				font-size: 42px;
-			}
-			
-			.yjg-input-username input {
-				width: 100%;
-				border: none;
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-				display: block;
-				outline: 0;
-				padding-left: 0.4rem;
-			}
-			/*验证码*/
-			
-			.yjg-input-code {
-				overflow: hidden;
-				height: 1.389rem;
-				margin-top: 0.4rem;
-				line-height: 0.8rem;
-			}
-			
-			.yjg-code-left {
-				padding: 0.5rem 0;
-				line-height: 0.4rem;
-				font-size: 12px;
-				display: block;
-				float: left;
-				color: #FFFFFF;
-				margin-right: 0.13rem;
-				text-align: center;
-			}
-			
-			[data-dpr="2"] .yjg-code-left {
-				font-size: 24px;
-			}
-			
-			[data-dpr="3"] .yjg-code-left {
-				font-size: 36px;
-			}
-			
-			.yjg-code-right {
-				width: 6rem;
-				float: left;
-				font-size: 14px;
-				padding: 0.4725rem 0;
-				background: #FFFFFF;
-				border-radius: 0.13rem;
-			}
-			
-			[data-dpr="2"] .yjg-code-right {
-				font-size: 24px;
-			}
-			
-			[data-dpr="3"] .yjg-code-right {
-				font-size: 36px;
-			}
-			
-			.yjg-code-right input {
-				width: 100%;
-				padding: 0 0.13rem;
-				border: none;
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-				display: block;
-				outline: 0;
-				padding-left: 0.4rem;
-			}
-			
-			.yjg-code-request {
-				float: left;
-				width: 2.4rem;
-				height: 1.389rem;
-				line-height: 1.389rem;
-				text-align: center;
-				background: #FFFFFF;
-				margin-left: 0.26rem;
-				border-radius: 0.13rem;
-				color: #000000;
-			}
-			/*登录*/
-			
-			.yjg-login {
-				width: 8.53rem;
-				height: 1.33rem;
-				background: #ea400c;
-				text-align: center;
-				line-height: 1.33rem;
-				color: #FFFFFF;
-				margin: 0 auto;
-				border-radius: 0.13rem;
-				font-size: 16px;
-				margin-top: 0.4rem;
-			}
-			[data-dpr="2"] .yjg-login {
-				font-size: 32px;
-			}
-			
-			[data-dpr="3"] .yjg-login {
-				font-size: 48px;
-			}
-			/*说明文字*/
-			
-			.introduce-box {
-				width: 10rem;
-				background: #ff6b05;
-			}
-			
-			.introduce-box-text {
-				width: 10rem;
-				margin: 0 auto;
-				background: #ff6b05;
-				width: 6.88rem;
-				color: #FFFFFF;
-				font-size: 14px;
-				padding-top: 0.66rem;
-				line-height: 0.64rem;
-			}
-			
-			[data-dpr="2"] .introduce-box-text {
-				font-size: 28px;
-			}
-			
-			[data-dpr="3"] .introduce-box-text {
-				font-size: 42px;
-			}
-			
-			.yjg-img {
-				margin: 0 auto;
-				width: 6.37rem;
-				height: 0.5rem;
-				margin-top: 0.4rem;
-			}
-			
-			.yjg-img img {
-				display: block;
-				width: 100%;
-				height: 100%;
-			}
-			
-			.yjg-bottom {
-				width: 10rem;
-				height: auto;
-				background: #fbdb30;
-				padding-top: 0.66rem;
-			}
-			
-			.yjg-bottom img {
-				display: block;
-				width: 100%;
-				height: 100%;
-			}
-			/*遮罩*/
-			
-			.yjg-cover {
-				position: fixed;
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				width: 100%;
-				height: 100%;
-				z-index: 999;
-				background: rgba(0, 0, 0, 0.6);
-				display: none;
-			}	
-			.cover-img {
-				width: 8.62rem;
-				height: 10.64rem;
-				background: url("img/hongbao.png") no-repeat left top;
-				background-size: cover;
-				margin: 0 auto;
-				margin-top: 2.53rem;
-				text-align: center;
-				
-			}
-			
-			.cover-close {
-				width: 0.4rem;
-				height: auto;
-				margin: 0 auto;
-				margin-top: 1.06rem;
-			}
-			
-			.cover-close img {
-				display: block;
-				width: 100%;
-				height: 100%;
-			}
-			
-			.yjg-redpack-text {
-				padding-top: 5.5rem;
-			}
-			
-			.yjg-redpack-text p:nth-child(1) {
-				font-size: 15px;
-				color: #FFFFFF;
-			}
-			
-			[data-dpr="2"] .yjg-redpack-text p:nth-child(1) {
-				font-size: 30px;
-			}
-			
-			[data-dpr="3"] .yjg-redpack-text p:nth-child(1) {
-				font-size: 45px;
-			}
-			
-			.yjg-money {
-				font-size: 90px;
-				color: #ffe61a;
-			}
-			
-			[data-dpr="2"] .yjg-money {
-				font-size: 180px;
-			}
-			
-			[data-dpr="3"] .yjg-money {
-				font-size: 270px;
-			}
-			
-			.yjg-redpack-text p:nth-child(2) {
-				height: 1.6rem;
-				font-size: 20px;
-				color: #FFFFFF;
-			}
-			
-			[data-dpr="2"] .yjg-redpack-text p:nth-child(2) {
-				font-size: 40px;
-			}
-			
-			[data-dpr="3"] .yjg-redpack-text p:nth-child(2) {
-				font-size: 60px;
-			}
-			
-			.yjg-user {
-				color: red;
-			}
-			
-			/*按钮*/
-			.redpack-button{
-				margin: 0 auto;
-				background: url("img/hongbaobtn.png") no-repeat left top;
-				background-size: 100%;
-				height: 1.38rem;
-				width: 5.22rem;			
-				margin-top: 1.06rem;
-			}
-		</style>
-	</head>
+        html,
+        body,
+        div,
+        span,
+        applet,
+        object,
+        iframe,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        pre,
+        a,
+        abbr,
+        acronym,
+        address,
+        big,
+        cite,
+        code,
+        del,
+        dfn,
+        em,
+        img,
+        ins,
+        kbd,
+        q,
+        s,
+        samp,
+        small,
+        strike,
+        strong,
+        sub,
+        sup,
+        tt,
+        var,
+        b,
+        u,
+        i,
+        center,
+        dl,
+        dt,
+        dd,
+        ol,
+        ul,
+        li,
+        fieldset,
+        form,
+        label,
+        legend,
+        table,
+        caption,
+        tbody,
+        tfoot,
+        thead,
+        tr,
+        th,
+        td,
+        article,
+        aside,
+        canvas,
+        details,
+        embed,
+        figure,
+        figcaption,
+        footer,
+        header,
+        hgroup,
+        menu,
+        nav,
+        output,
+        ruby,
+        section,
+        summary,
+        time,
+        mark,
+        audio,
+        video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            /*font: inherit;*/
+            vertical-align: baseline;
+            width: 100%;
+        }
 
-	<body>
-		<div class="container">
-			<div class="yjg-page-content" id="noMove">
-				<form class="yjg-input-group">
-					<div class="yjg-input-username">
-						<div class="yjg-input-right">
-							<input type="number" id="phoneNumber" placeholder="输入手机号领取红包"/>
-						</div>
-					</div>
-					<div class="yjg-input-code">
-						<div class="yjg-code-right">
-							<input type="text" id="inputCode" placeholder="请输入验证码"/>
-						</div>
-						<div class="yjg-code-request" id="requestCode">
-							获取验证码
-						</div>
-					</div>
-				</form>
-				<div class="yjg-login" id="login">
-					抢99元红包
-				</div>
-			</div>
-			<div class="yjg-bottom">
-				<img src="img/2.png" />
-			</div>
-			<!--遮罩-->
-			<div class="yjg-cover" id="mask">
-				<div class="no-opsity">
-					<div class="cover-img">
-						<div class="yjg-redpack-text">
-							<p style="margin-bottom: 0.13rem;">恭喜,您已获得云加工新人红包</p>
-							<p><span class="yjg-money" id="money"></span>元</p>
-						</div>
-						<div class="redpack-button" id="appStore"></div>
-					</div>
-					<div class="cover-close" id="close">
-						<img src="img/quxiao@2x.png" />
-					</div>
-				</div>
-			</div>
-		</div>
-	</body>
-	<script src="js/mui.min.js"></script>
-	<script src="js/jquery-2.1.1.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/yjg.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" charset="utf-8">
-		mui.init();
-		var dataDpr = document.getElementsByTagName("html")[0].getAttribute("data-dpr");
-		var login = document.getElementById("login");
-		var requestCode = document.getElementById("requestCode");
-		var regExp = /^1[3|4|5|6|8|7|9][0-9]\d{4,8}$/;
-		var inMsm = false;
-		var openAdvert = null;//1打开连接动作,2点击注册动作,3点击获取验证码的动作,4跳转app
-		function getQueryVariable(variable) {
-			var query = window.location.search.substring(1);
-			var vars = query.split("&");
-			for (var i = 0; i < vars.length; i++) {
-				var pair = vars[i].split("=");
-				if (pair[0] == variable) {
-					return pair[1];
-				}
-			}
-			return (false);
-		}
-		/*
-		 * 广告记录埋点
-		 */
-		function record(){
-			var advertId = getQueryVariable("advertId");
-			$.ajax({
-				type:'POST',
-				dataType: 'json',
-				data: {
-					advertId:advertId,
-					code: openAdvert
-				},
-				url: "http://192.168.105.75:8088/market/record",
-				success: doRecordSuccess
-			});
-		}
-		/*
-		 * 广告记录请求成功
-		 */
-		function doRecordSuccess(){
-			console.log(data);
-		}
-		/*
-		 * 获取验证码
-		 */
-		function getCode(){
-			openAdvert = 3;
-			record();//埋点
-			var phoneNumber = document.getElementById("phoneNumber");
-			var regExp = /^1[3|4|5|6|8|7|9][0-9]\d{4,8}$/;
-			if(phoneNumber.value == ""){
-				yunjiagongToast("手机号格式不正确");
-				return false;
-			}
-			if(!regExp.test(phoneNumber.value)){
-				yunjiagongToast("手机号格式不正确");
-				return false;
-			}
-			if(inMsm) {
-				return;
-			}
-			inMsm = true;
-			$.ajax({
-				type: 'GET',
-				dataType: 'jsonp',
-				data: {
-					uname:phoneNumber.value
-				},
-				url: "http://service.yunjg.net/userManagerController/getSmsVerifyCodeH5",
-				//            url : "http://localhost:8082/shareManagerController/doWebRegister",
-				success: getCodeSuccess,
-			});
-		}
-		function getCodeSuccess(data){
-			console.log('验证' + JSON.stringify(data));
-			var num = 60;
-			if(data.code != null){
-				var timer = setInterval(function() {
-					if(num == 0) {
-						clearInterval(timer);
-						inMsm = false;
-						requestCode.innerHTML = "重新发送";
-						requestCode.style.color = "#929292";
-					} else {
-						num--;
-						requestCode.style.color = "#929292";
-						requestCode.innerHTML = num + 's';
-					};
-				}, 1000);
-			}else{
-				inMsm = false;
-				yunjiagongToast(data.resultType);
-			}
-			
-		}
-		requestCode.addEventListener('click',getCode);
-		/*
-		 * 用户登录
-		 */
-		function doLogin(){
-			openAdvert = 2;
-			record();//埋点
-			var phoneNumber = document.getElementById("phoneNumber");
-			var inputCode = document.getElementById("inputCode");
-			var requestCode = document.getElementById("requestCode");
-			var qqNumber = getQueryVariable("qqNumber");
-			var serviceId = getQueryVariable("serviceId");
-			if(phoneNumber.value == ""){
-				yunjiagongToast("手机号格式不正确");
-				return false;
-			}
-			if(!regExp.test(phoneNumber.value)){
-				yunjiagongToast("手机号格式不正确");
-				return false;
-			}
-			if(inputCode.value == ""){
-				yunjiagongToast("请输入验证码");
-			}
-			$.ajax({
-				type: 'GET',
-				dataType: 'jsonp',
-				data: {
-					mobile:phoneNumber.value,
-					code: inputCode.value,
-					qqNumber: qqNumber,
-					serviceId:serviceId
-				},
-				url: "http://service.yunjg.net/shareManagerController/doWebRegisterByQQActivity",
-				success: doLoginSuccess
-			});
-		}
-		function doLoginSuccess(data){
-			console.log(data);
-			var phoneNumber = document.getElementById("phoneNumber");
-			var inputCode = document.getElementById("inputCode");
-			var requestCode = document.getElementById("requestCode");
-			var cover = document.getElementById("mask");
-			var noMove = document.getElementById("noMove");
-			var money = document.getElementById("money");
-			var close = document.getElementById("close");
-			var appStore = document.getElementById("appStore");
-			cover.style.display = "block";
-			noMove.style.position = "fixed";
-			money.innerHTML = data.money;
-			appStore.addEventListener('click',function(){
-				openAdvert = 4;
-				record();//埋点
-				window.location.href = "http://api.yunjg.net/down.html";
-			});
-			close.addEventListener('click',function(){
-				cover.style.display = "none";
-				noMove.style.position = "initial";
-			});
-			
-		}
-		login.addEventListener('click',doLogin);
-		mui.ready(function(){
-			var phoneNumber = document.getElementById("phoneNumber");
-			var inputCode = document.getElementById("inputCode");
-			inputCode.value = '';
-			phoneNumber.value = '';
-			openAdvert = 1;
-			record();
-		});
-	</script>
+        .yjg-page-content {
+            width: 10rem;
+            height: auto;
+            background: url("img/1.png") no-repeat left top;
+            background-size: 100%;
+        }
+
+        .yjg-input-group {
+            margin: 0 auto;
+            height: 3.2rem;
+            width: 8.66rem;
+            padding-top: 12rem;
+
+        }
+
+        .yjg-input-username {
+            margin: 0 auto;
+            overflow: hidden;
+            padding: 0.4725rem 0;
+            background: #FFFFFF;
+            border-radius: 0.13rem;
+            font-size: 14px;
+            margin-right: 0.66rem;
+        }
+
+        [data-dpr="2"] .yjg-input-username {
+            font-size: 28px;
+        }
+
+        [data-dpr="3"] .yjg-input-username {
+            font-size: 42px;
+        }
+
+        .yjg-input-username input {
+            width: 100%;
+            border: none;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: block;
+            outline: 0;
+            padding-left: 0.4rem;
+        }
+
+        /*验证码*/
+
+        .yjg-input-code {
+            overflow: hidden;
+            height: 1.389rem;
+            margin-top: 0.4rem;
+            line-height: 0.8rem;
+        }
+
+        .yjg-code-left {
+            padding: 0.5rem 0;
+            line-height: 0.4rem;
+            font-size: 12px;
+            display: block;
+            float: left;
+            color: #FFFFFF;
+            margin-right: 0.13rem;
+            text-align: center;
+        }
+
+        [data-dpr="2"] .yjg-code-left {
+            font-size: 24px;
+        }
+
+        [data-dpr="3"] .yjg-code-left {
+            font-size: 36px;
+        }
+
+        .yjg-code-right {
+            width: 6rem;
+            float: left;
+            font-size: 14px;
+            padding: 0.4725rem 0;
+            background: #FFFFFF;
+            border-radius: 0.13rem;
+        }
+
+        [data-dpr="2"] .yjg-code-right {
+            font-size: 24px;
+        }
+
+        [data-dpr="3"] .yjg-code-right {
+            font-size: 36px;
+        }
+
+        .yjg-code-right input {
+            width: 100%;
+            padding: 0 0.13rem;
+            border: none;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: block;
+            outline: 0;
+            padding-left: 0.4rem;
+        }
+
+        .yjg-code-request {
+            float: left;
+            width: 2.4rem;
+            height: 1.389rem;
+            line-height: 1.389rem;
+            text-align: center;
+            background: #FFFFFF;
+            margin-left: 0.26rem;
+            border-radius: 0.13rem;
+            color: #000000;
+        }
+
+        /*登录*/
+
+        .yjg-login {
+            width: 8.53rem;
+            height: 1.33rem;
+            background: #ea400c;
+            text-align: center;
+            line-height: 1.33rem;
+            color: #FFFFFF;
+            margin: 0 auto;
+            border-radius: 0.13rem;
+            font-size: 16px;
+            margin-top: 0.4rem;
+        }
+
+        [data-dpr="2"] .yjg-login {
+            font-size: 32px;
+        }
+
+        [data-dpr="3"] .yjg-login {
+            font-size: 48px;
+        }
+
+        /*说明文字*/
+
+        .introduce-box {
+            width: 10rem;
+            background: #ff6b05;
+        }
+
+        .introduce-box-text {
+            width: 10rem;
+            margin: 0 auto;
+            background: #ff6b05;
+            width: 6.88rem;
+            color: #FFFFFF;
+            font-size: 14px;
+            padding-top: 0.66rem;
+            line-height: 0.64rem;
+        }
+
+        [data-dpr="2"] .introduce-box-text {
+            font-size: 28px;
+        }
+
+        [data-dpr="3"] .introduce-box-text {
+            font-size: 42px;
+        }
+
+        .yjg-img {
+            margin: 0 auto;
+            width: 6.37rem;
+            height: 0.5rem;
+            margin-top: 0.4rem;
+        }
+
+        .yjg-img img {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .yjg-bottom {
+            width: 10rem;
+            height: auto;
+            background: #fbdb30;
+            padding-top: 0.66rem;
+        }
+
+        .yjg-bottom img {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /*遮罩*/
+
+        .yjg-cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+        }
+
+        .cover-img {
+            width: 8.62rem;
+            height: 10.64rem;
+            background: url("img/hongbao.png") no-repeat left top;
+            background-size: cover;
+            margin: 0 auto;
+            margin-top: 2.53rem;
+            text-align: center;
+
+        }
+
+        .cover-close {
+            width: 0.4rem;
+            height: auto;
+            margin: 0 auto;
+            margin-top: 1.06rem;
+        }
+
+        .cover-close img {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .yjg-redpack-text {
+            padding-top: 5.5rem;
+        }
+
+        .yjg-redpack-text p:nth-child(1) {
+            font-size: 15px;
+            color: #FFFFFF;
+        }
+
+        [data-dpr="2"] .yjg-redpack-text p:nth-child(1) {
+            font-size: 30px;
+        }
+
+        [data-dpr="3"] .yjg-redpack-text p:nth-child(1) {
+            font-size: 45px;
+        }
+
+        .yjg-money {
+            font-size: 90px;
+            color: #ffe61a;
+        }
+
+        [data-dpr="2"] .yjg-money {
+            font-size: 180px;
+        }
+
+        [data-dpr="3"] .yjg-money {
+            font-size: 270px;
+        }
+
+        .yjg-redpack-text p:nth-child(2) {
+            height: 1.6rem;
+            font-size: 20px;
+            color: #FFFFFF;
+        }
+
+        [data-dpr="2"] .yjg-redpack-text p:nth-child(2) {
+            font-size: 40px;
+        }
+
+        [data-dpr="3"] .yjg-redpack-text p:nth-child(2) {
+            font-size: 60px;
+        }
+
+        .yjg-user {
+            color: red;
+        }
+
+        /*按钮*/
+        .redpack-button {
+            margin: 0 auto;
+            background: url("img/hongbaobtn.png") no-repeat left top;
+            background-size: 100%;
+            height: 1.38rem;
+            width: 5.22rem;
+            margin-top: 1.06rem;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="yjg-page-content" id="noMove">
+        <form class="yjg-input-group">
+            <div class="yjg-input-username">
+                <div class="yjg-input-right">
+                    <input type="number" id="phoneNumber" placeholder="输入手机号领取红包"/>
+                </div>
+            </div>
+            <div class="yjg-input-code">
+                <div class="yjg-code-right">
+                    <input type="text" id="inputCode" placeholder="请输入验证码"/>
+                </div>
+                <div class="yjg-code-request" id="requestCode">
+                    获取验证码
+                </div>
+            </div>
+        </form>
+        <div class="yjg-login" id="login">
+            抢99元红包
+        </div>
+    </div>
+    <div class="yjg-bottom">
+        <img src="img/2.png"/>
+    </div>
+    <!--遮罩-->
+    <div class="yjg-cover" id="mask">
+        <div class="no-opsity">
+            <div class="cover-img">
+                <div class="yjg-redpack-text">
+                    <p style="margin-bottom: 0.13rem;">恭喜,您已获得云加工新人红包</p>
+                    <p><span class="yjg-money" id="money"></span>元</p>
+                </div>
+                <div class="redpack-button" id="appStore"></div>
+            </div>
+            <div class="cover-close" id="close">
+                <img src="img/quxiao@2x.png"/>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/mui.min.js"></script>
+<script src="js/jquery-2.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/yjg.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init();
+    var dataDpr = document.getElementsByTagName("html")[0].getAttribute("data-dpr");
+    var login = document.getElementById("login");
+    var requestCode = document.getElementById("requestCode");
+    var regExp = /^1[3|4|5|6|8|7|9][0-9]\d{4,8}$/;
+    var inMsm = false;
+    var openAdvert = null;//1打开连接动作,2点击注册动作,3点击获取验证码的动作,4跳转app
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
+    /*
+     * 广告记录埋点
+     */
+    function record() {
+        var advertId = getQueryVariable("advertId");
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                advertId: advertId,
+                code: openAdvert
+            },
+            url: "http://192.168.105.75:8088/market/record",
+            success: doRecordSuccess
+        });
+    }
+
+    /*
+     * 广告记录请求成功
+     */
+    function doRecordSuccess() {
+        console.log(data);
+    }
+
+    /*
+     * 获取验证码
+     */
+    function getCode() {
+        openAdvert = 3;
+        record();//埋点
+        var phoneNumber = document.getElementById("phoneNumber");
+        var regExp = /^1[3|4|5|6|8|7|9][0-9]\d{4,8}$/;
+        if (phoneNumber.value == "") {
+            yunjiagongToast("手机号格式不正确");
+            return false;
+        }
+        if (!regExp.test(phoneNumber.value)) {
+            yunjiagongToast("手机号格式不正确");
+            return false;
+        }
+        if (inMsm) {
+            return;
+        }
+        inMsm = true;
+        $.ajax({
+            type: 'GET',
+            dataType: 'jsonp',
+            data: {
+                uname: phoneNumber.value
+            },
+            url: "http://service.yunjg.net/userManagerController/getSmsVerifyCodeH5",
+            //            url : "http://localhost:8082/shareManagerController/doWebRegister",
+            success: getCodeSuccess,
+        });
+    }
+
+    function getCodeSuccess(data) {
+        console.log('验证' + JSON.stringify(data));
+        var num = 60;
+        if (data.code != null) {
+            var timer = setInterval(function () {
+                if (num == 0) {
+                    clearInterval(timer);
+                    inMsm = false;
+                    requestCode.innerHTML = "重新发送";
+                    requestCode.style.color = "#929292";
+                } else {
+                    num--;
+                    requestCode.style.color = "#929292";
+                    requestCode.innerHTML = num + 's';
+                }
+                ;
+            }, 1000);
+        } else {
+            inMsm = false;
+            yunjiagongToast(data.resultType);
+        }
+
+    }
+
+    requestCode.addEventListener('click', getCode);
+
+    /*
+     * 用户登录
+     */
+    function doLogin() {
+        openAdvert = 2;
+        record();//埋点
+        var phoneNumber = document.getElementById("phoneNumber");
+        var inputCode = document.getElementById("inputCode");
+        var requestCode = document.getElementById("requestCode");
+        var qqNumber = getQueryVariable("qqNumber");
+        var serviceId = getQueryVariable("serviceId");
+        if (phoneNumber.value == "") {
+            yunjiagongToast("手机号格式不正确");
+            return false;
+        }
+        if (!regExp.test(phoneNumber.value)) {
+            yunjiagongToast("手机号格式不正确");
+            return false;
+        }
+        if (inputCode.value == "") {
+            yunjiagongToast("请输入验证码");
+        }
+        $.ajax({
+            type: 'GET',
+            dataType: 'jsonp',
+            data: {
+                mobile: phoneNumber.value,
+                code: inputCode.value,
+                qqNumber: qqNumber,
+                serviceId: serviceId
+            },
+            url: "http://service.yunjg.net/shareManagerController/doWebRegisterByQQActivity",
+            success: doLoginSuccess
+        });
+    }
+
+    function doLoginSuccess(data) {
+        console.log(data);
+        var phoneNumber = document.getElementById("phoneNumber");
+        var inputCode = document.getElementById("inputCode");
+        var requestCode = document.getElementById("requestCode");
+        var cover = document.getElementById("mask");
+        var noMove = document.getElementById("noMove");
+        var money = document.getElementById("money");
+        var close = document.getElementById("close");
+        var appStore = document.getElementById("appStore");
+        cover.style.display = "block";
+        noMove.style.position = "fixed";
+        money.innerHTML = data.money;
+        appStore.addEventListener('click', function () {
+            openAdvert = 4;
+            record();//埋点
+            window.location.href = "http://api.yunjg.net/down.html";
+        });
+        close.addEventListener('click', function () {
+            cover.style.display = "none";
+            noMove.style.position = "initial";
+        });
+
+    }
+
+    login.addEventListener('click', doLogin);
+    mui.ready(function () {
+        var phoneNumber = document.getElementById("phoneNumber");
+        var inputCode = document.getElementById("inputCode");
+        inputCode.value = '';
+        phoneNumber.value = '';
+        openAdvert = 1;
+        record();
+    });
+</script>
 
 </html>

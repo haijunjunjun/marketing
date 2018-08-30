@@ -2,8 +2,11 @@ package com.niule.market.service;
 
 import com.niule.market.dao.mapper.ActionMapper;
 import com.niule.market.dao.mapper.AdvRecordMapper;
+import com.niule.market.dao.mapper.AuthNoMapper;
 import com.niule.market.dao.model.Action;
 import com.niule.market.dao.model.AdvRecord;
+import com.niule.market.dao.model.AuthNo;
+import com.niule.market.model.AdvertParamModel;
 import com.niule.market.util.BizRunTimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,8 @@ public class RecordService {
     private AdvRecordMapper advRecordMapper;
     @Autowired
     private ActionMapper actionMapper;
+    @Autowired
+    private AuthNoMapper authNoMapper;
 
     //获取用户的详细信息 ip地址、来源信息、访问url
     private Map<String, String> getDetailInfio(HttpServletRequest request) {
@@ -117,5 +122,21 @@ public class RecordService {
 
     private Action getAction(Integer code) {
         return actionMapper.selectByPrimaryKey(code);
+    }
+
+    public AdvertParamModel getParam(Integer authNoId) {
+        if (Objects.isNull(authNoId)) {
+            log.info("authNoId is null");
+            throw new BizRunTimeException("authNoId is null");
+        }
+        AuthNo authNo = authNoMapper.selectByPrimaryKey(authNoId);
+        if (Objects.isNull(authNo)) {
+            log.info("数据信息查询异常!");
+            throw new BizRunTimeException("数据信息查询异常！");
+        }
+        AdvertParamModel advertParamModel = new AdvertParamModel();
+        advertParamModel.setQq(authNo.getQq());
+        advertParamModel.setWorkNo(authNo.getWorkNo());
+        return advertParamModel;
     }
 }

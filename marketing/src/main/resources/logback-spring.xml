@@ -12,7 +12,7 @@
         </layout>
     </appender>
 
-    <appender name="logFile"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="logFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <Prudent>true</Prudent>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>
