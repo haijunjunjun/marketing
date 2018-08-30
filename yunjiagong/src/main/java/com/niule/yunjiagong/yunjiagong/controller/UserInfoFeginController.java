@@ -1,6 +1,8 @@
 package com.niule.yunjiagong.yunjiagong.controller;
 
+import com.niule.yunjiagong.yunjiagong.model.cloud.SystemPayRequest;
 import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
+import com.niule.yunjiagong.yunjiagong.service.cloud.UserGoldBeansFeginService;
 import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,17 @@ public class UserInfoFeginController {
 
     @Autowired
     private UserInfoFeginService userInfoFeginService;
+    @Autowired
+    private UserGoldBeansFeginService userGoldBeansFeginService;
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public DataResponse<UserBaseInfo> getUserBaseInfo() {
         DataResponse<UserBaseInfo> operator = userInfoFeginService.getOperator();
         return operator;
     }
+    @RequestMapping(value = "/user/gold", method = RequestMethod.POST)
+    public DataResponse updateGold() {
+        return userGoldBeansFeginService.updateUserGoldBeans(new SystemPayRequest());
+    }
+
 }

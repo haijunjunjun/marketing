@@ -6,9 +6,12 @@ import com.niule.yunjiagong.yunjiagong.dal.mapper.SignLogMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.SignTemplateMapper;
 import com.niule.yunjiagong.yunjiagong.dal.model.SignInfo;
 import com.niule.yunjiagong.yunjiagong.dal.model.SignTemplate;
+import com.niule.yunjiagong.yunjiagong.model.cloud.SystemPayRequest;
 import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
+import com.niule.yunjiagong.yunjiagong.service.cloud.UserGoldBeansFeginService;
 import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
+import com.niule.yunjiagong.yunjiagong.util.DataResponse;
 import com.niule.yunjiagong.yunjiagong.util.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
@@ -36,6 +39,8 @@ public class SignService {
     private SignLogMapper signLogMapper;
     @Autowired
     private UserInfoFeginService userInfoFeginService;
+    @Autowired
+    private UserGoldBeansFeginService userGoldBeansFeginService;
 
     public MessageInfo doSign(String signDateV1) throws ParseException {
         UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
@@ -63,8 +68,12 @@ public class SignService {
             realDuration = signInfoV1.getDuration() + 1;
             if (realDuration % signTemplate.getCycles() == 0) {
                 signLogMapper.saveSignLog(userId, signTemplate.getBeans() + "", "用户签到", new Date());
-                // TODO: 2018/8/29 更新用户的金豆
-
+                SystemPayRequest systemPayRequest = new SystemPayRequest();
+                systemPayRequest.setPayAmount(signTemplate.getBeans().longValue());
+                systemPayRequest.setTargetType(2);
+                systemPayRequest.setDesc("用户签到赠送金豆");
+                DataResponse dataResponse = userGoldBeansFeginService.updateUserGoldBeans(systemPayRequest);
+                log.info("dataResponse is :"+dataResponse);
             }
         }
         if (realDuration % signTemplate.getCycles() == 0) {
