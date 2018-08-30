@@ -415,38 +415,38 @@ body {
 /*.effect-zoe-v6:hover figcaption,*/
 /*.effect-zoe-v6:hover h2,*/
 /*.effect-zoe-v6:hover p.icon-links a {*/
-    /*-webkit-transform: translate3d(0, 0, 0);*/
-    /*transform: translate3d(0, 0, 0);*/
+/*-webkit-transform: translate3d(0, 0, 0);*/
+/*transform: translate3d(0, 0, 0);*/
 /*}*/
 
 /*.effect-zoe-v6 h2 {*/
-    /*display: inline-block;*/
+/*display: inline-block;*/
 /*}*/
 
 /*.effect-zoe-v6 figcaption {*/
-    /*top: auto;*/
-    /*margin: 0px 0px 0px 0px;*/
-    /*bottom: 0;*/
-    /*padding: 1em;*/
-    /*height: 24.75em;*/
-    /*background: rgba(0, 0, 0, 0.75);*/
-    /*color: #3c4a50;*/
-    /*-webkit-transition: -webkit-transform 0.35s;*/
-    /*transition: transform 0.35s;*/
-    /*-webkit-transform: translate3d(0, 100%, 0);*/
-    /*transform: translate3d(0, 100%, 0);*/
+/*top: auto;*/
+/*margin: 0px 0px 0px 0px;*/
+/*bottom: 0;*/
+/*padding: 1em;*/
+/*height: 24.75em;*/
+/*background: rgba(0, 0, 0, 0.75);*/
+/*color: #3c4a50;*/
+/*-webkit-transition: -webkit-transform 0.35s;*/
+/*transition: transform 0.35s;*/
+/*-webkit-transform: translate3d(0, 100%, 0);*/
+/*transform: translate3d(0, 100%, 0);*/
 /*}*/
 
 /*.grid .effect-zoe-v6 {*/
-    /*position: relative;*/
-    /*float: left;*/
-    /*overflow: hidden;*/
-    /*background: #e1f7f6;*/
-    /*text-align: center;*/
-    /*cursor: pointer;*/
-    /*margin: 0px 0px 0px 53px;*/
-    /*width: 371px;*/
-    /*height: 454px;*/
+/*position: relative;*/
+/*float: left;*/
+/*overflow: hidden;*/
+/*background: #e1f7f6;*/
+/*text-align: center;*/
+/*cursor: pointer;*/
+/*margin: 0px 0px 0px 53px;*/
+/*width: 371px;*/
+/*height: 454px;*/
 /*}*/
 
 .grid .effect-zoe-v1 {
@@ -499,7 +499,7 @@ body {
 /* ==============================  Image hover effect ============================== */
 .grid .effect-zoe-v5 {
     position: relative;
-    margin:0px 0px 0px 10px;
+    margin: 0px 0px 0px 10px;
     padding: 0px 0px 0px 105px;
     float: contour;
     left: 183px;
@@ -512,13 +512,13 @@ body {
     height: 470px;
 }
 
-.effect-zoe-v5 img{
+.effect-zoe-v5 img {
     width: 474px;
     height: 470px;
     border-radius: 4px;
 }
 
-.effect-zoe-v5 .picV1{
+.effect-zoe-v5 .picV1 {
     position: absolute;
     margin: -1px 0px 0px -2px;
     top: -15px;
@@ -535,7 +535,7 @@ body {
 }
 
 /* ==============================  logo  ============================== */
-.pull-left{
+.pull-left {
     margin: -10px 0px 0px 13px;
 }
 
@@ -895,19 +895,19 @@ i.fa.fa-envelope-o {
 //  联系我们
 /////////////////////////////////////////////////////////////////////*/
 
-.grid .contact-method{
+.grid .contact-method {
     margin: 87px 2px -4px 8px;
     left: 0px;
     right: 0px;
 }
 
-.grid .contact-title{
+.grid .contact-title {
     margin: 39px 2px -4px 8px;
     left: 0px;
     right: 0px;
 }
 
-.grid .contact-qr{
+.grid .contact-qr {
     margin: 39px 2px -4px 8px;
     left: 0px;
     right: 0px;
