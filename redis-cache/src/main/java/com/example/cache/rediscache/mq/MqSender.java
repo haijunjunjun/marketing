@@ -2,7 +2,7 @@ package com.example.cache.rediscache.mq;
 
 /**
  * @author haijun
- * @create 2018 - 08 - 30 - 10:40
+ * @create 2018 - 08 - 30 - 15:04
  */
-public class MqProducer {
+public class MqSender {
 }
