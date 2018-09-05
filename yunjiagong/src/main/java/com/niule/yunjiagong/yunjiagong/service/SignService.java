@@ -16,6 +16,8 @@ import com.niule.yunjiagong.yunjiagong.util.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -44,7 +46,7 @@ public class SignService {
 
     public MessageInfo doSign(String signDateV1) throws ParseException {
         UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
-        int userId = userBaseInfo.getId().intValue();
+        Integer userId = userBaseInfo.getId().intValue();
         Date signDate = this.formatDate(signDateV1);
         if (Objects.isNull(userId) || Objects.isNull(signDate)) {
             log.info("参数信息异常！");
@@ -54,6 +56,7 @@ public class SignService {
         signInfo.setUserId(userId);
         SignInfo signInfoV1 = signInfoMapper.selectOne(signInfo);
         SignTemplate signTemplate = signTemplateMapper.selectByPrimaryKey(Integer.parseInt(TemplateEnum.SIGN_TEMPLATE.getCode()));
+//        SignTemplate signTemplate = this.getSignTemplate();
         Date preOneDate = DateUtils.addDays(signDate, -1);
         MessageInfo messageInfo = new MessageInfo();
         int realDuration;
@@ -69,11 +72,13 @@ public class SignService {
             if (realDuration % signTemplate.getCycles() == 0) {
                 signLogMapper.saveSignLog(userId, signTemplate.getBeans() + "", "用户签到", new Date());
                 SystemPayRequest systemPayRequest = new SystemPayRequest();
-                systemPayRequest.setPayAmount(signTemplate.getBeans().longValue());
+                systemPayRequest.setBuyAmount(signTemplate.getBeans().longValue());
+                systemPayRequest.setUserId(userId.longValue());
+                systemPayRequest.setPayAmount(0l);
                 systemPayRequest.setTargetType(2);
                 systemPayRequest.setDesc("用户签到赠送金豆");
                 DataResponse dataResponse = userGoldBeansFeginService.updateUserGoldBeans(systemPayRequest);
-                log.info("dataResponse is :"+dataResponse);
+                log.info("dataResponse is :" + dataResponse);
             }
         }
         if (realDuration % signTemplate.getCycles() == 0) {
@@ -107,5 +112,10 @@ public class SignService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date parseDate = sdf.parse(date);
         return parseDate;
+    }
+
+    public SignTemplate getSignTemplate() {
+        log.info("开始");
+        return signTemplateMapper.selectByPrimaryKey(Integer.parseInt(TemplateEnum.SIGN_TEMPLATE.getCode()));
     }
 }
