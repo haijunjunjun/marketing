@@ -20,4 +20,5 @@ public interface CustomerInfoMapper extends MyMapper<CustomerInfo> {
 
     List<CustomerInfo> getCustomerInfoList(@Param("userId") Integer userId, @Param("status") Integer status);
 
+    List<CustomerInfo> fetchCustomerListInfo();
 }

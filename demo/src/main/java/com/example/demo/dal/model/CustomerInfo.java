@@ -114,7 +114,7 @@ public class CustomerInfo {
     private Integer isCompact;
 
     /**
-     * 合同是否后台审核（1：审核成功 0：审核失败）
+     * 合同是否后台审核（1：审核成功 0：审核失败 2:待审核）
      */
     @Column(name = "is_compact_check")
     private Integer isCompactCheck;
@@ -176,6 +176,12 @@ public class CustomerInfo {
      */
     @Column(name = "relative_id")
     private Integer relativeId;
+
+    /**
+     * 最后一次操作时间
+     */
+    @Column(name = "last_modify_time")
+    private Date lastModifyTime;
 
     /**
      * 获取客户id
@@ -502,18 +508,18 @@ public class CustomerInfo {
     }
 
     /**
-     * 获取合同是否后台审核（1：审核成功 0：审核失败）
+     * 获取合同是否后台审核（1：审核成功 0：审核失败 2:待审核）
      *
-     * @return is_compact_check - 合同是否后台审核（1：审核成功 0：审核失败）
+     * @return is_compact_check - 合同是否后台审核（1：审核成功 0：审核失败 2:待审核）
      */
     public Integer getIsCompactCheck() {
         return isCompactCheck;
     }
 
     /**
-     * 设置合同是否后台审核（1：审核成功 0：审核失败）
+     * 设置合同是否后台审核（1：审核成功 0：审核失败 2:待审核）
      *
-     * @param isCompactCheck 合同是否后台审核（1：审核成功 0：审核失败）
+     * @param isCompactCheck 合同是否后台审核（1：审核成功 0：审核失败 2:待审核）
      */
     public void setIsCompactCheck(Integer isCompactCheck) {
         this.isCompactCheck = isCompactCheck;
@@ -697,5 +703,23 @@ public class CustomerInfo {
      */
     public void setRelativeId(Integer relativeId) {
         this.relativeId = relativeId;
+    }
+
+    /**
+     * 获取最后一次操作时间
+     *
+     * @return last_modify_time - 最后一次操作时间
+     */
+    public Date getLastModifyTime() {
+        return lastModifyTime;
+    }
+
+    /**
+     * 设置最后一次操作时间
+     *
+     * @param lastModifyTime 最后一次操作时间
+     */
+    public void setLastModifyTime(Date lastModifyTime) {
+        this.lastModifyTime = lastModifyTime;
     }
 }

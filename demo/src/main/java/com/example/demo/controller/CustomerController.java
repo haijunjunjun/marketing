@@ -35,7 +35,7 @@ public class CustomerController {
                                                                                 @Valid @NotNull @RequestParam("status") Integer status,
                                                                                 @Valid @NotNull @RequestParam("pageSize") Integer pageSize,
                                                                                 @Valid @NotNull @RequestParam("pageNum") Integer pageNum) {
-        return ResponseEntity.ok(customerService.getCunstomerInfo(curOperator.getId(), status, pageNum, pageSize));
+        return ResponseEntity.ok(customerService.getCustomerInfo(curOperator.getId(), status, pageNum, pageSize));
     }
 
     /**
@@ -59,7 +59,7 @@ public class CustomerController {
      */
     @RequestMapping(value = "/marketing/customer/donate/beans", method = RequestMethod.POST)
     public ResponseEntity<MessageInfo> donateCustGoldBeans(@Valid @NotNull @Operator CurOperator curOperator,
-                                                           @Valid @NotNull @RequestBody(required = true) DonateGoldBeansModel donateGoldBeansModel) {
+                                                           @Valid @NotNull @RequestBody(required = true) DonateGoldBeansModel donateGoldBeansModel) throws Exception {
         return ResponseEntity.ok(customerService.donateGoldBeans(curOperator.getId(), donateGoldBeansModel.getCustId(), donateGoldBeansModel.getGoldBeansNum()));
     }
 

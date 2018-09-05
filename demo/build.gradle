@@ -103,4 +103,6 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
 
     compile group: 'com.github.pagehelper', name: 'pagehelper', version: '4.2.1'
+
+    compile group: 'com.alipay.sdk', name: 'alipay-sdk-java', version: '3.3.49.ALL'
 }

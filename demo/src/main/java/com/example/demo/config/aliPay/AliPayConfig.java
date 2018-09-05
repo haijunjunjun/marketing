@@ -1,4 +1,4 @@
-package com.example.cache.rediscache.config;
+package com.example.demo.config.aliPay;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

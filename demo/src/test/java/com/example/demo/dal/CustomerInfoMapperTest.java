@@ -35,19 +35,19 @@ public class CustomerInfoMapperTest {
 
     @Test
     public void getHasComunicationTest() {
-        Integer hasComunication = customerInfoMapper.getHasComunication(1);
+        Integer hasComunication = customerInfoMapper.getHasComunication(1,"");
         log.info("hasComunication is :" + hasComunication);
     }
 
     @Test
     public void getHasInterestTest() {
-        Integer hasInterest = customerInfoMapper.getHasInterest(1);
+        Integer hasInterest = customerInfoMapper.getHasInterest(1,"");
         log.info("hasInterest is :" + hasInterest);
     }
 
     @Test
     public void getHasCompact() {
-        Integer hasCompact = customerInfoMapper.getHasCompact(1);
+        Integer hasCompact = customerInfoMapper.getHasCompact(1,"");
         log.info("hasCompact is :" + hasCompact);
     }
 
@@ -78,5 +78,11 @@ public class CustomerInfoMapperTest {
         customerInfo.setModifyTime(new Date());
         int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
         log.info("info is :" + i);
+    }
+
+    @Test
+    public void test2 (){
+        List<CustomerInfo> customerInfoList = customerInfoMapper.fetchCustomerListInfo();
+        log.info("customerInfoList is :"+customerInfoList.size());
     }
 }

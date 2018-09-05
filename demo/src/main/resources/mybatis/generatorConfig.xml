@@ -55,7 +55,7 @@
         <!--<table tableName="user_gold_beans">-->
         <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="pay_record">
+        <table tableName="user_action">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
         <!--<table tableName="cust_gold_beans">-->

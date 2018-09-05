@@ -1,10 +1,14 @@
 package com.example.demo.service;
 
+import com.alibaba.fastjson.JSON;
+import com.example.demo.constant.ActionStatus;
 import com.example.demo.constant.CustomerStatus;
 import com.example.demo.dal.mapper.*;
 import com.example.demo.dal.model.*;
 import com.example.demo.model.CustInfoModel;
 import com.example.demo.model.CustRespModel;
+import com.example.demo.model.http.HttpDataModel;
+import com.example.demo.service.httpService.ValidUserRegistService;
 import com.example.demo.util.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,21 +33,24 @@ public class CustomerService {
     private UserGoldBeansMapper userGoldBeansMapper;
     private ConfigMapper configMapper;
     private UserActionMapper userActionMapper;
+    private ValidUserRegistService validUserRegistService;
 
     @Autowired
     public CustomerService(CustomerInfoMapper customerInfoMapper,
                            CustGoldBeansMapper custGoldBeansMapper,
                            UserGoldBeansMapper userGoldBeansMapper,
                            ConfigMapper configMapper,
-                           UserActionMapper userActionMapper) {
+                           UserActionMapper userActionMapper,
+                           ValidUserRegistService validUserRegistService) {
         this.customerInfoMapper = customerInfoMapper;
         this.custGoldBeansMapper = custGoldBeansMapper;
         this.userGoldBeansMapper = userGoldBeansMapper;
         this.configMapper = configMapper;
         this.userActionMapper = userActionMapper;
+        this.validUserRegistService = validUserRegistService;
     }
 
-    public MessageInfo<PageInfo<CustRespModel>> getCunstomerInfo(Integer userId, Integer status, Integer pageNum, Integer pageSize) {
+    public MessageInfo<PageInfo<CustRespModel>> getCustomerInfo(Integer userId, Integer status, Integer pageNum, Integer pageSize) {
         MessageInfo<PageInfo<CustRespModel>> customerInfoMessageInfo = new MessageInfo<>();
         if (Objects.isNull(userId) || Objects.isNull(status)) {
             log.info("参数信息有误！");
@@ -98,6 +105,7 @@ public class CustomerService {
         addUserAction(customerInfoData, customerInfo);
 
         customerInfo.setModifyTime(new Date());
+        customerInfo.setLastModifyTime(new Date());
         int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
         if (i != 1) {
             log.info("数据库更新失败！");
@@ -114,22 +122,22 @@ public class CustomerService {
 
     private void addUserAction(CustomerInfo customerInfoOrigin, CustomerInfo customerInfoUpdate) {
         if (customerInfoOrigin.getIsVisit() != customerInfoUpdate.getIsVisit()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "visit");
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.VISIT.getName().trim());
         }
         if (customerInfoOrigin.getIsPhone() != customerInfoUpdate.getIsPhone()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "phone");
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.PHONE.getName().trim());
         }
         if (customerInfoOrigin.getIsMoney() != customerInfoUpdate.getIsMoney()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "money");
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.MONEY.getName().trim());
         }
         if (customerInfoOrigin.getIsInterestCust() != customerInfoUpdate.getIsInterestCust()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "interest");
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.INTEREST.getName().trim());
         }
-        if (customerInfoOrigin.getIsGoldBeans() != customerInfoUpdate.getIsInterestCust()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "beans");
+        if (customerInfoOrigin.getIsGoldBeans() != customerInfoUpdate.getIsGoldBeans()) {
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.BEANS.getName().trim());
         }
         if (customerInfoOrigin.getIsCompact() != customerInfoUpdate.getIsCompact()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), "compact");
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.COMPACT.getName().trim());
         }
     }
 
@@ -138,23 +146,23 @@ public class CustomerService {
         UserAction userAction = new UserAction();
         userAction.setCustId(custId);
         userAction.setUserId(userId);
-        if ("visit".equals(str)) {
-            userAction.setAction("已拜访");
+        if (ActionStatus.VISIT.getName().trim().equals(str)) {
+            userAction.setAction(ActionStatus.VISIT.getDesc());
         }
-        if ("compact".equals(str)) {
-            userAction.setAction("已签合同");
+        if (ActionStatus.COMPACT.getName().trim().equals(str)) {
+            userAction.setAction(ActionStatus.COMPACT.getDesc());
         }
-        if ("beans".equals(str)) {
-            userAction.setAction("已赠送金豆");
+        if (ActionStatus.BEANS.getName().trim().equals(str)) {
+            userAction.setAction(ActionStatus.BEANS.getDesc());
         }
-        if ("interest".equals(str)) {
-            userAction.setAction("有意向客户");
+        if (ActionStatus.INTEREST.getName().trim().equals(str)) {
+            userAction.setAction(ActionStatus.INTEREST.getDesc());
         }
-        if ("money".equals(str)) {
-            userAction.setAction("已付款");
+        if (ActionStatus.MONEY.getName().trim().equals(str)) {
+            userAction.setAction(ActionStatus.MONEY.getDesc());
         }
-        if ("phone".equals(str)) {
-            userAction.setAction("已打电话");
+        if (ActionStatus.PHONE.getName().trim().equals(str)) {
+            userAction.setAction(ActionStatus.PHONE.getDesc());
         }
         userAction.setCreateTime(new Date());
         return userActionMapper.insert(userAction);
@@ -201,8 +209,20 @@ public class CustomerService {
     }
 
 
-    public MessageInfo donateGoldBeans(Integer userId, Integer custId, Integer goldBeansNum) {
+    public MessageInfo donateGoldBeans(Integer userId, Integer custId, Integer goldBeansNum) throws Exception {
         MessageInfo messageInfo = new MessageInfo();
+
+        //判断该客户是否是云加工注册客户
+        CustomerInfo customerInfos = new CustomerInfo();
+        customerInfos.setId(custId);
+        CustomerInfo customerInfoV1 = customerInfoMapper.selectOne(customerInfos);
+        String s = validUserRegistService.validUserRegist(customerInfoV1.getCustPhone());
+        HttpDataModel httpDataModel = JSON.parseObject(s, HttpDataModel.class);
+        if (!httpDataModel.isData()) {
+            messageInfo.setContent("该用户目前还没有注册为云加工用户！赠送金豆失败!");
+            return messageInfo;
+        }
+
         UserGoldBeans userGoldBeans = new UserGoldBeans();
         userGoldBeans.setUserId(userId);
         UserGoldBeans userGoldBeansV1 = userGoldBeansMapper.selectOne(userGoldBeans);
@@ -230,6 +250,7 @@ public class CustomerService {
         CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setId(custId);
         customerInfo.setIsGoldBeans(1);
+        customerInfo.setLastModifyTime(new Date());
         int isGoldBeansUpdate = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
         if (1 != isGoldBeansUpdate) {
             log.info("客户信息更新异常!");
@@ -319,6 +340,7 @@ public class CustomerService {
         CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setId(id);
         customerInfo.setPrice(price);
+        customerInfo.setLastModifyTime(new Date());
         int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
         if (1 != i) {
             log.info("签约价更新失败");

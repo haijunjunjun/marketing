@@ -30,6 +30,11 @@ public class UserAction {
     private String action;
 
     /**
+     * 备注
+     */
+    private String mark;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_time")
@@ -105,6 +110,24 @@ public class UserAction {
      */
     public void setAction(String action) {
         this.action = action == null ? null : action.trim();
+    }
+
+    /**
+     * 获取备注
+     *
+     * @return mark - 备注
+     */
+    public String getMark() {
+        return mark;
+    }
+
+    /**
+     * 设置备注
+     *
+     * @param mark 备注
+     */
+    public void setMark(String mark) {
+        this.mark = mark == null ? null : mark.trim();
     }
 
     /**

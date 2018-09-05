@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DemoApplication;
+import com.example.demo.dal.mapper.CustomerInfoMapper;
 import com.example.demo.dal.model.CustomerInfo;
 import com.example.demo.dal.model.UserInfo;
 import com.example.demo.util.MessageInfo;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -20,6 +22,8 @@ public class CustomerServiceTest {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private CustomerInfoMapper customerInfoMapper;
 
     @Test
     public void getCustomerInfoTest() {
@@ -29,15 +33,17 @@ public class CustomerServiceTest {
 //        log.info("cunstomerInfo is :" + cunstomerInfo);
     }
 
-//    @Test
-//    public void updateCustomerInfoTest() {
-//        CustomerInfo customerInfo = new CustomerInfo();
-//        customerInfo.setId(1);
+    @Test
+    public void updateCustomerInfoTest() {
+        CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setId(1);
 //        customerInfo.setUserId(1);
 //        customerInfo.setCustName("海军-Test");
+        customerInfo.setLastModifyTime(new Date());
 //        MessageInfo messageInfo = customerService.editCustomerInfo(customerInfo);
-//        log.info("messageInfo is :" + messageInfo);
-//    }
+        int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
+        log.info("messageInfo is :" + i);
+    }
 
 //    @Test
 //    public void removeCustomerInfoTest() {
