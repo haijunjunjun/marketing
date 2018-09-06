@@ -50,6 +50,7 @@ public class ManageService {
             saleList.setPhone(saleInfo.getPhone());
             saleList.setRealName(saleInfo.getRealName());
             saleList.setSaleType(saleInfo.getSaleType());
+            saleList.setUserId(saleInfo.getUserId());
             Map<String, Integer> saleNum = this.getSaleNum(u.getId());
             saleList.setMonthNum(saleNum.get("monthNum"));
             saleList.setWeekNum(saleNum.get("weekNum"));
@@ -129,10 +130,11 @@ public class ManageService {
             throw new BizRuntimeException("数据查询异常!");
         }
         SaleInfo saleInfo = new SaleInfo();
+        saleInfo.setUserId(userInfo.getId());
         saleInfo.setImageUrl(userInfo.getImageUrl());
         saleInfo.setPhone(userInfo.getPhone());
         saleInfo.setRealName(userInfo.getRealName());
-        saleInfo.setSaleType(userInfo.getRoleId() == 1 ? "销售" : "other");
+        saleInfo.setSaleType(userInfo.getRoleId() == 1 ? "销售" : "经理");
         return saleInfo;
     }
 

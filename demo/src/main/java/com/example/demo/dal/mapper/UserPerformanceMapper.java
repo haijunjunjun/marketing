@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserPerformanceMapper extends MyMapper<UserPerformance> {
 
-    Integer getPerformance(@Param("userId") Integer userId, @Param("dt1") String dt1, @Param("dt2") String dt2);
+    Double getPerformance(@Param("userId") Integer userId, @Param("dt1") String dt1, @Param("dt2") String dt2);
 
     List<UserPerformance> getUserPerformanceList(@Param("userId") Integer userId, @Param("dt1") String dt1, @Param("dt2") String dt2);
 

@@ -328,7 +328,7 @@ public class MyService {
     public MessageInfo<SumArrangeModel> getSumArraListInfo(Integer userId) {
         MessageInfo<SumArrangeModel> listMessageInfo = new MessageInfo<>();
         List<SumArrange> sumArrangeList = sumArrangeMapper.getSumArrangeList(userId);
-        if (Objects.isNull(sumArrangeList)) {
+        if (Objects.isNull(sumArrangeList) || sumArrangeList.size() == 0) {
             listMessageInfo.setContent("获取信息失败");
             return listMessageInfo;
         }

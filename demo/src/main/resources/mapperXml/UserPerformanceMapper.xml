@@ -13,7 +13,7 @@
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
     </resultMap>
 
-    <select id="getPerformance" resultType="java.lang.Integer">
+    <select id="getPerformance" resultType="java.lang.Double">
         select SUM(performance) from user_performance
         WHERE user_id = #{userId}
         AND date_format(create_time,"%Y%m%d") BETWEEN #{dt1} AND #{dt2}

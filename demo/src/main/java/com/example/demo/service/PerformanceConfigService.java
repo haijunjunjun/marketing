@@ -1,10 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dal.mapper.*;
-import com.example.demo.dal.model.PerformanceConfig;
-import com.example.demo.dal.model.PerformanceConfigV1;
-import com.example.demo.dal.model.UserCommissions;
-import com.example.demo.dal.model.UserInfo;
+import com.example.demo.dal.model.*;
 import com.example.demo.util.BizRuntimeException;
 import com.example.demo.util.DateUtil;
 import com.example.demo.util.MessageInfo;
@@ -164,51 +161,114 @@ public class PerformanceConfigService {
         }
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
         String level = userInfo.getLevel();
-        PerformanceConfigV1 performanceConfigV1 = new PerformanceConfigV1();
-        performanceConfigV1.setLevel(level);
-        PerformanceConfigV1 performanceConfigData = performanceConfigV1Mapper.selectOne(performanceConfigV1);
-        BigDecimal kpi = new BigDecimal(Double.toString(performanceConfigData.getKpi())).setScale(2, BigDecimal.ROUND_HALF_DOWN);
-        BigDecimal deathLine = new BigDecimal(Double.toString(performanceConfigData.getDeathLine())).setScale(2, BigDecimal.ROUND_HALF_DOWN);
-        if (Objects.isNull(performanceConfigData)) {
-            log.info("performanceConfigData 信息查询异常！");
-            throw new BizRuntimeException("performanceConfigData 信息查询异常!");
+        if (StringUtils.isEmpty(level)) {
+            log.info("level 等级信息为空");
+            throw new BizRuntimeException("level 等级信息为空");
         }
-        //计算当前日期所在周的上一周日期区间
-        Map<String, String> dtV1 = this.getDt(getWeekDays(-1));
-        //计算当前用户上一周的总业绩
-        Integer data = userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end")) == null ? 0 : userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end"));
-        BigDecimal performanceV1 = new BigDecimal(data.toString()).setScale(2, BigDecimal.ROUND_HALF_DOWN);
-        //上周业绩 < 生死线
-        if (performanceV1.compareTo(deathLine) == -1) {
-            Integer remove = userInfoMapper.remove(userId);
-            if (1 != remove) {
-                log.info("信息移除异常！");
-                throw new BizRuntimeException("信息移除异常!");
+        if (1 == userInfo.getStatus()) {
+            if (1 == userInfo.getRoleId()) {
+                PerformanceConfigV1 performanceConfigV1 = new PerformanceConfigV1();
+                performanceConfigV1.setLevel(level);
+                PerformanceConfigV1 performanceConfigData = performanceConfigV1Mapper.selectOne(performanceConfigV1);
+                BigDecimal kpi = new BigDecimal(Double.toString(performanceConfigData.getKpi())).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+                BigDecimal deathLine = new BigDecimal(Double.toString(performanceConfigData.getDeathLine())).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+                if (Objects.isNull(performanceConfigData)) {
+                    log.info("performanceConfigData 信息查询异常！");
+                    throw new BizRuntimeException("performanceConfigData 信息查询异常!");
+                }
+                //计算当前日期所在周的上一周日期区间
+                Map<String, String> dtV1 = this.getDt(getWeekDays(-1));
+                //计算当前用户上一周的总业绩
+                Double data = userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end")) == null ? 0 : userPerformanceMapper.getPerformance(userId, dtV1.get("begin"), dtV1.get("end"));
+                BigDecimal performanceV1 = new BigDecimal(data.toString()).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+                //上周业绩 < 生死线
+                if (performanceV1.compareTo(deathLine) == -1) {
+                    Integer remove = userInfoMapper.remove(userId);
+                    if (1 != remove) {
+                        log.info("信息移除异常！");
+                        throw new BizRuntimeException("信息移除异常!");
+                    }
+                    return Double.parseDouble("-1");
+                }
+                //上周业绩 >= 生死线 && 上周业绩 < kpi
+                if ((performanceV1.compareTo(deathLine) == 1 || performanceV1.compareTo(deathLine) == 0)
+                        && performanceV1.compareTo(kpi) == -1) {
+                    return performanceV1.multiply(new BigDecimal("0.05")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+                }
+                //上周业绩 >= kpi && 上周业绩 < 150%kpi
+                if ((performanceV1.compareTo(kpi) == 1 || performanceV1.compareTo(kpi) == 0)
+                        && performanceV1.compareTo(kpi.multiply(new BigDecimal("1.5")).setScale(2, BigDecimal.ROUND_HALF_DOWN)) == -1) {
+                    return performanceV1.multiply(new BigDecimal("0.1")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+                }
+                //上周业绩 >= 150%kpi && 上周业绩 < 200%kpi
+                BigDecimal v1 = kpi.multiply(new BigDecimal("1.5")).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+                BigDecimal v2 = kpi.multiply(new BigDecimal("2")).setScale(2, BigDecimal.ROUND_HALF_DOWN);
+                if ((performanceV1.compareTo(v1) == 1 || performanceV1.compareTo(v1) == 0)
+                        && performanceV1.compareTo(v2) == -1) {
+                    return performanceV1.multiply(new BigDecimal("0.12")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+                }
+                //上周业绩 >= 200%kpi
+                if (performanceV1.compareTo(v2) == 1 || performanceV1.compareTo(v2) == 0) {
+                    return performanceV1.multiply(new BigDecimal("0.15")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+                }
+            } else if (2 == userInfo.getRoleId() && 2 == userInfo.getManageId()) {
+                List<UserInfo> userInfoList = this.getUserInfoList(1,userInfo.getId());
+                double sumPerformance = this.calPerformance(userInfoList);
+                return new BigDecimal(Double.toString(sumPerformance)).multiply(new BigDecimal("0.02")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+            } else if (2 == userInfo.getRoleId() && -1 == userInfo.getManageId()) {
+                double managerPerformance = 0.00;
+                double marketPerformance = 0.00;
+                List<UserInfo> userInfoList = this.getUserInfoList(1,userInfo.getId());
+                if (!Objects.isNull(userInfoList)) {
+                    managerPerformance = this.calPerformance(userInfoList);
+                    for (UserInfo userInfo1 : userInfoList){
+                        List<UserInfo> userInfoList2 = this.getUserInfoList(1, userInfo1.getId());
+                        double v = this.calPerformance(userInfoList2);
+                        marketPerformance = new BigDecimal(Double.toString(marketPerformance))
+                                .add(new BigDecimal(Double.toString(v)))
+                                .setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+                    }
+                }
+                double finalPerformance = new BigDecimal(Double.toString(managerPerformance))
+                        .add(new BigDecimal(Double.toString(marketPerformance)))
+                        .setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+                return new BigDecimal(Double.toString(finalPerformance))
+                        .multiply(new BigDecimal("0.03"))
+                        .setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
             }
-            return Double.parseDouble("-1");
-        }
-        //上周业绩 >= 生死线 && 上周业绩 < kpi
-        if ((performanceV1.compareTo(deathLine) == 1 || performanceV1.compareTo(deathLine) == 0)
-                && performanceV1.compareTo(kpi) == -1) {
-            return performanceV1.multiply(new BigDecimal("0.05")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
-        }
-        //上周业绩 >= kpi && 上周业绩 < 150%kpi
-        if ((performanceV1.compareTo(kpi) == 1 || performanceV1.compareTo(kpi) == 0)
-                && performanceV1.compareTo(kpi.multiply(new BigDecimal("1.5")).setScale(2, BigDecimal.ROUND_HALF_DOWN)) == -1) {
-            return performanceV1.multiply(new BigDecimal("0.1")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
-        }
-        //上周业绩 >= 150%kpi && 上周业绩 < 200%kpi
-        BigDecimal v1 = kpi.multiply(new BigDecimal("1.5")).setScale(2, BigDecimal.ROUND_HALF_DOWN);
-        BigDecimal v2 = kpi.multiply(new BigDecimal("2")).setScale(2, BigDecimal.ROUND_HALF_DOWN);
-        if ((performanceV1.compareTo(v1) == 1 || performanceV1.compareTo(v1) == 0)
-                && performanceV1.compareTo(v2) == -1) {
-            return performanceV1.multiply(new BigDecimal("0.12")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
-        }
-        //上周业绩 >= 200%kpi
-        if (performanceV1.compareTo(v2) == 1 || performanceV1.compareTo(v2) == 0) {
-            return performanceV1.multiply(new BigDecimal("0.15")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
         }
         return null;
+    }
+
+    /**
+     * 通过userInfo 信息计算业绩
+     */
+    private double calPerformance(List<UserInfo> userInfoList) {
+        double sumPerformance = 0.00;
+        if (!Objects.isNull(userInfoList)) {
+            for (UserInfo u1 : userInfoList) {
+                UserPerformance userPerformance = new UserPerformance();
+                userPerformance.setUserId(u1.getId());
+                List<UserPerformance> userPerformanceList = userPerformanceMapper.select(userPerformance);
+                if (!Objects.isNull(userPerformanceList)) {
+                    for (UserPerformance userPerformance1 : userPerformanceList) {
+                        sumPerformance = new BigDecimal(Double.toString(sumPerformance))
+                                .add(new BigDecimal(userPerformance1.getPerformance().toString()))
+                                .setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+                    }
+                }
+            }
+        }
+        return sumPerformance;
+    }
+
+    /**通过status 与 manageId 来查询 userInfoList*/
+    private List<UserInfo> getUserInfoList (Integer status,Integer manageId){
+        UserInfo u = new UserInfo();
+        u.setStatus(status);
+        u.setManageId(manageId);
+        List<UserInfo> userInfoList = userInfoMapper.select(u);
+        return userInfoList;
     }
 
 //    /**

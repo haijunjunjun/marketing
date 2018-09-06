@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.annotation.Operator;
-import com.example.demo.dal.model.GoldBeansApply;
-import com.example.demo.dal.model.SumArrange;
 import com.example.demo.model.*;
 import com.example.demo.service.MyService;
 import com.example.demo.util.GoldBeansMessageInfo;
@@ -10,6 +8,7 @@ import com.example.demo.util.MessageInfo;
 import com.example.demo.util.MessageInfoV1;
 import com.example.demo.util.PerformanceMessageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,10 +36,17 @@ public class MyController {
         return ResponseEntity.ok(myService.getMyPersonalInfo(curOperator.getId()));
     }
 
+    @Description("针对当前操作用户的业绩信息")
     @RequestMapping(value = "/marketing/my/performance/info", method = RequestMethod.GET)
     public ResponseEntity<PerformanceMessageInfo<List<MyPerformanceModel>>> getMyPerformanceInfo(@Valid @NotNull @Operator CurOperator curOperator,
                                                                                                  @Valid @NotNull @RequestParam("dates") String date) {
         return ResponseEntity.ok(myService.getMyPerformanceInfo(curOperator.getId(), date));
+    }
+
+    @Description("针对经理查看销售人员时的业绩信息")
+    @RequestMapping(value = "/marketing/manage/performance/info", method = RequestMethod.POST)
+    public ResponseEntity<PerformanceMessageInfo<List<MyPerformanceModel>>> getManagePerformanceInfo(@Valid @NotNull @RequestBody(required = true) ManagePerformanceModel managePerformanceModel) {
+        return ResponseEntity.ok(myService.getMyPerformanceInfo(managePerformanceModel.getUserId(), managePerformanceModel.getDates()));
     }
 
     @RequestMapping(value = "/marketing/gold/beans/apply/info", method = RequestMethod.GET)

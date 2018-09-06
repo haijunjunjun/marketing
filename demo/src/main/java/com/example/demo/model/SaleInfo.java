@@ -11,4 +11,5 @@ public class SaleInfo implements Serializable {
     private String saleType;
     private String realName;
     private String phone;
+    private Integer userId;
 }

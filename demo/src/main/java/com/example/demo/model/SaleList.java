@@ -31,4 +31,8 @@ public class SaleList implements Serializable {
      * 周销量
      */
     private Integer weekNum;
+    /**
+     * 用户id
+     */
+    private Integer userId;
 }
