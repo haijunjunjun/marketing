@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.dal.mapper.CustomerInfoMapper;
+import com.example.demo.dal.mapper.PayRecordFinalMapper;
 import com.example.demo.dal.mapper.PayRecordMapper;
 import com.example.demo.dal.mapper.UserPerformanceMapper;
 import com.example.demo.dal.model.CustomerInfo;
 import com.example.demo.dal.model.PayRecord;
+import com.example.demo.dal.model.PayRecordFinal;
 import com.example.demo.dal.model.UserPerformance;
 import com.example.demo.model.WxPayResponseModel;
 import com.example.demo.util.BizRuntimeException;
@@ -42,6 +44,8 @@ public class WXPayPrecreateService {
     @Autowired
     private PayRecordMapper payRecordMapper;
     @Autowired
+    private PayRecordFinalMapper payRecordFinalMapper;
+    @Autowired
     private CustomerInfoMapper customerInfoMapper;
     @Autowired
     private UserPerformanceMapper userPerformanceMapper;
@@ -73,7 +77,7 @@ public class WXPayPrecreateService {
         // 自定义参数, 可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"
         reqData.put("device_info", "device");
         // 附加数据，在查询API和支付通知中原样返回，可作为自定义参数使用。
-        reqData.put("attach", "success");
+        reqData.put("attach", custId.toString());
         /**
          * {
          * code_url=weixin://wxpay/bizpayurl?pr=vvz4xwC,
@@ -173,6 +177,17 @@ public class WXPayPrecreateService {
             payRecord2.setPayResult("success");
             payRecord2.setModifyTime(new Date());
             payRecordMapper.updateByPrimaryKeySelective(payRecord2);
+
+            Integer custId = Integer.parseInt(reqData.get("attach").trim());
+            PayRecordFinal payRecordFinal = new PayRecordFinal();
+            payRecordFinal.setCustId(custId);
+            payRecordFinal.setCompactNo("--");
+            payRecordFinal.setCreateTime(new Date());
+            payRecordFinal.setOutTradeNo(tradeNo);
+            payRecordFinal.setPayResult("success");
+            payRecordFinal.setReturnMsg("success_pay");
+            payRecordFinalMapper.insert(payRecordFinal);
+
             CustomerInfo customerInfo = new CustomerInfo();
             customerInfo.setId(payRecord1.getCustId());
             customerInfo.setIsMoney(1);

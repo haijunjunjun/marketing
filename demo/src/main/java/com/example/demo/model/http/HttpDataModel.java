@@ -11,5 +11,5 @@ import java.io.Serializable;
 @Data
 public class HttpDataModel implements Serializable {
     private static final long serialVersionUID = 2959215401833758529L;
-    private boolean data;
+    private String data;
 }

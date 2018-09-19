@@ -8,6 +8,8 @@ import com.example.demo.dal.model.*;
 import com.example.demo.model.CustInfoModel;
 import com.example.demo.model.CustRespModel;
 import com.example.demo.model.http.HttpDataModel;
+import com.example.demo.model.http.HttpDonateUserGoldBeansResponseModel;
+import com.example.demo.service.httpService.DanateUserGoldBeans;
 import com.example.demo.service.httpService.ValidUserRegistService;
 import com.example.demo.util.*;
 import com.github.pagehelper.PageHelper;
@@ -34,6 +36,7 @@ public class CustomerService {
     private ConfigMapper configMapper;
     private UserActionMapper userActionMapper;
     private ValidUserRegistService validUserRegistService;
+    private DanateUserGoldBeans danateUserGoldBeans;
 
     @Autowired
     public CustomerService(CustomerInfoMapper customerInfoMapper,
@@ -41,13 +44,15 @@ public class CustomerService {
                            UserGoldBeansMapper userGoldBeansMapper,
                            ConfigMapper configMapper,
                            UserActionMapper userActionMapper,
-                           ValidUserRegistService validUserRegistService) {
+                           ValidUserRegistService validUserRegistService,
+                           DanateUserGoldBeans danateUserGoldBeans) {
         this.customerInfoMapper = customerInfoMapper;
         this.custGoldBeansMapper = custGoldBeansMapper;
         this.userGoldBeansMapper = userGoldBeansMapper;
         this.configMapper = configMapper;
         this.userActionMapper = userActionMapper;
         this.validUserRegistService = validUserRegistService;
+        this.danateUserGoldBeans = danateUserGoldBeans;
     }
 
     public MessageInfo<PageInfo<CustRespModel>> getCustomerInfo(Integer userId, Integer status, Integer pageNum, Integer pageSize) {
@@ -121,48 +126,73 @@ public class CustomerService {
     }
 
     private void addUserAction(CustomerInfo customerInfoOrigin, CustomerInfo customerInfoUpdate) {
+        String mark = "";
         if (customerInfoOrigin.getIsVisit() != customerInfoUpdate.getIsVisit()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.VISIT.getName().trim());
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+                mark = customerInfoUpdate.getMark();
+            }
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.VISIT.getName().trim(),mark);
         }
         if (customerInfoOrigin.getIsPhone() != customerInfoUpdate.getIsPhone()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.PHONE.getName().trim());
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+                mark = customerInfoUpdate.getMark();
+            }
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.PHONE.getName().trim(),mark);
         }
         if (customerInfoOrigin.getIsMoney() != customerInfoUpdate.getIsMoney()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.MONEY.getName().trim());
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+                mark = customerInfoUpdate.getMark();
+            }
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.MONEY.getName().trim(),mark);
         }
         if (customerInfoOrigin.getIsInterestCust() != customerInfoUpdate.getIsInterestCust()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.INTEREST.getName().trim());
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+                mark = customerInfoUpdate.getMark();
+            }
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.INTEREST.getName().trim(),mark);
         }
         if (customerInfoOrigin.getIsGoldBeans() != customerInfoUpdate.getIsGoldBeans()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.BEANS.getName().trim());
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+                mark = customerInfoUpdate.getMark();
+            }
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.BEANS.getName().trim(),mark);
         }
         if (customerInfoOrigin.getIsCompact() != customerInfoUpdate.getIsCompact()) {
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.COMPACT.getName().trim());
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+                mark = customerInfoUpdate.getMark();
+            }
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.COMPACT.getName().trim(),mark);
         }
     }
 
     //保存用户操作动作
-    private Integer saveUserAction(Integer custId, Integer userId, String str) {
+    private Integer saveUserAction(Integer custId, Integer userId, String str,String mark) {
         UserAction userAction = new UserAction();
         userAction.setCustId(custId);
         userAction.setUserId(userId);
         if (ActionStatus.VISIT.getName().trim().equals(str)) {
             userAction.setAction(ActionStatus.VISIT.getDesc());
+            userAction.setMark(mark);
         }
         if (ActionStatus.COMPACT.getName().trim().equals(str)) {
             userAction.setAction(ActionStatus.COMPACT.getDesc());
+            userAction.setMark(mark);
         }
         if (ActionStatus.BEANS.getName().trim().equals(str)) {
             userAction.setAction(ActionStatus.BEANS.getDesc());
+            userAction.setMark(mark);
         }
         if (ActionStatus.INTEREST.getName().trim().equals(str)) {
             userAction.setAction(ActionStatus.INTEREST.getDesc());
+            userAction.setMark(mark);
         }
         if (ActionStatus.MONEY.getName().trim().equals(str)) {
             userAction.setAction(ActionStatus.MONEY.getDesc());
+            userAction.setMark(mark);
         }
         if (ActionStatus.PHONE.getName().trim().equals(str)) {
             userAction.setAction(ActionStatus.PHONE.getDesc());
+            userAction.setMark(mark);
         }
         userAction.setCreateTime(new Date());
         return userActionMapper.insert(userAction);
@@ -216,9 +246,8 @@ public class CustomerService {
         CustomerInfo customerInfos = new CustomerInfo();
         customerInfos.setId(custId);
         CustomerInfo customerInfoV1 = customerInfoMapper.selectOne(customerInfos);
-        String s = validUserRegistService.validUserRegist(customerInfoV1.getCustPhone());
-        HttpDataModel httpDataModel = JSON.parseObject(s, HttpDataModel.class);
-        if (!httpDataModel.isData()) {
+        HttpDataModel httpDataModel1 = validUserRegistService.validUserRegist(customerInfoV1.getCustPhone());
+        if (Objects.isNull(httpDataModel1) || httpDataModel1.getData().length() == 0  || "null".equals(httpDataModel1.getData())) {
             messageInfo.setContent("该用户目前还没有注册为云加工用户！赠送金豆失败!");
             return messageInfo;
         }
@@ -246,6 +275,8 @@ public class CustomerService {
             messageInfo.setContent("更新失败!");
             return messageInfo;
         }
+        HttpDonateUserGoldBeansResponseModel httpDonateUserGoldBeansResponseModel = danateUserGoldBeans.donateUserGoldBeans(customerInfoV1.getCustPhone(), goldBeansNum);
+
         userGoldBeansMapper.updateGoldBeansNum(-goldBeansNum, userId, new Date());
         CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setId(custId);
@@ -310,24 +341,42 @@ public class CustomerService {
         if (1 != insert) {
             log.info("客户金豆初始化失败");
         }
-
+        String mark = "";
         if (1 == customerInfo.getIsPhone()) {
-            saveUserAction(customerInfo.getId(), userId, "phone");
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+                mark = customerInfo.getMark();
+            }
+            saveUserAction(customerInfo.getId(), userId, "phone",mark);
         }
         if (1 == customerInfo.getIsVisit()) {
-            saveUserAction(customerInfo.getId(), userId, "visit");
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+                mark = customerInfo.getMark();
+            }
+            saveUserAction(customerInfo.getId(), userId, "visit",mark);
         }
         if (1 == customerInfo.getIsCompact()) {
-            saveUserAction(customerInfo.getId(), userId, "compact");
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+                mark = customerInfo.getMark();
+            }
+            saveUserAction(customerInfo.getId(), userId, "compact",mark);
         }
         if (1 == customerInfo.getIsInterestCust()) {
-            saveUserAction(customerInfo.getId(), userId, "interest");
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+                mark = customerInfo.getMark();
+            }
+            saveUserAction(customerInfo.getId(), userId, "interest",mark);
         }
         if (1 == customerInfo.getIsGoldBeans()) {
-            saveUserAction(customerInfo.getId(), userId, "beans");
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+                mark = customerInfo.getMark();
+            }
+            saveUserAction(customerInfo.getId(), userId, "beans",mark);
         }
         if (1 == customerInfo.getIsMoney()) {
-            saveUserAction(customerInfo.getId(), userId, "money");
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+                mark = customerInfo.getMark();
+            }
+            saveUserAction(customerInfo.getId(), userId, "money",mark);
         }
 
         log.info("报备成功");

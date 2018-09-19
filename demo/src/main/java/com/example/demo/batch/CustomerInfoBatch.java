@@ -40,7 +40,7 @@ public class CustomerInfoBatch {
         Config configInfo = configMapper.selectOne(config);
 
         for (CustomerInfo customerInfo : customerInfoList) {
-            if (this.getDidderDate(new Date(), customerInfo.getLastModifyTime()) == configInfo.getConfigValue()) {
+            if (this.getDidderDate(new Date(), customerInfo.getLastModifyTime() == null ? customerInfo.getModifyTime() : customerInfo.getLastModifyTime()) == configInfo.getConfigValue()) {
                 CustomerInfo cust = new CustomerInfo();
                 cust.setId(customerInfo.getId());
                 cust.setStatus(3);

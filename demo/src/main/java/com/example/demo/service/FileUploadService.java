@@ -67,6 +67,7 @@ public class FileUploadService {
             CustomerInfo customerInfo = new CustomerInfo();
             customerInfo.setId(custId);
             customerInfo.setCompactImg(url);
+            customerInfo.setCompactTime(new Date());
             customerInfo.setIsCompact(1);
             customerInfo.setIsCompactCheck(2);
             int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);

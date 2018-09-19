@@ -1,26 +1,25 @@
 package com.example.demo.service.httpService;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.demo.constant.HttpConnectionUrl;
 import com.example.demo.model.http.HttpDataModel;
+import com.example.demo.model.http.HttpDonateUserGoldBeansResponseModel;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
 
 /**
  * @author haijun
- * @create 2018 - 08 - 31 - 17:21
+ * @create 2018 - 09 - 13 - 17:21
  */
 @Service
-public class ValidUserRegistService {
+public class DanateUserGoldBeans {
 
-    public HttpDataModel validUserRegist(String phone) throws Exception {
-        String urlStr = HttpConnectionUrl.YUNJIAGONG.getUrl() + "/userManagerController/checkUserRegistered?mobile="+phone;
+    public HttpDonateUserGoldBeansResponseModel donateUserGoldBeans(String phone,Integer goldBeansNum) throws Exception {
+        String urlStr = HttpConnectionUrl.YUNJIAGONG.getUrl() + "/userManagerController/beanGift?mobile="+phone+"&beanNumber="+goldBeansNum;
         URL url = new URL(urlStr);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("POST");
@@ -36,8 +35,8 @@ public class ValidUserRegistService {
 //        System.out.println(bufferedReader.toString());
 //        System.out.println(stringBuffer.toString());
 //        System.out.println(Arrays.asList(stringBuffer.toString()));
-        HttpDataModel httpDataModel = JSON.parseObject(stringBuffer.toString(), HttpDataModel.class);
-        System.out.println("data is :"+httpDataModel);
-        return httpDataModel;
+        HttpDonateUserGoldBeansResponseModel httpDonateUserGoldBeansResponseModel = JSON.parseObject(stringBuffer.toString(), HttpDonateUserGoldBeansResponseModel.class);
+        System.out.println("data is :"+httpDonateUserGoldBeansResponseModel.getData());
+        return httpDonateUserGoldBeansResponseModel;
     }
 }

@@ -22,7 +22,7 @@ public class UserPerformanceMapperTest {
 
     @Test
     public void getPerformanceTest() {
-        Integer performance = userPerformanceMapper.getPerformance(1, "20180702", "20180707");
+        Double performance = userPerformanceMapper.getPerformance(1, "20180702", "20180707");
         log.info("performance is :" + performance);
     }
 

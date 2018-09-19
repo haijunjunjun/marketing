@@ -1,4 +1,4 @@
-package com.example.demo.config.datasource;
+package com.niule.yunjiagong.yunjiagong.config.datasource;
 
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -30,22 +30,22 @@ public class MyBatisConfig {
     public SqlSessionFactory sqlSessionFactoryBean() {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
-        bean.setTypeAliasesPackage("com.example.demo.dal.model");
+        bean.setTypeAliasesPackage("com.niule.yunjiagong.yunjiagong.dal.model");
 
-//        // 分页插件
-//        PageHelper pageHelper = new PageHelper();
-//        Properties properties = new Properties();
-//        properties.setProperty("reasonable", "true");
-//        properties.setProperty("supportMethodsArguments", "true");
-//        properties.setProperty("returnPageInfo", "check");
-//        properties.setProperty("params", "count=countSql");
-//        properties.setProperty("rowBoundsWithCount", "true");
-//        properties.setProperty("offsetAsPageNum", "true");
-//
-//        pageHelper.setProperties(properties);
-//
-//        // 添加插件
-//        bean.setPlugins(new Interceptor[]{pageHelper});
+        // 分页插件
+        PageHelper pageHelper = new PageHelper();
+        Properties properties = new Properties();
+        properties.setProperty("reasonable", "true");
+        properties.setProperty("supportMethodsArguments", "true");
+        properties.setProperty("returnPageInfo", "check");
+        properties.setProperty("params", "count=countSql");
+        properties.setProperty("rowBoundsWithCount", "true");
+        properties.setProperty("offsetAsPageNum", "true");
+
+        pageHelper.setProperties(properties);
+
+        // 添加插件
+        bean.setPlugins(new Interceptor[]{pageHelper});
 
         // 添加XML目录
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

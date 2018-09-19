@@ -22,7 +22,8 @@ public class CommissionBatch {
     //每周二晚上9点49执行跑批任务 （计算提成）
     //@Scheduled(cron = "0 49 09 ? * TUE")
     //每周一凌晨一点
-    @Scheduled(cron = "0 0 1 ? * MON")
+//    @Scheduled(cron = "0 0 1 ? * MON")
+    @Scheduled(cron = "0 10 13 ? * MON")
     public void executeV1() {
         log.info("prepare execute commission");
         List<UserInfo> userInfo = userInfoService.getUserInfo();
