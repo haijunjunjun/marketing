@@ -11,8 +11,18 @@
         <result column="source" jdbcType="VARCHAR" property="source"/>
         <result column="beans" jdbcType="VARCHAR" property="beans"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="sign_times" jdbcType="INTEGER" property="signTimes"/>
     </resultMap>
     <insert id="saveSignLog">
         insert into sign_log (user_id,beans,source,create_time) values (#{userId},#{beans},#{source},#{createTime})
     </insert>
+    <select id="getSignInfo" resultMap="BaseResultMap" resultType="java.util.List">
+        select * from sign_log
+        <where>
+            user_id = #{userId}
+            <if test="searchTime != null">
+                and  date_format(create_time,"%Y%m%d") = #{searchTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
 </mapper>

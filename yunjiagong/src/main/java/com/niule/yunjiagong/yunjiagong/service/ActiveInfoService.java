@@ -4,14 +4,17 @@ import com.niule.yunjiagong.yunjiagong.dal.mapper.ActiveInfoMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.RecommendLogMapper;
 import com.niule.yunjiagong.yunjiagong.dal.model.ActiveInfo;
 import com.niule.yunjiagong.yunjiagong.dal.model.RecommendLog;
+import com.niule.yunjiagong.yunjiagong.model.ActiveInfoModel;
 import com.niule.yunjiagong.yunjiagong.model.Share;
 import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
 import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,11 +33,22 @@ public class ActiveInfoService {
     @Autowired
     private UserInfoFeginService userInfoFeginService;
 
-    public List<ActiveInfo> getActiveInfo() {
+    public List<ActiveInfoModel> getActiveInfo() {
+        List<ActiveInfoModel> dataList = new ArrayList<>();
         ActiveInfo activeInfo = new ActiveInfo();
         activeInfo.setSwiches(1);
         List<ActiveInfo> activeInfos = activeInfoMapper.select(activeInfo);
-        return activeInfos;
+        if (!Objects.isNull(activeInfos) && activeInfos.size() != 0) {
+            activeInfos.forEach(activeInfoV1 -> {
+                ActiveInfoModel activeInfoModel = new ActiveInfoModel();
+                activeInfoModel.setId(activeInfoV1.getId());
+                if (!StringUtils.isEmpty(activeInfoV1.getImg()) && activeInfoV1.getImg().length() != 0) {
+                    activeInfoModel.setImgUrl(activeInfoV1.getImg());
+                }
+                dataList.add(activeInfoModel);
+            });
+        }
+        return dataList;
     }
 
     public String getLocal(Integer activityId) {

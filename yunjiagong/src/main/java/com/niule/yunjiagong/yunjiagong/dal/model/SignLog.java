@@ -38,6 +38,12 @@ public class SignLog {
     private Date createTime;
 
     /**
+     * 签到天数
+     */
+    @Column(name = "sign_times")
+    private Integer signTimes;
+
+    /**
      * @return id
      */
     public Integer getId() {
@@ -139,5 +145,23 @@ public class SignLog {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取签到天数
+     *
+     * @return sign_times - 签到天数
+     */
+    public Integer getSignTimes() {
+        return signTimes;
+    }
+
+    /**
+     * 设置签到天数
+     *
+     * @param signTimes 签到天数
+     */
+    public void setSignTimes(Integer signTimes) {
+        this.signTimes = signTimes;
     }
 }

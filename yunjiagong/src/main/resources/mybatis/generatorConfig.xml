@@ -94,7 +94,7 @@
         <!--<table tableName="complaint">-->
         <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="subscribe_num">
+        <table tableName="account_bank">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
         <!--<table tableName="city">-->

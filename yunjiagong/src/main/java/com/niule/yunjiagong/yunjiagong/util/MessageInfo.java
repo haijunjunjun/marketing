@@ -12,4 +12,6 @@ import java.io.Serializable;
 public class MessageInfo implements Serializable {
     private static final long serialVersionUID = 3775809485459514694L;
     private String content;
+    private Integer realDuration;
+    private Integer goldBeans = 0;
 }

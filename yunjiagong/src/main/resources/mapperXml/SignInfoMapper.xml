@@ -20,4 +20,13 @@
         #{userId}
     </update>
 
+    <select id="checkSign" resultType="java.lang.Integer">
+        select count(*) from sign_info
+        <where>
+            user_id = #{userId}
+            <if test="searchTime != null">
+                and  date_format(sign_date,"%Y%m%d") = #{searchTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
 </mapper>
