@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.UnitMapper">
+  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.Unit">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="createTimeStamp" jdbcType="TIMESTAMP" property="createtimestamp" />
+    <result column="updateTimeStamp" jdbcType="TIMESTAMP" property="updatetimestamp" />
+    <result column="creatorId" jdbcType="BIGINT" property="creatorid" />
+    <result column="creatorName" jdbcType="VARCHAR" property="creatorname" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <select id="getUnitInfo" resultMap="BaseResultMap" resultType="java.util.List">
+    select * from unit order by sort asc
+  </select>
+</mapper>
