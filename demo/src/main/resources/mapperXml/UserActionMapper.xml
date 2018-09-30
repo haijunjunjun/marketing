@@ -11,5 +11,6 @@
     <result column="action" jdbcType="VARCHAR" property="action" />
     <result column="mark" jdbcType="VARCHAR" property="mark" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
 </mapper>

@@ -55,6 +55,12 @@ public class PayRecordFinal {
     private Date modifyTime;
 
     /**
+     * 支付方式（1：微信支付   2：支付宝）
+     */
+    @Column(name = "pay_type")
+    private Integer payType;
+
+    /**
      * 获取主键id
      *
      * @return id - 主键id
@@ -196,5 +202,23 @@ public class PayRecordFinal {
      */
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    /**
+     * 获取支付方式（1：微信支付   2：支付宝）
+     *
+     * @return pay_type - 支付方式（1：微信支付   2：支付宝）
+     */
+    public Integer getPayType() {
+        return payType;
+    }
+
+    /**
+     * 设置支付方式（1：微信支付   2：支付宝）
+     *
+     * @param payType 支付方式（1：微信支付   2：支付宝）
+     */
+    public void setPayType(Integer payType) {
+        this.payType = payType;
     }
 }

@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.config.annotation.Operator;
 import com.example.demo.dal.model.CustomerInfo;
 import com.example.demo.model.*;
+import com.example.demo.model.http.HttpCustGoldBeansDetail;
 import com.example.demo.service.CustomerService;
 import com.example.demo.util.MessageInfo;
 import com.example.demo.util.MessageInfoV1;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.text.ParseException;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -94,5 +97,72 @@ public class CustomerController {
     @RequestMapping(value = "/marketing/cust/info", method = RequestMethod.POST)
     public ResponseEntity<MessageInfo<CustInfoModel>> getCustInfo(@Valid @NotNull @RequestParam("custId") Integer custId) {
         return ResponseEntity.ok(customerService.getCustInfo(custId));
+    }
+
+    /**
+     * 客户发票申请
+     */
+    @RequestMapping(value = "/marketing/cust/receipt/apply", method = RequestMethod.POST)
+    public ResponseEntity<MessageInfo<String>> custReceiptApply(@Valid @NotNull @Operator CurOperator curOperator,
+                                                                @Valid @NotNull @RequestBody(required = true) UserCustReceiptApplyModel userCustReceiptApplyModel) {
+        return ResponseEntity.ok(customerService.custReceiptApply(curOperator.getId(), userCustReceiptApplyModel));
+    }
+
+    /**
+     * 获取客户详情基本信息
+     */
+    @RequestMapping(value = "/marketing/customer/detail/info", method = RequestMethod.POST)
+    public ResponseEntity<CustBaseInfo> getCustomerDetailInfo(@Valid @NotNull @RequestBody(required = true) CustModel custModel) {
+        return ResponseEntity.ok(customerService.getCustBaseInfo(custModel));
+    }
+
+    /**
+     * 客户详情信息动作记录
+     */
+    @RequestMapping(value = "/marketing/customer/detail/info/action", method = RequestMethod.POST)
+    public ResponseEntity<MessageInfo<String>> custBaseAction(@Valid @NotNull @Operator CurOperator curOperator,
+                                                              @Valid @NotNull @RequestBody(required = true) CustBaseActionModel custBaseActionModel) throws ParseException {
+        return ResponseEntity.ok(customerService.custBaseAction(curOperator.getId(), custBaseActionModel.getCustId(), custBaseActionModel.getActionCode(), custBaseActionModel.getOperateTime(), custBaseActionModel.getMark()));
+    }
+
+    /**
+     * 客户详情操作记录
+     */
+    @RequestMapping(value = "/marketing/customer/detail/info/operate", method = RequestMethod.POST)
+    public ResponseEntity<List<CustBaseOperateModel>> custBaseOperate(@Valid @NotNull @Operator CurOperator curOperator,
+                                                                      @Valid @NotNull @RequestBody(required = true) CustModel custModel) {
+        return ResponseEntity.ok(customerService.custBaseOperate(curOperator.getId(), custModel.getCustId()));
+    }
+
+    /**
+     * 客户详情操作记录 编辑信息获取
+     */
+    @RequestMapping(value = "/marketing/customer/detail/operate/edit/info", method = RequestMethod.POST)
+    public ResponseEntity<CustBaseOperateEditInfoModel> custBaseOperateEditInfo(@Valid @NotNull @RequestBody(required = true) IdModel idModel) {
+        return ResponseEntity.ok(customerService.getCustBaseOperateEditInfo(idModel.getId()));
+    }
+
+    /**
+     * 客户详情操作记录 编辑操作
+     */
+    @RequestMapping(value = "/marketing/customer/detail/operate/edit", method = RequestMethod.POST)
+    public ResponseEntity<MessageInfo<String>> custBaseOperateEdit(@Valid @NotNull @RequestBody(required = true) CustBaseOperateEditInfoModel custBaseOperateEditInfoModel) throws ParseException {
+        return ResponseEntity.ok(customerService.custBaseOperateEdit(custBaseOperateEditInfoModel));
+    }
+
+    /**
+     * 客户详情操作记录 删除操作
+     */
+    @RequestMapping(value = "/marketing/customer/detail/operate/delete", method = RequestMethod.POST)
+    public ResponseEntity<MessageInfo<String>> custBaseOperateDelete(@Valid @NotNull @RequestBody(required = true) IdModel idModel) throws ParseException {
+        return ResponseEntity.ok(customerService.custBaseOperateDelete(idModel));
+    }
+
+    /**
+     * 金豆明细
+     */
+    @RequestMapping(value = "/marketing/customer/gold/detail/info", method = RequestMethod.POST)
+    public ResponseEntity<MessageInfo<List<HttpCustGoldBeansDetail>>> custGoldDetailInfo(@Valid @NotNull @RequestBody(required = true) CustModel custModel) throws Exception {
+        return ResponseEntity.ok(customerService.getCustGoldBeansDetail(custModel.getCustId()));
     }
 }

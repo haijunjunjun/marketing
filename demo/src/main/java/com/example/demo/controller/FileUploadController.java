@@ -26,7 +26,7 @@ public class FileUploadController {
     @Description("上传客户的合同图片")
     @RequestMapping(value = "/marketing/upload", method = RequestMethod.POST)
     public ResponseEntity<MessageInfoV1> uploadFile(@Valid @NotNull @RequestBody(required = true) Base64Model base64Model) {
-        return ResponseEntity.ok(fileUploadService.uploadFileV1(base64Model.getId(), base64Model.getBase64()));
+        return ResponseEntity.ok(fileUploadService.uploadFileV1(base64Model.getId(), base64Model.getBase64(), base64Model.getCompactNo()));
     }
 
     @Description("合同审核")

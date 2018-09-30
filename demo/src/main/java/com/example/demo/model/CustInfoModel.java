@@ -27,6 +27,11 @@ public class CustInfoModel implements Serializable {
     private String companyType;
 
     /**
+     * 公司行业说明
+     */
+    private String companyTypeDesc;
+
+    /**
      * 状态 （1：待跟进 2：已签约 3：已放弃）
      */
     private Integer status;

@@ -58,6 +58,9 @@
         <table tableName="pay_record_final">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
+        <!--<table tableName="pay_record_final">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
         <!--<table tableName="cust_gold_beans">-->
         <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->

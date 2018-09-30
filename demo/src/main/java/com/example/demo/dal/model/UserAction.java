@@ -41,6 +41,12 @@ public class UserAction {
     private Date createTime;
 
     /**
+     * 修改时间
+     */
+    @Column(name = "modify_time")
+    private Date modifyTime;
+
+    /**
      * 获取主键id
      *
      * @return id - 主键id
@@ -146,5 +152,23 @@ public class UserAction {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取修改时间
+     *
+     * @return modify_time - 修改时间
+     */
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    /**
+     * 设置修改时间
+     *
+     * @param modifyTime 修改时间
+     */
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }

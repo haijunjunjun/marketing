@@ -13,4 +13,5 @@ public class Base64Model implements Serializable {
     private static final long serialVersionUID = -6815143814436650018L;
     private Integer id;
     private String base64;
+    private String compactNo;
 }

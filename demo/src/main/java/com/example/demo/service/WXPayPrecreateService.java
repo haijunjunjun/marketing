@@ -179,13 +179,20 @@ public class WXPayPrecreateService {
             payRecordMapper.updateByPrimaryKeySelective(payRecord2);
 
             Integer custId = Integer.parseInt(reqData.get("attach").trim());
+            CustomerInfo customerInfoV3 = new CustomerInfo();
+            customerInfoV3.setId(custId);
+            CustomerInfo customerInfos = customerInfoMapper.selectOne(customerInfoV3);
+
             PayRecordFinal payRecordFinal = new PayRecordFinal();
             payRecordFinal.setCustId(custId);
-            payRecordFinal.setCompactNo("--");
+            if (!StringUtils.isEmpty(customerInfos.getCompactNo()) && customerInfos.getCompactNo().length() != 0){
+                payRecordFinal.setCompactNo(customerInfos.getCompactNo());
+            }
             payRecordFinal.setCreateTime(new Date());
             payRecordFinal.setOutTradeNo(tradeNo);
             payRecordFinal.setPayResult("success");
             payRecordFinal.setReturnMsg("success_pay");
+            payRecordFinal.setPayType(1);
             payRecordFinalMapper.insert(payRecordFinal);
 
             CustomerInfo customerInfo = new CustomerInfo();

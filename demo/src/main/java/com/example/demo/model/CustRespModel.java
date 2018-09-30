@@ -47,6 +47,11 @@ public class CustRespModel implements Serializable {
     private Integer status;
 
     /**
+     * 发票申请状态 (0:未申请  1 ：审核中 2：已通过 3：未通过)
+     */
+    private Integer receiptStatus;
+
+    /**
      * 客户名称
      */
     @Column(name = "cust_name")

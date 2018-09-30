@@ -7,9 +7,11 @@ import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.example.demo.config.aliPay.AliPayConfig;
 import com.example.demo.dal.mapper.AlipayRecordMapper;
 import com.example.demo.dal.mapper.CustomerInfoMapper;
+import com.example.demo.dal.mapper.PayRecordFinalMapper;
 import com.example.demo.dal.mapper.UserPerformanceMapper;
 import com.example.demo.dal.model.AlipayRecord;
 import com.example.demo.dal.model.CustomerInfo;
+import com.example.demo.dal.model.PayRecordFinal;
 import com.example.demo.dal.model.UserPerformance;
 import com.example.demo.model.AliPayResponseModel;
 import com.example.demo.util.AliPayMessageInfo;
@@ -46,6 +48,8 @@ public class AliPayServiceV1 {
     private AlipayRecordMapper alipayRecordMapper;
     @Autowired
     private UserPerformanceMapper userPerformanceMapper;
+    @Autowired
+    private PayRecordFinalMapper payRecordFinalMapper;
 
     //支付宝支付
     public AliPayMessageInfo<String> aliPayPrecreate(Integer custId) throws Exception {
@@ -150,13 +154,27 @@ public class AliPayServiceV1 {
             if (tradeStatus.equals("TRADE_FINISHED") || tradeStatus.equals("TRADE_SUCCESS")) {
                 alipayRecordV1.setPayStatus("SUCCESS_PAY");
                 alipayRecordMapper.updateByPrimaryKeySelective(alipayRecordV1);
+
+                CustomerInfo customerInfoV2 = customerInfoMapper.selectByPrimaryKey(alipayRecordInfo.getCustId());
+
+                PayRecordFinal payRecordFinal = new PayRecordFinal();
+                payRecordFinal.setCustId(alipayRecordInfo.getCustId());
+                payRecordFinal.setOutTradeNo(outTradeNo);
+                payRecordFinal.setReturnMsg("SUCCESS_PAY");
+                payRecordFinal.setPayResult("SUCCESS_PAY");
+                payRecordFinal.setCreateTime(new Date());
+                if (!StringUtils.isEmpty(customerInfoV2.getCompactNo()) && customerInfoV2.getCompactNo().length() != 0){
+                    payRecordFinal.setCompactNo(customerInfoV2.getCompactNo());
+                }
+                payRecordFinal.setPayType(2);
+                payRecordFinalMapper.insert(payRecordFinal);
+
                 CustomerInfo customerInfo = new CustomerInfo();
                 customerInfo.setId(alipayRecordInfo.getCustId());
                 customerInfo.setIsMoney(1);
                 customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
 
                 UserPerformance userPerformance = new UserPerformance();
-                CustomerInfo customerInfoV2 = customerInfoMapper.selectByPrimaryKey(alipayRecordInfo.getCustId());
                 userPerformance.setCustId(customerInfoV2.getId());
                 userPerformance.setUserId(customerInfoV2.getUserId());
                 userPerformance.setCreateTime(new Date());

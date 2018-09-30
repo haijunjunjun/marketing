@@ -25,6 +25,12 @@ public class PayRecord {
     private String outTradeNo;
 
     /**
+     * 合同编号
+     */
+    @Column(name = "compact_no")
+    private String compactNo;
+
+    /**
      * 交易类型
      */
     @Column(name = "trade_type")
@@ -153,6 +159,24 @@ public class PayRecord {
      */
     public void setOutTradeNo(String outTradeNo) {
         this.outTradeNo = outTradeNo == null ? null : outTradeNo.trim();
+    }
+
+    /**
+     * 获取合同编号
+     *
+     * @return compact_no - 合同编号
+     */
+    public String getCompactNo() {
+        return compactNo;
+    }
+
+    /**
+     * 设置合同编号
+     *
+     * @param compactNo 合同编号
+     */
+    public void setCompactNo(String compactNo) {
+        this.compactNo = compactNo == null ? null : compactNo.trim();
     }
 
     /**

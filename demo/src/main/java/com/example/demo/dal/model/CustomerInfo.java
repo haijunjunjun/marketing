@@ -31,6 +31,12 @@ public class CustomerInfo {
     private String companyType;
 
     /**
+     * 公司行业说明
+     */
+    @Column(name = "company_type_desc")
+    private String companyTypeDesc;
+
+    /**
      * 状态 （1：待跟进 2：已签约 3：已放弃 4：已删除）
      */
     private Integer status;
@@ -136,6 +142,12 @@ public class CustomerInfo {
      */
     @Column(name = "compact_img")
     private String compactImg;
+
+    /**
+     * 合同编号
+     */
+    @Column(name = "compact_no")
+    private String compactNo;
 
     /**
      * 备注
@@ -253,6 +265,24 @@ public class CustomerInfo {
      */
     public void setCompanyType(String companyType) {
         this.companyType = companyType == null ? null : companyType.trim();
+    }
+
+    /**
+     * 获取公司行业说明
+     *
+     * @return company_type_desc - 公司行业说明
+     */
+    public String getCompanyTypeDesc() {
+        return companyTypeDesc;
+    }
+
+    /**
+     * 设置公司行业说明
+     *
+     * @param companyTypeDesc 公司行业说明
+     */
+    public void setCompanyTypeDesc(String companyTypeDesc) {
+        this.companyTypeDesc = companyTypeDesc == null ? null : companyTypeDesc.trim();
     }
 
     /**
@@ -577,6 +607,24 @@ public class CustomerInfo {
      */
     public void setCompactImg(String compactImg) {
         this.compactImg = compactImg == null ? null : compactImg.trim();
+    }
+
+    /**
+     * 获取合同编号
+     *
+     * @return compact_no - 合同编号
+     */
+    public String getCompactNo() {
+        return compactNo;
+    }
+
+    /**
+     * 设置合同编号
+     *
+     * @param compactNo 合同编号
+     */
+    public void setCompactNo(String compactNo) {
+        this.compactNo = compactNo == null ? null : compactNo.trim();
     }
 
     /**

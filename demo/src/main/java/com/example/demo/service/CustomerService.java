@@ -1,15 +1,15 @@
 package com.example.demo.service;
 
-import com.alibaba.fastjson.JSON;
 import com.example.demo.constant.ActionStatus;
 import com.example.demo.constant.CustomerStatus;
 import com.example.demo.dal.mapper.*;
 import com.example.demo.dal.model.*;
-import com.example.demo.model.CustInfoModel;
-import com.example.demo.model.CustRespModel;
+import com.example.demo.model.*;
+import com.example.demo.model.http.HttpCustGoldBeansDetail;
 import com.example.demo.model.http.HttpDataModel;
 import com.example.demo.model.http.HttpDonateUserGoldBeansResponseModel;
 import com.example.demo.service.httpService.DanateUserGoldBeans;
+import com.example.demo.service.httpService.HttpCustGoldBeansAction;
 import com.example.demo.service.httpService.ValidUserRegistService;
 import com.example.demo.util.*;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +38,9 @@ public class CustomerService {
     private UserActionMapper userActionMapper;
     private ValidUserRegistService validUserRegistService;
     private DanateUserGoldBeans danateUserGoldBeans;
+    private UserReceiptApplyMapper userReceiptApplyMapper;
+    private UserInfoMapper userInfoMapper;
+    private HttpCustGoldBeansAction httpCustGoldBeansAction;
 
     @Autowired
     public CustomerService(CustomerInfoMapper customerInfoMapper,
@@ -45,7 +49,10 @@ public class CustomerService {
                            ConfigMapper configMapper,
                            UserActionMapper userActionMapper,
                            ValidUserRegistService validUserRegistService,
-                           DanateUserGoldBeans danateUserGoldBeans) {
+                           DanateUserGoldBeans danateUserGoldBeans,
+                           UserReceiptApplyMapper userReceiptApplyMapper,
+                           UserInfoMapper userInfoMapper,
+                           HttpCustGoldBeansAction httpCustGoldBeansAction) {
         this.customerInfoMapper = customerInfoMapper;
         this.custGoldBeansMapper = custGoldBeansMapper;
         this.userGoldBeansMapper = userGoldBeansMapper;
@@ -53,6 +60,9 @@ public class CustomerService {
         this.userActionMapper = userActionMapper;
         this.validUserRegistService = validUserRegistService;
         this.danateUserGoldBeans = danateUserGoldBeans;
+        this.userReceiptApplyMapper = userReceiptApplyMapper;
+        this.userInfoMapper = userInfoMapper;
+        this.httpCustGoldBeansAction = httpCustGoldBeansAction;
     }
 
     public MessageInfo<PageInfo<CustRespModel>> getCustomerInfo(Integer userId, Integer status, Integer pageNum, Integer pageSize) {
@@ -86,6 +96,16 @@ public class CustomerService {
             custRespModel.setCompactTimeV1(sdf.format(c.getCompactTime() == null ? c.getModifyTime() : c.getCompactTime()));
             custRespModel.setAbandonTimeV1(sdf.format(c.getAbandonTime() == null ? c.getModifyTime() : c.getAbandonTime()));
             custRespModel.setDeleteTimeV1(sdf.format(c.getDeleteTime() == null ? c.getModifyTime() : c.getDeleteTime()));
+
+            UserReceiptApply userReceiptApply = new UserReceiptApply();
+            userReceiptApply.setUserId(userId);
+            userReceiptApply.setCustId(c.getId());
+            UserReceiptApply userReceiptApplyV1 = userReceiptApplyMapper.selectOne(userReceiptApply);
+            if (!Objects.isNull(userReceiptApplyV1) && !Objects.isNull(userReceiptApplyV1.getStatus())){
+                custRespModel.setReceiptStatus(userReceiptApplyV1.getStatus());
+            }else {
+                custRespModel.setReceiptStatus(4);
+            }
             custRespModelList.add(custRespModel);
         }
         BeanUtils.copyProperties(customerInfoPageInfo, custRespModelPageInfo);
@@ -128,45 +148,45 @@ public class CustomerService {
     private void addUserAction(CustomerInfo customerInfoOrigin, CustomerInfo customerInfoUpdate) {
         String mark = "";
         if (customerInfoOrigin.getIsVisit() != customerInfoUpdate.getIsVisit()) {
-            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0) {
                 mark = customerInfoUpdate.getMark();
             }
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.VISIT.getName().trim(),mark);
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.VISIT.getName().trim(), mark);
         }
         if (customerInfoOrigin.getIsPhone() != customerInfoUpdate.getIsPhone()) {
-            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0) {
                 mark = customerInfoUpdate.getMark();
             }
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.PHONE.getName().trim(),mark);
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.PHONE.getName().trim(), mark);
         }
         if (customerInfoOrigin.getIsMoney() != customerInfoUpdate.getIsMoney()) {
-            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0) {
                 mark = customerInfoUpdate.getMark();
             }
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.MONEY.getName().trim(),mark);
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.MONEY.getName().trim(), mark);
         }
         if (customerInfoOrigin.getIsInterestCust() != customerInfoUpdate.getIsInterestCust()) {
-            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0) {
                 mark = customerInfoUpdate.getMark();
             }
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.INTEREST.getName().trim(),mark);
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.INTEREST.getName().trim(), mark);
         }
         if (customerInfoOrigin.getIsGoldBeans() != customerInfoUpdate.getIsGoldBeans()) {
-            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0) {
                 mark = customerInfoUpdate.getMark();
             }
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.BEANS.getName().trim(),mark);
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.BEANS.getName().trim(), mark);
         }
         if (customerInfoOrigin.getIsCompact() != customerInfoUpdate.getIsCompact()) {
-            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfoUpdate.getMark()) && customerInfoUpdate.getMark().length() != 0) {
                 mark = customerInfoUpdate.getMark();
             }
-            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.COMPACT.getName().trim(),mark);
+            saveUserAction(customerInfoUpdate.getId(), customerInfoUpdate.getUserId(), ActionStatus.COMPACT.getName().trim(), mark);
         }
     }
 
     //保存用户操作动作
-    private Integer saveUserAction(Integer custId, Integer userId, String str,String mark) {
+    private Integer saveUserAction(Integer custId, Integer userId, String str, String mark) {
         UserAction userAction = new UserAction();
         userAction.setCustId(custId);
         userAction.setUserId(userId);
@@ -247,7 +267,7 @@ public class CustomerService {
         customerInfos.setId(custId);
         CustomerInfo customerInfoV1 = customerInfoMapper.selectOne(customerInfos);
         HttpDataModel httpDataModel1 = validUserRegistService.validUserRegist(customerInfoV1.getCustPhone());
-        if (Objects.isNull(httpDataModel1) || httpDataModel1.getData().length() == 0  || "null".equals(httpDataModel1.getData())) {
+        if (Objects.isNull(httpDataModel1) || Objects.isNull(httpDataModel1.getData()) || httpDataModel1.getData().length() == 0 || "null".equals(httpDataModel1.getData())) {
             messageInfo.setContent("该用户目前还没有注册为云加工用户！赠送金豆失败!");
             return messageInfo;
         }
@@ -287,6 +307,14 @@ public class CustomerService {
             log.info("客户信息更新异常!");
             throw new BizRuntimeException("客户信息更新异常!");
         }
+        UserAction userAction = new UserAction();
+        userAction.setUserId(userId);
+        userAction.setCreateTime(new Date());
+        userAction.setAction("已赠送金豆");
+        userAction.setCustId(custId);
+        userAction.setMark("");
+        userActionMapper.insert(userAction);
+
         messageInfo.setContent("赠送成功！");
         return messageInfo;
     }
@@ -343,40 +371,40 @@ public class CustomerService {
         }
         String mark = "";
         if (1 == customerInfo.getIsPhone()) {
-            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0) {
                 mark = customerInfo.getMark();
             }
-            saveUserAction(customerInfo.getId(), userId, "phone",mark);
+            saveUserAction(customerInfo.getId(), userId, "phone", mark);
         }
         if (1 == customerInfo.getIsVisit()) {
-            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0) {
                 mark = customerInfo.getMark();
             }
-            saveUserAction(customerInfo.getId(), userId, "visit",mark);
+            saveUserAction(customerInfo.getId(), userId, "visit", mark);
         }
         if (1 == customerInfo.getIsCompact()) {
-            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0) {
                 mark = customerInfo.getMark();
             }
-            saveUserAction(customerInfo.getId(), userId, "compact",mark);
+            saveUserAction(customerInfo.getId(), userId, "compact", mark);
         }
         if (1 == customerInfo.getIsInterestCust()) {
-            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0) {
                 mark = customerInfo.getMark();
             }
-            saveUserAction(customerInfo.getId(), userId, "interest",mark);
+            saveUserAction(customerInfo.getId(), userId, "interest", mark);
         }
         if (1 == customerInfo.getIsGoldBeans()) {
-            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0) {
                 mark = customerInfo.getMark();
             }
-            saveUserAction(customerInfo.getId(), userId, "beans",mark);
+            saveUserAction(customerInfo.getId(), userId, "beans", mark);
         }
         if (1 == customerInfo.getIsMoney()) {
-            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0){
+            if (!StringUtils.isEmpty(customerInfo.getMark()) && customerInfo.getMark().length() != 0) {
                 mark = customerInfo.getMark();
             }
-            saveUserAction(customerInfo.getId(), userId, "money",mark);
+            saveUserAction(customerInfo.getId(), userId, "money", mark);
         }
 
         log.info("报备成功");
@@ -429,5 +457,191 @@ public class CustomerService {
         messageInfo.setData(configInfo.getConfigValue());
         messageInfo.setContent("success");
         return messageInfo;
+    }
+
+    public MessageInfo<String> custReceiptApply(Integer userId, UserCustReceiptApplyModel userCustReceiptApplyModel) {
+        MessageInfo<String> messageInfo = new MessageInfo<>();
+        UserReceiptApply userReceiptApply = new UserReceiptApply();
+        userReceiptApply.setUserId(userId);
+        userReceiptApply.setCustId(userCustReceiptApplyModel.getCustId());
+        if (!StringUtils.isEmpty(userCustReceiptApplyModel.getCompanyName()) && userCustReceiptApplyModel.getCompanyName().length() != 0){
+            userReceiptApply.setCompanyName(userCustReceiptApplyModel.getCompanyName());
+        }
+        if (!StringUtils.isEmpty(userCustReceiptApplyModel.getCustReceiptAddress()) && userCustReceiptApplyModel.getCustReceiptAddress().length() != 0){
+            userReceiptApply.setCustReceiptAddress(userCustReceiptApplyModel.getCustReceiptAddress());
+        }
+        if (!StringUtils.isEmpty(userCustReceiptApplyModel.getCustReceiptName()) && userCustReceiptApplyModel.getCustReceiptName().length() != 0){
+            userReceiptApply.setApplyUserName(userCustReceiptApplyModel.getCustReceiptName());
+        }
+        if (!StringUtils.isEmpty(userCustReceiptApplyModel.getCustReceiptPhone()) && userCustReceiptApplyModel.getCustReceiptPhone().length() != 0){
+            userReceiptApply.setApplyUserPhone(userCustReceiptApplyModel.getCustReceiptPhone());
+        }
+        if (!StringUtils.isEmpty(userCustReceiptApplyModel.getDutyParagraph()) && userCustReceiptApplyModel.getDutyParagraph().length() != 0){
+            userReceiptApply.setDutyParagraph(userCustReceiptApplyModel.getDutyParagraph());
+        }
+        if (!StringUtils.isEmpty(userCustReceiptApplyModel.getReceiptTitle()) && userCustReceiptApplyModel.getReceiptTitle().length() != 0){
+            userReceiptApply.setReceiptTitle(userCustReceiptApplyModel.getReceiptTitle());
+        }
+        userReceiptApply.setCreateTime(new Date());
+        userReceiptApply.setApplyTime(new Date());
+        userReceiptApply.setStatus(1);
+        int insert = userReceiptApplyMapper.insert(userReceiptApply);
+        if (1 != insert){
+            log.info("发票申请失败");
+            messageInfo.setContent("发票申请失败");
+            return messageInfo;
+        }
+        messageInfo.setContent("发票申请成功");
+        return messageInfo;
+    }
+
+    public CustBaseInfo getCustBaseInfo (CustModel custModel){
+        CustBaseInfo custBaseInfo = new CustBaseInfo();
+        CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setId(custModel.getCustId());
+        CustomerInfo customerInfoV1 = customerInfoMapper.selectOne(customerInfo);
+        if (!StringUtils.isEmpty(customerInfoV1.getCompanyAddr()) && customerInfoV1.getCompanyAddr().length() != 0){
+            custBaseInfo.setAddress(customerInfoV1.getCompanyAddr());
+        }
+        if (!StringUtils.isEmpty(customerInfoV1.getCompanyName()) && customerInfoV1.getCompanyName().length() != 0){
+            custBaseInfo.setCompanyName(customerInfoV1.getCompanyName());
+        }
+        if (!StringUtils.isEmpty(customerInfoV1.getCompanyType()) && customerInfoV1.getCompanyType().length() != 0){
+            custBaseInfo.setCompanyType(customerInfoV1.getCompanyType());
+        }
+        if (!StringUtils.isEmpty(customerInfoV1.getCompanyTypeDesc()) && customerInfoV1.getCompanyTypeDesc().length() != 0){
+            custBaseInfo.setCompanyTypeDesc(customerInfoV1.getCompanyTypeDesc());
+        }
+        if (!StringUtils.isEmpty(customerInfoV1.getCustName()) && customerInfoV1.getCustName().length() != 0){
+            custBaseInfo.setCustName(customerInfoV1.getCustName());
+        }
+        if (!StringUtils.isEmpty(customerInfoV1.getCustPhone()) && customerInfoV1.getCustPhone().length() != 0){
+            custBaseInfo.setCustPhone(customerInfoV1.getCustPhone());
+        }
+        if (!StringUtils.isEmpty(customerInfoV1.getMark()) && customerInfoV1.getMark().length() != 0){
+            custBaseInfo.setMark(customerInfoV1.getMark());
+        }
+        return custBaseInfo;
+    }
+
+    public MessageInfo<String> custBaseAction (Integer userId,Integer custId,String actionCode,String operateTime,String mark) throws ParseException {
+        MessageInfo<String> messageInfo = new MessageInfo<>();
+        UserAction userAction = new UserAction();
+        userAction.setUserId(userId);
+        userAction.setCustId(custId);
+        if (!StringUtils.isEmpty(operateTime) && operateTime.length() != 0){
+            userAction.setCreateTime(DateUtil.dateStrV3(operateTime));
+        }else {
+            userAction.setCreateTime(new Date());
+        }
+        if (!StringUtils.isEmpty(mark) && mark.length() != 0){
+            userAction.setMark(mark);
+        }
+        userAction.setAction(CustBaseAction.getNameByCode(actionCode));
+        int insert = userActionMapper.insert(userAction);
+        if (1 != insert){
+            messageInfo.setContent("记录失败");
+            return messageInfo;
+        }
+        messageInfo.setContent("记录成功");
+        return messageInfo;
+    }
+
+    public List<CustBaseOperateModel> custBaseOperate (Integer userId,Integer custId){
+        List<CustBaseOperateModel> dataList = new ArrayList<>();
+        UserAction userAction = new UserAction();
+        userAction.setUserId(userId);
+        userAction.setCustId(custId);
+        List<UserAction> userActionList = userActionMapper.select(userAction);
+        if (!Objects.isNull(userActionList) && userActionList.size() != 0){
+            userActionList.forEach(userActionInfo -> {
+                CustBaseOperateModel custBaseOperateModel = new CustBaseOperateModel();
+                custBaseOperateModel.setId(userActionInfo.getId());
+                if (!StringUtils.isEmpty(userActionInfo.getAction()) && userActionInfo.getAction().length() != 0){
+                    custBaseOperateModel.setActionName(userActionInfo.getAction());
+                    if (ActionStatus.PHONE.getDesc().equals(userActionInfo.getAction().trim())
+                            || ActionStatus.VISIT.getDesc().equals(userActionInfo.getAction().trim())
+                            || ActionStatus.INTEREST.getDesc().equals(userActionInfo.getAction().trim())){
+                        custBaseOperateModel.setIsEdit("1");
+                    }else {
+                        custBaseOperateModel.setIsEdit("0");
+                    }
+                }
+                if (!Objects.isNull(userActionInfo.getModifyTime())){
+                    custBaseOperateModel.setOperateTime(DateUtil.dateStrV2(userActionInfo.getModifyTime()));
+                }else {
+                    custBaseOperateModel.setOperateTime(DateUtil.dateStrV2(userActionInfo.getCreateTime()));
+                }
+                UserInfo userInfo = new UserInfo();
+                userInfo.setId(userId);
+                UserInfo userInfos = userInfoMapper.selectOne(userInfo);
+                if (Objects.isNull(userInfos) && !StringUtils.isEmpty(userInfos.getRealName()) && userInfos.getRealName().length() != 0){
+                    custBaseOperateModel.setUserName(userInfos.getRealName());
+                }
+                dataList.add(custBaseOperateModel);
+            });
+        }
+        return dataList;
+    }
+
+    public CustBaseOperateEditInfoModel getCustBaseOperateEditInfo(Integer id){
+        CustBaseOperateEditInfoModel custBaseOperateEditInfoModel = new CustBaseOperateEditInfoModel();
+        UserAction userAction = new UserAction();
+        userAction.setId(id);
+        UserAction userActionInfo = userActionMapper.selectOne(userAction);
+        if (!Objects.isNull(userActionInfo)){
+            if (!Objects.isNull(userActionInfo.getModifyTime())){
+                custBaseOperateEditInfoModel.setOperateTime(DateUtil.dateStrV2(userActionInfo.getModifyTime()));
+            }else {
+                custBaseOperateEditInfoModel.setOperateTime(DateUtil.dateStrV2(userActionInfo.getCreateTime()));
+            }
+            if (!StringUtils.isEmpty(userActionInfo.getAction()) && userActionInfo.getAction().length() != 0){
+                custBaseOperateEditInfoModel.setMark(userActionInfo.getMark());
+            }
+            custBaseOperateEditInfoModel.setId(userActionInfo.getId());
+        }
+        return custBaseOperateEditInfoModel;
+    }
+
+    public MessageInfo<String> custBaseOperateEdit (CustBaseOperateEditInfoModel custBaseOperateEditInfoModel) throws ParseException {
+        MessageInfo<String> messageInfo = new MessageInfo<>();
+        UserAction userAction = new UserAction();
+        userAction.setId(custBaseOperateEditInfoModel.getId());
+        if (!StringUtils.isEmpty(custBaseOperateEditInfoModel.getOperateTime()) && custBaseOperateEditInfoModel.getOperateTime().length() != 0){
+            userAction.setModifyTime(DateUtil.dateStrV3(custBaseOperateEditInfoModel.getOperateTime()));
+        }
+        if (!StringUtils.isEmpty(custBaseOperateEditInfoModel.getMark()) && custBaseOperateEditInfoModel.getMark().length() != 0){
+            userAction.setMark(custBaseOperateEditInfoModel.getMark());
+        }
+        int i = userActionMapper.updateByPrimaryKeySelective(userAction);
+        if (1 != i){
+            messageInfo.setContent("更新失败");
+            return messageInfo;
+        }
+        messageInfo.setContent("更新成功");
+        return messageInfo;
+    }
+
+    public MessageInfo<String> custBaseOperateDelete (IdModel idModel){
+        MessageInfo<String> messageInfo = new MessageInfo<>();
+        int i = userActionMapper.deleteByPrimaryKey(idModel.getId());
+        if (1 != i){
+            messageInfo.setContent("记录删除失败");
+            return messageInfo;
+        }
+        messageInfo.setContent("记录删除成功");
+        return messageInfo;
+    }
+
+    public MessageInfo<List<HttpCustGoldBeansDetail>> getCustGoldBeansDetail (Integer custId) throws Exception {
+        CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setId(custId);
+        CustomerInfo customerInfos = customerInfoMapper.selectOne(customerInfo);
+        if (!Objects.isNull(customerInfos) && !StringUtils.isEmpty(customerInfos.getCustPhone()) && customerInfos.getCustPhone().length() != 0){
+            String custPhone = customerInfos.getCustPhone();
+            MessageInfo<List<HttpCustGoldBeansDetail>> userGoldBeansDetail = httpCustGoldBeansAction.getUserGoldBeansDetail(custPhone);
+            return userGoldBeansDetail;
+        }
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,5 +17,10 @@ public class DateUtil {
     public static String dateStrV2(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat(patternV2);
         return sdf.format(date);
+    }
+
+    public static Date dateStrV3(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(patternV2);
+        return sdf.parse(date);
     }
 }

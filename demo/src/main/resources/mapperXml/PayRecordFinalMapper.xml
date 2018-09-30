@@ -13,5 +13,6 @@
     <result column="pay_result" jdbcType="VARCHAR" property="payResult" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
   </resultMap>
 </mapper>

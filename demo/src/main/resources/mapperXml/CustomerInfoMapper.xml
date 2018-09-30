@@ -9,6 +9,7 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="company_name" jdbcType="VARCHAR" property="companyName" />
     <result column="company_type" jdbcType="VARCHAR" property="companyType" />
+    <result column="company_type_desc" jdbcType="VARCHAR" property="companyTypeDesc" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="cust_name" jdbcType="VARCHAR" property="custName" />
     <result column="cust_phone" jdbcType="VARCHAR" property="custPhone" />
@@ -27,6 +28,7 @@
     <result column="is_money" jdbcType="INTEGER" property="isMoney" />
     <result column="is_interest_cust" jdbcType="INTEGER" property="isInterestCust" />
     <result column="compact_img" jdbcType="VARCHAR" property="compactImg" />
+    <result column="compact_no" jdbcType="VARCHAR" property="compactNo" />
     <result column="mark" jdbcType="VARCHAR" property="mark" />
     <result column="price" jdbcType="DOUBLE" property="price" />
     <result column="abandon_reason" jdbcType="VARCHAR" property="abandonReason" />

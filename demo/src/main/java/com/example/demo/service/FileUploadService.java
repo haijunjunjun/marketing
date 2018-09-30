@@ -35,7 +35,7 @@ public class FileUploadService {
     @Autowired
     private DefaultResourceMapper defaultResourceMapper;
 
-    public MessageInfoV1 uploadFileV1(Integer custId, String base64) {
+    public MessageInfoV1 uploadFileV1(Integer custId, String base64,String compactNo) {
         MessageInfoV1 messageInfoV1 = new MessageInfoV1();
         MultipartFile multipartFile = MultipartFileV1.base64ToMultipart(base64);
 //        String uploadPath = "D://path/compact/";
@@ -68,6 +68,7 @@ public class FileUploadService {
             customerInfo.setId(custId);
             customerInfo.setCompactImg(url);
             customerInfo.setCompactTime(new Date());
+            customerInfo.setCompactNo(compactNo);
             customerInfo.setIsCompact(1);
             customerInfo.setIsCompactCheck(2);
             int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
@@ -75,6 +76,7 @@ public class FileUploadService {
                 log.info("数据库更新失败!");
                 throw new BizRuntimeException("数据库更新失败!");
             }
+
             log.info("上传成功!");
             messageInfoV1.setContent("上传成功!");
             return messageInfoV1;
@@ -161,6 +163,7 @@ public class FileUploadService {
             customerInfo.setStatus(2);
             customerInfo.setCheckTime(new Date());
             customerInfo.setModifyTime(new Date());
+            customerInfo.setLastModifyTime(new Date());
 
             //对销售人员的业绩 添加记录
             UserPerformance userPerformance = new UserPerformance();
@@ -182,6 +185,7 @@ public class FileUploadService {
             customerInfo.setIsCompactCheck(isCompactCheck);
             customerInfo.setCheckTime(new Date());
             customerInfo.setModifyTime(new Date());
+            customerInfo.setLastModifyTime(new Date());
             customerInfo.setCheckRefuseReason(checkRefuseReason);
         }
         int i = customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
