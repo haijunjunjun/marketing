@@ -184,11 +184,11 @@ public class PerformanceConfigService {
                     BigDecimal performanceV1 = new BigDecimal(data.toString()).setScale(2, BigDecimal.ROUND_HALF_DOWN);
                     //上周业绩 < 生死线
                     if (performanceV1.compareTo(deathLine) == -1) {
-                        Integer remove = userInfoMapper.remove(userId);
-                        if (1 != remove) {
-                            log.info("信息移除异常！");
-                            throw new BizRuntimeException("信息移除异常!");
-                        }
+//                        Integer remove = userInfoMapper.remove(userId);
+//                        if (1 != remove) {
+//                            log.info("信息移除异常！");
+//                            throw new BizRuntimeException("信息移除异常!");
+//                        }
                         return Double.parseDouble("-1");
                     }
                     //上周业绩 >= 生死线 && 上周业绩 < kpi

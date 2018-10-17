@@ -200,20 +200,20 @@ public class WXPayPrecreateService {
             customerInfo.setIsMoney(1);
             customerInfoMapper.updateByPrimaryKeySelective(customerInfo);
 
-            String total_fee = reqData.get("total_fee");
-            UserPerformance userPerformance = new UserPerformance();
-            CustomerInfo customerInfoV1 = new CustomerInfo();
-            customerInfoV1.setId(payRecord1.getCustId());
-            CustomerInfo customerInfoV2 = customerInfoMapper.selectOne(customerInfoV1);
-            userPerformance.setCustId(customerInfoV2.getId());
-            userPerformance.setUserId(customerInfoV2.getUserId());
-            userPerformance.setCreateTime(new Date());
-            userPerformance.setModifyTime(new Date());
-            userPerformance.setPerformance(new BigDecimal(reqData.get("total_fee")).divide(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue());
-            int insert = userPerformanceMapper.insert(userPerformance);
-            if (1 != insert) {
-                log.info("业绩保存异常！");
-            }
+//            String total_fee = reqData.get("total_fee");
+//            UserPerformance userPerformance = new UserPerformance();
+//            CustomerInfo customerInfoV1 = new CustomerInfo();
+//            customerInfoV1.setId(payRecord1.getCustId());
+//            CustomerInfo customerInfoV2 = customerInfoMapper.selectOne(customerInfoV1);
+//            userPerformance.setCustId(customerInfoV2.getId());
+//            userPerformance.setUserId(customerInfoV2.getUserId());
+//            userPerformance.setCreateTime(new Date());
+//            userPerformance.setModifyTime(new Date());
+//            userPerformance.setPerformance(new BigDecimal(reqData.get("total_fee")).divide(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue());
+//            int insert = userPerformanceMapper.insert(userPerformance);
+//            if (1 != insert) {
+//                log.info("业绩保存异常！");
+//            }
             log.info("回调成功···");
             Map<String, String> responseMap = new HashMap<>(2);
             responseMap.put("return_code", "SUCCESS");

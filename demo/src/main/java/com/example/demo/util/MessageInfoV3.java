@@ -12,6 +12,6 @@ import java.io.Serializable;
 public class MessageInfoV3<T> implements Serializable {
     private static final long serialVersionUID = -8692315893794641219L;
     private T data;
-    private Integer totalGoldBeans;
+    private String code;
     private String content;
 }

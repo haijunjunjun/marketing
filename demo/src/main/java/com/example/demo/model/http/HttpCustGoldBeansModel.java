@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class HttpCustGoldBeansModel implements Serializable {
     private static final long serialVersionUID = 7279028281852184985L;
-    private List<HttpCustGoldBeansDetail> data;
+    private HttpCustGoldBeansDetailModel data;
     private String success;
     private String message;
     private Integer errorCode;

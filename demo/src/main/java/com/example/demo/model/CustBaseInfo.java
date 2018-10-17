@@ -18,4 +18,13 @@ public class CustBaseInfo implements Serializable {
     private String companyTypeDesc;
     private String address;
     private String mark;
+    /**
+     * 经度
+     */
+    private String longitude;
+
+    /**
+     * 纬度
+     */
+    private String latitude;
 }

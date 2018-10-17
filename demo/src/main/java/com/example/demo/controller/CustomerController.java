@@ -4,10 +4,12 @@ import com.example.demo.config.annotation.Operator;
 import com.example.demo.dal.model.CustomerInfo;
 import com.example.demo.model.*;
 import com.example.demo.model.http.HttpCustGoldBeansDetail;
+import com.example.demo.model.http.HttpCustGoldBeansDetailModel;
 import com.example.demo.service.CustomerService;
 import com.example.demo.util.MessageInfo;
 import com.example.demo.util.MessageInfoV1;
 import com.example.demo.util.MessageInfoV2;
+import com.example.demo.util.MessageInfoV3;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +123,7 @@ public class CustomerController {
      */
     @RequestMapping(value = "/marketing/customer/detail/info/action", method = RequestMethod.POST)
     public ResponseEntity<MessageInfo<String>> custBaseAction(@Valid @NotNull @Operator CurOperator curOperator,
-                                                              @Valid @NotNull @RequestBody(required = true) CustBaseActionModel custBaseActionModel) throws ParseException {
+                                                              @Valid @NotNull @RequestBody(required = true) CustBaseActionModel custBaseActionModel) throws Exception {
         return ResponseEntity.ok(customerService.custBaseAction(curOperator.getId(), custBaseActionModel.getCustId(), custBaseActionModel.getActionCode(), custBaseActionModel.getOperateTime(), custBaseActionModel.getMark()));
     }
 
@@ -162,7 +164,7 @@ public class CustomerController {
      * 金豆明细
      */
     @RequestMapping(value = "/marketing/customer/gold/detail/info", method = RequestMethod.POST)
-    public ResponseEntity<MessageInfo<List<HttpCustGoldBeansDetail>>> custGoldDetailInfo(@Valid @NotNull @RequestBody(required = true) CustModel custModel) throws Exception {
+    public ResponseEntity<MessageInfoV3<HttpCustGoldBeansDetailModel>> custGoldDetailInfo(@Valid @NotNull @RequestBody(required = true) CustModel custModel) throws Exception {
         return ResponseEntity.ok(customerService.getCustGoldBeansDetail(custModel.getCustId()));
     }
 }

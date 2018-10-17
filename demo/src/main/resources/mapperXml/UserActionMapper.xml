@@ -13,4 +13,8 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
+  <select id="getUserActionListInfo" resultMap="BaseResultMap" resultType="java.util.List">
+    select * from user_action where user_id = #{userId} and cust_id = #{custId}
+    order by coalesce( create_time,modify_time) desc
+  </select>
 </mapper>

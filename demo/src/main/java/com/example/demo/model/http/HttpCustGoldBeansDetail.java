@@ -16,6 +16,7 @@ public class HttpCustGoldBeansDetail implements Serializable {
     private Date createTimeStamp;
     private String source;
     private Integer otayonii;
+    private String realOtayonii;
     private Integer userId;
     private String orderNo;
 }

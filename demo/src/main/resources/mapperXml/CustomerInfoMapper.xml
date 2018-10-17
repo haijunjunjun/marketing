@@ -37,6 +37,8 @@
     <result column="donate_gold_beans" jdbcType="INTEGER" property="donateGoldBeans" />
     <result column="relative_id" jdbcType="INTEGER" property="relativeId" />
     <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
   </resultMap>
     <select id="getMonthNum" resultType="java.lang.Integer">
         SELECT COUNT(*) from customer_info

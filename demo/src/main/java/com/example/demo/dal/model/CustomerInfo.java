@@ -196,6 +196,16 @@ public class CustomerInfo {
     private Date lastModifyTime;
 
     /**
+     * 经度
+     */
+    private String longitude;
+
+    /**
+     * 纬度
+     */
+    private String latitude;
+
+    /**
      * 获取客户id
      *
      * @return id - 客户id
@@ -769,5 +779,41 @@ public class CustomerInfo {
      */
     public void setLastModifyTime(Date lastModifyTime) {
         this.lastModifyTime = lastModifyTime;
+    }
+
+    /**
+     * 获取经度
+     *
+     * @return longitude - 经度
+     */
+    public String getLongitude() {
+        return longitude;
+    }
+
+    /**
+     * 设置经度
+     *
+     * @param longitude 经度
+     */
+    public void setLongitude(String longitude) {
+        this.longitude = longitude == null ? null : longitude.trim();
+    }
+
+    /**
+     * 获取纬度
+     *
+     * @return latitude - 纬度
+     */
+    public String getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * 设置纬度
+     *
+     * @param latitude 纬度
+     */
+    public void setLatitude(String latitude) {
+        this.latitude = latitude == null ? null : latitude.trim();
     }
 }

@@ -6,9 +6,12 @@ package com.example.demo.util;
  */
 public enum  CustBaseAction {
 
-    CONTACT("1","已联系"),
+    CONTACT("1","已打电话"),
     VISIT("2","已拜访"),
-    INTEREST("3","有意向");
+    INTEREST("3","有意向客户"),
+    NOINTEREST("4","无意向客户"),
+
+    HASINTEREST("5","有意向");
 
     private String code;
     private String name;
