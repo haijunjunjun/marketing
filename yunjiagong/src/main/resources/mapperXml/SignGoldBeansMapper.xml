@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.SignGoldBeansMapper">
+  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.SignGoldBeans">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="three_gold_beans" jdbcType="INTEGER" property="threeGoldBeans" />
+    <result column="seven_gold_beans" jdbcType="INTEGER" property="sevenGoldBeans" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+  </resultMap>
+  <update id="updateSignThreeGoldBeans">
+    update sign_gold_beans set three_gold_beans = #{threeGoldBeans} ,modify_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%m:%s')
+    where user_id = #{userId}
+  </update>
+  <update id="updateSignSevenGoldBeans">
+    update sign_gold_beans set seven_gold_beans = #{sevenGoldBeans} ,modify_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%m:%s')
+    where user_id = #{userId}
+  </update>
+  <update id="updateSignGoldBeansInfo">
+    update sign_gold_beans set three_gold_beans = #{threeGoldBeans},seven_gold_beans = #{sevenGoldBeans} ,modify_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%m:%s')
+    where user_id = #{userId}
+  </update>
+</mapper>

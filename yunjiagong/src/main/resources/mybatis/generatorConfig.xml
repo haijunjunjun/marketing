@@ -94,7 +94,7 @@
         <!--<table tableName="complaint">-->
         <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="unit">
+        <table tableName="factory_require">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
         <!--<table tableName="city">-->

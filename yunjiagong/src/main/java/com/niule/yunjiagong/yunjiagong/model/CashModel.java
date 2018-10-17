@@ -11,5 +11,6 @@ import java.io.Serializable;
 @Data
 public class CashModel implements Serializable {
     private static final long serialVersionUID = -4956617722994692581L;
+    private Integer accountBankId;
     private String money;
 }

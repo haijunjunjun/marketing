@@ -56,6 +56,7 @@ public class ComplaintService {
         Complaint complaint = new Complaint();
         BeanUtils.copyProperties(complaintModel, complaint);
         complaint.setCreateTime(new Date());
+        complaint.setStatus(1);
         int i = complaintMapper.insertSelective(complaint);
         if (1 == i) {
             messageInfo.setContent("投诉成功,请等待审核!");

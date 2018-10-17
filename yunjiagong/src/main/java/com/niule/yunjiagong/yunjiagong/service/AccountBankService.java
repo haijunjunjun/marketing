@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Objects;
 
@@ -118,6 +119,7 @@ public class AccountBankService {
         accountBank.setUserId(userId);
         AccountBank accountBankInfo = accountBankMapper.selectOne(accountBank);
         if (!Objects.isNull(accountBankInfo)){
+            bankInfoModel.setId(accountBankInfo.getId());
             if (!StringUtils.isEmpty(accountBankInfo.getAccountBankName()) && accountBankInfo.getAccountBankName().length() != 0){
                 bankInfoModel.setAccountBankName(accountBankInfo.getAccountBankName());
             }
@@ -135,8 +137,9 @@ public class AccountBankService {
             messageInfoV2.setResult("提现金额不能为空");
             return messageInfoV2;
         }
-        if (new BigDecimal(cashModel.getMoney()).compareTo(BigDecimal.ZERO) == 0
-                || new BigDecimal(cashModel.getMoney()).compareTo(BigDecimal.ZERO) == -1){
+        BigDecimal realMoney = new BigDecimal(cashModel.getMoney()).divide(new BigDecimal("1000"), 2, RoundingMode.HALF_UP);
+        if (realMoney.compareTo(BigDecimal.ZERO) == 0
+                || realMoney.compareTo(BigDecimal.ZERO) == -1){
             messageInfoV2.setResult("提现金额必须大于0");
             return messageInfoV2;
         }
@@ -147,7 +150,7 @@ public class AccountBankService {
             messageInfoV2.setResult("系统信息异常");
             return messageInfoV2;
         }
-        if (new BigDecimal(cashModel.getMoney()).compareTo(new BigDecimal(Double.toString(balanceMoney))) == 1){
+        if (realMoney.compareTo(new BigDecimal(Double.toString(balanceMoney))) == 1){
             messageInfoV2.setResult("提现金额不能大于余额");
             return messageInfoV2;
         }
@@ -162,7 +165,8 @@ public class AccountBankService {
 
         CashApply cashApply = new CashApply();
         cashApply.setUserId(userId);
-        cashApply.setCashMoney(Double.parseDouble(cashModel.getMoney()));
+        cashApply.setAccountBankId(cashModel.getAccountBankId());
+        cashApply.setCashMoney(Double.parseDouble(realMoney.toString()));
         cashApply.setCashStatus(CashStatusEnum.WAIT.getCode());
         cashApply.setCreateTime(new Date());
         int insert = cashApplyMapper.insert(cashApply);

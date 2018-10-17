@@ -2,14 +2,8 @@ package com.niule.yunjiagong.yunjiagong.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.niule.yunjiagong.yunjiagong.dal.mapper.AddressMapper;
-import com.niule.yunjiagong.yunjiagong.dal.mapper.AreaMapper;
-import com.niule.yunjiagong.yunjiagong.dal.mapper.CityMapper;
-import com.niule.yunjiagong.yunjiagong.dal.mapper.ProvinceMapper;
-import com.niule.yunjiagong.yunjiagong.dal.model.Address;
-import com.niule.yunjiagong.yunjiagong.dal.model.Area;
-import com.niule.yunjiagong.yunjiagong.dal.model.City;
-import com.niule.yunjiagong.yunjiagong.dal.model.Province;
+import com.niule.yunjiagong.yunjiagong.dal.mapper.*;
+import com.niule.yunjiagong.yunjiagong.dal.model.*;
 import com.niule.yunjiagong.yunjiagong.model.cloud.UserBaseInfo;
 import com.niule.yunjiagong.yunjiagong.service.cloud.UserInfoFeginService;
 import com.niule.yunjiagong.yunjiagong.util.BizRuntimeException;
@@ -43,6 +37,8 @@ public class AddressService {
     private AreaMapper areaMapper;
     @Autowired
     private UserInfoFeginService userInfoFeginService;
+    @Autowired
+    private FactoryRequireMapper factoryRequireMapper;
 
     public PageInfo<Address> getAddressList(Integer pageNum, Integer pageSize) {
         UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
@@ -53,25 +49,25 @@ public class AddressService {
         List<Address> addresses = addressMapper.getAddressList(userBaseInfo.getId().intValue(), 1);
         PageInfo<Address> addressPageInfo = new PageInfo<>(addresses);
 
-        PageInfo<Address> addressPageInfoV1 = new PageInfo<>();
-        BeanUtils.copyProperties(addressPageInfo, addressPageInfoV1);
-        List<Address> addressList = new ArrayList<>();
+//        PageInfo<Address> addressPageInfoV1 = new PageInfo<>();
+//        BeanUtils.copyProperties(addressPageInfo, addressPageInfoV1);
+//        List<Address> addressList = new ArrayList<>();
 
-        Address addressInfo = new Address();
-        addressInfo.setUserId(userBaseInfo.getId().intValue());
-        addressInfo.setIsDefaultAddress(1);
-        Address addressV2 = addressMapper.selectOne(addressInfo);
-        addressList.add(addressV2);
-        for (Address a : addressPageInfo.getList()) {
-            Address address = new Address();
-            if (1 == a.getIsDefaultAddress()) {
-                continue;
-            }
-            BeanUtils.copyProperties(a, address);
-            addressList.add(address);
-        }
-        addressPageInfoV1.setList(addressList);
-        return addressPageInfoV1;
+//        Address addressInfo = new Address();
+//        addressInfo.setUserId(userBaseInfo.getId().intValue());
+//        addressInfo.setIsDefaultAddress(1);
+//        Address addressV2 = addressMapper.selectOne(addressInfo);
+//        addressList.add(addressV2);
+//        for (Address a : addressPageInfo.getList()) {
+//            Address address = new Address();
+//            if (1 == a.getIsDefaultAddress()) {
+//                continue;
+//            }
+//            BeanUtils.copyProperties(a, address);
+//            addressList.add(address);
+//        }
+//        addressPageInfoV1.setList(addressList);
+        return addressPageInfo;
     }
 
     public DataResponse addAddress(Address address) {
@@ -190,5 +186,9 @@ public class AddressService {
             throw new BizRuntimeException("数据库信息异常！");
         }
         return area;
+    }
+
+    public List<FactoryRequire> getFactoryArea (){
+        return factoryRequireMapper.selectAll();
     }
 }

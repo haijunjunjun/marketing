@@ -7,6 +7,7 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="account_bank_id" jdbcType="INTEGER" property="accountBankId" />
     <result column="cash_money" jdbcType="DOUBLE" property="cashMoney" />
     <result column="cash_status" jdbcType="INTEGER" property="cashStatus" />
     <result column="reason" jdbcType="VARCHAR" property="reason" />

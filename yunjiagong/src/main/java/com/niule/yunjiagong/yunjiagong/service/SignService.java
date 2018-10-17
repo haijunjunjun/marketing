@@ -1,9 +1,11 @@
 package com.niule.yunjiagong.yunjiagong.service;
 
 import com.niule.yunjiagong.yunjiagong.constants.Enum.TemplateEnum;
+import com.niule.yunjiagong.yunjiagong.dal.mapper.SignGoldBeansMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.SignInfoMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.SignLogMapper;
 import com.niule.yunjiagong.yunjiagong.dal.mapper.SignTemplateMapper;
+import com.niule.yunjiagong.yunjiagong.dal.model.SignGoldBeans;
 import com.niule.yunjiagong.yunjiagong.dal.model.SignInfo;
 import com.niule.yunjiagong.yunjiagong.dal.model.SignLog;
 import com.niule.yunjiagong.yunjiagong.dal.model.SignTemplate;
@@ -23,9 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -46,11 +46,13 @@ public class SignService {
     private UserInfoFeginService userInfoFeginService;
     @Autowired
     private UserGoldBeansFeginService userGoldBeansFeginService;
+    @Autowired
+    private SignGoldBeansMapper signGoldBeansMapper;
 
     public MessageInfo doSign() {
         UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
         Integer userId = userBaseInfo.getId().intValue();
-//        Integer userId = 48;
+//        Integer userId = 90;
 //        Date signDate = this.formatDate(signDateV1);
         Date signDate = new Date();
         if (Objects.isNull(userId) || Objects.isNull(signDate)) {
@@ -84,28 +86,37 @@ public class SignService {
             systemPayRequest.setPayAmount(0l);
             systemPayRequest.setTargetType(2);
             systemPayRequest.setDesc("用户签到赠送金豆");
-            if (realDuration % signTemplateV1.getCycles() == signTemplate.getCycles()) {
+
+            if (realDuration > 1 && realDuration % 7 == 1){
+                signGoldBeansMapper.updateSignGoldBeansInfo(userId,0,0);
+            }
+            if ((realDuration - 1) % signTemplateV1.getCycles() + 1 == signTemplate.getCycles()) {
                 signLogMapper.saveSignLog(userId, signTemplate.getBeans() + "", "用户签到", new Date());
                 systemPayRequest.setBuyAmount(signTemplate.getBeans().longValue());
                 DataResponse dataResponse = userGoldBeansFeginService.updateUserGoldBeans(systemPayRequest);
                 log.info("dataResponse is :" + dataResponse);
-            }
-            if (realDuration % signTemplateV1.getCycles() == 0) {
+            } else if ((realDuration - 1) % signTemplateV1.getCycles() + 1 == signTemplateV1.getCycles()) {
                 randomGoldBeans = 1 + (int) (Math.random() * (signTemplateV1.getBeans() - 1 + 1));
                 signLogMapper.saveSignLog(userId, randomGoldBeans + "", "用户签到", new Date());
                 systemPayRequest.setBuyAmount(randomGoldBeans.longValue());
                 DataResponse dataResponse = userGoldBeansFeginService.updateUserGoldBeans(systemPayRequest);
                 log.info("dataResponse is :" + dataResponse);
+            } else {
+                signLogMapper.saveSignLog(userId, 0 + "", "用户签到", new Date());
             }
-            signLogMapper.saveSignLog(userId, 0 + "", "用户签到", new Date());
         }
-        if (realDuration % signTemplateV1.getCycles() == signTemplate.getCycles()) {
+        if ((realDuration - 1) % signTemplateV1.getCycles() + 1 == signTemplate.getCycles()) {
             messageInfo.setContent("恭喜您，已连续签到" + realDuration + "天，获得金豆" + signTemplate.getBeans() + "颗！");
             messageInfo.setGoldBeans(signTemplate.getBeans());
+
+            signGoldBeansMapper.updateSignThreeGoldBeans(userId,signTemplate.getBeans());
+
         }
-        if (realDuration % signTemplateV1.getCycles() == 0) {
+        if ((realDuration - 1) % signTemplateV1.getCycles() + 1 == signTemplateV1.getCycles()) {
             messageInfo.setContent("恭喜您，已连续签到" + realDuration + "天，获得金豆" + randomGoldBeans + "颗！");
             messageInfo.setGoldBeans(randomGoldBeans);
+
+            signGoldBeansMapper.updateSignSevenGoldBeans(userId,randomGoldBeans);
         }
         messageInfo.setRealDuration(realDuration);
         return messageInfo;
@@ -115,31 +126,52 @@ public class SignService {
         SignInfoModel signInfoModel = new SignInfoModel();
         UserBaseInfo userBaseInfo = userInfoFeginService.getOperator().getData();
         Integer userId = userBaseInfo.getId().intValue();
-        SignLog signLogInfo = signLogMapper.getSignInfo(userId, DateUtilV1.dateV3(new Date()));
-        if (!Objects.isNull(signLogInfo)) {
-                signInfoModel.setSign(this.checkSign());
-                SignInfo signInfo = new SignInfo();
-                signInfo.setUserId(userId);
-                SignInfo signInfoV1 = signInfoMapper.selectOne(signInfo);
-                if (!Objects.isNull(signInfoV1)){
-                    signInfoModel.setRealDuration(signInfoV1.getDuration());
-                    if (signInfoV1.getDuration() % 7 == 3){
-                        signInfoModel.setGoldBeans(Integer.parseInt(signLogInfo.getBeans()));
-                    }
-                    if (signInfoV1.getDuration() % 7 == 0){
-                        signInfoModel.setRandomGoldBeans(Integer.parseInt(signLogInfo.getBeans()));
-                    }
-                }
-        }else {
-            signInfoModel.setSign(this.checkSign());
-            signInfoModel.setGoldBeans(0);
-            SignInfo signInfo = new SignInfo();
-            signInfo.setUserId(userId);
-            SignInfo signInfoV1 = signInfoMapper.selectOne(signInfo);
-            if (!Objects.isNull(signInfoV1)){
+
+        SignInfo signInfo = new SignInfo();
+        signInfo.setUserId(userId);
+        SignInfo signInfoV1 = signInfoMapper.selectOne(signInfo);
+        Date preOneDate = DateUtils.addDays(new Date(), -1);
+
+        SignGoldBeans signGoldBeans = new SignGoldBeans();
+        signGoldBeans.setUserId(userId);
+        SignGoldBeans signGoldBeansInfo = signGoldBeansMapper.selectOne(signGoldBeans);
+        if (Objects.isNull(signGoldBeansInfo)){
+            SignGoldBeans signGoldBeansV1 = new SignGoldBeans();
+            signGoldBeansV1.setUserId(userId);
+            signGoldBeansV1.setCreateTime(new Date());
+            signGoldBeansV1.setModifyTime(new Date());
+            signGoldBeansV1.setThreeGoldBeans(0);
+            signGoldBeansV1.setSevenGoldBeans(0);
+            signGoldBeansMapper.insert(signGoldBeansV1);
+            signGoldBeansInfo = signGoldBeansV1;
+        }
+
+        signInfoModel.setSign(this.checkSign());
+        if (Objects.isNull(signInfoV1)){
+            signInfoModel.setRealDuration(0);
+            signInfoModel.setGoldBeans(signGoldBeansInfo.getThreeGoldBeans());
+            signInfoModel.setRandomGoldBeans(signGoldBeansInfo.getSevenGoldBeans());
+            return signInfoModel;
+        }
+
+        SignLog signLog = new SignLog();
+        signLog.setUserId(userId);
+        int i = signLogMapper.selectCount(signLog);
+        if (i>= 2){
+            SignLog signInfo1 = signLogMapper.getSignInfo(userId, DateUtilV1.dateV3(preOneDate));
+            if (Objects.isNull(signInfo1)){
+                signGoldBeansMapper.updateSignGoldBeansInfo(userId,0,0);
+
+                signInfoModel.setGoldBeans(signGoldBeansInfo.getThreeGoldBeans());
                 signInfoModel.setRealDuration(signInfoV1.getDuration());
+                signInfoModel.setRandomGoldBeans(signGoldBeansInfo.getSevenGoldBeans());
+                return signInfoModel;
             }
         }
+        Integer duration = signInfoV1.getDuration();
+        signInfoModel.setGoldBeans(signGoldBeansInfo.getThreeGoldBeans());
+        signInfoModel.setRealDuration(duration);
+        signInfoModel.setRandomGoldBeans(signGoldBeansInfo.getSevenGoldBeans());
         return signInfoModel;
     }
 

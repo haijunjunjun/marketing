@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niule.yunjiagong.yunjiagong.dal.mapper.FactoryRequireMapper">
+  <resultMap id="BaseResultMap" type="com.niule.yunjiagong.yunjiagong.dal.model.FactoryRequire">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="factoryRequire" jdbcType="VARCHAR" property="factoryrequire" />
+    <result column="createTimeStamp" jdbcType="TIMESTAMP" property="createtimestamp" />
+    <result column="updateTimeStamp" jdbcType="TIMESTAMP" property="updatetimestamp" />
+    <result column="creatorId" jdbcType="BIGINT" property="creatorid" />
+    <result column="creatorName" jdbcType="VARCHAR" property="creatorname" />
+    <result column="sort" jdbcType="VARCHAR" property="sort" />
+  </resultMap>
+</mapper>

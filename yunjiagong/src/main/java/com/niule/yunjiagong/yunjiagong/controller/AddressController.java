@@ -70,5 +70,9 @@ public class AddressController {
         return DataResponse.success(addressService.getArea(cityModel.getCityId()));
     }
 
-
+    @Description("加工厂地域")
+    @RequestMapping(value = "/user/factory/area", method = RequestMethod.POST)
+    public DataResponse getFactoryArea() {
+        return DataResponse.success(addressService.getFactoryArea());
+    }
 }

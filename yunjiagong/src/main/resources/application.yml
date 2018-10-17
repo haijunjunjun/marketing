@@ -4,5 +4,6 @@ spring:
   profiles:
     active:
       - dev
+      - log
   application:
     name: cloud-common-service

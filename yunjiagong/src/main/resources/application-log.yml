@@ -1,0 +1,5 @@
+#logging:
+#  pattern:
+#    console: "%d - %msg%n"
+#  level:
+#    com.niule.yunjiagong.yunjiagong.* : debug

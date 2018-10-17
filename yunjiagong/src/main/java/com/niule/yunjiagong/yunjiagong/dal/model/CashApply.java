@@ -19,6 +19,12 @@ public class CashApply {
     private Integer userId;
 
     /**
+     * 银行卡信息主键id
+     */
+    @Column(name = "account_bank_id")
+    private Integer accountBankId;
+
+    /**
      * 提现金额
      */
     @Column(name = "cash_money")
@@ -86,6 +92,24 @@ public class CashApply {
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    /**
+     * 获取银行卡信息主键id
+     *
+     * @return account_bank_id - 银行卡信息主键id
+     */
+    public Integer getAccountBankId() {
+        return accountBankId;
+    }
+
+    /**
+     * 设置银行卡信息主键id
+     *
+     * @param accountBankId 银行卡信息主键id
+     */
+    public void setAccountBankId(Integer accountBankId) {
+        this.accountBankId = accountBankId;
     }
 
     /**
