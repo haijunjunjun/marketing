@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.define.ReceiptApplyResponseMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.define.ReceiptApplyResponse">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="apply_user_name" property="applyUserName" jdbcType="VARCHAR"/>
+        <result column="apply_user_phone" property="applyUserPhone" jdbcType="VARCHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="duty_paragraph" property="dutyParagraph" jdbcType="VARCHAR"/>
+        <result column="receipt_title" property="receiptTitle" jdbcType="VARCHAR"/>
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="searchReceiptInfo" resultMap="BaseResultMap"
+            resultType="com.niule.marketing.controller.controller.dal.model.define.ReceiptApplyResponse">
+        SELECT * from user_receipt_apply
+        <where>
+            1=1
+            <if test="applyUserName != null">
+                and  apply_user_name like concat('%',#{applyUserName},'%')
+            </if>
+            <if test="applyUserPhone != null">
+                and  apply_user_phone like concat('%',#{applyUserPhone},'%')
+            </if>
+            <if test="status != null">
+                and  status = #{status}
+            </if>
+            <if test="startTime != null">
+                and  date_format(apply_time,"%Y%m%d") &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and  date_format(apply_time,"%Y%m%d") &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by apply_time desc
+    </select>
+</mapper>

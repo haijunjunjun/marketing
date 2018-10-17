@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.UserCommissionCountMapper" >
+  <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.UserCommissionCount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="month" property="month" jdbcType="VARCHAR" />
+    <result column="base_salary" property="baseSalary" jdbcType="DOUBLE" />
+    <result column="commission" property="commission" jdbcType="DOUBLE" />
+    <result column="personal_tax" property="personalTax" jdbcType="DOUBLE" />
+    <result column="social_insurance" property="socialInsurance" jdbcType="DOUBLE" />
+    <result column="other_fee" property="otherFee" jdbcType="DOUBLE" />
+    <result column="count_total" property="countTotal" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, real_name, city, year, month, base_salary, commission, personal_tax, 
+    social_insurance, other_fee, count_total, create_time, modify_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.niule.marketing.controller.controller.dal.model.UserCommissionCountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_commission_count
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_commission_count
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_commission_count
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.niule.marketing.controller.controller.dal.model.UserCommissionCountExample" >
+    delete from user_commission_count
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.niule.marketing.controller.controller.dal.model.UserCommissionCount" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user_commission_count (user_id, real_name, city, 
+      year, month, base_salary, 
+      commission, personal_tax, social_insurance, 
+      other_fee, count_total, create_time, 
+      modify_time)
+    values (#{userId,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{year,jdbcType=VARCHAR}, #{month,jdbcType=VARCHAR}, #{baseSalary,jdbcType=DOUBLE}, 
+      #{commission,jdbcType=DOUBLE}, #{personalTax,jdbcType=DOUBLE}, #{socialInsurance,jdbcType=DOUBLE}, 
+      #{otherFee,jdbcType=DOUBLE}, #{countTotal,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.niule.marketing.controller.controller.dal.model.UserCommissionCount" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user_commission_count
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="baseSalary != null" >
+        base_salary,
+      </if>
+      <if test="commission != null" >
+        commission,
+      </if>
+      <if test="personalTax != null" >
+        personal_tax,
+      </if>
+      <if test="socialInsurance != null" >
+        social_insurance,
+      </if>
+      <if test="otherFee != null" >
+        other_fee,
+      </if>
+      <if test="countTotal != null" >
+        count_total,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="baseSalary != null" >
+        #{baseSalary,jdbcType=DOUBLE},
+      </if>
+      <if test="commission != null" >
+        #{commission,jdbcType=DOUBLE},
+      </if>
+      <if test="personalTax != null" >
+        #{personalTax,jdbcType=DOUBLE},
+      </if>
+      <if test="socialInsurance != null" >
+        #{socialInsurance,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="countTotal != null" >
+        #{countTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.niule.marketing.controller.controller.dal.model.UserCommissionCountExample" resultType="java.lang.Integer" >
+    select count(*) from user_commission_count
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_commission_count
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.realName != null" >
+        real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.year != null" >
+        year = #{record.year,jdbcType=VARCHAR},
+      </if>
+      <if test="record.month != null" >
+        month = #{record.month,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baseSalary != null" >
+        base_salary = #{record.baseSalary,jdbcType=DOUBLE},
+      </if>
+      <if test="record.commission != null" >
+        commission = #{record.commission,jdbcType=DOUBLE},
+      </if>
+      <if test="record.personalTax != null" >
+        personal_tax = #{record.personalTax,jdbcType=DOUBLE},
+      </if>
+      <if test="record.socialInsurance != null" >
+        social_insurance = #{record.socialInsurance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.otherFee != null" >
+        other_fee = #{record.otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="record.countTotal != null" >
+        count_total = #{record.countTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null" >
+        modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_commission_count
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      real_name = #{record.realName,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      year = #{record.year,jdbcType=VARCHAR},
+      month = #{record.month,jdbcType=VARCHAR},
+      base_salary = #{record.baseSalary,jdbcType=DOUBLE},
+      commission = #{record.commission,jdbcType=DOUBLE},
+      personal_tax = #{record.personalTax,jdbcType=DOUBLE},
+      social_insurance = #{record.socialInsurance,jdbcType=DOUBLE},
+      other_fee = #{record.otherFee,jdbcType=DOUBLE},
+      count_total = #{record.countTotal,jdbcType=DOUBLE},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      modify_time = #{record.modifyTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.niule.marketing.controller.controller.dal.model.UserCommissionCount" >
+    update user_commission_count
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        month = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="baseSalary != null" >
+        base_salary = #{baseSalary,jdbcType=DOUBLE},
+      </if>
+      <if test="commission != null" >
+        commission = #{commission,jdbcType=DOUBLE},
+      </if>
+      <if test="personalTax != null" >
+        personal_tax = #{personalTax,jdbcType=DOUBLE},
+      </if>
+      <if test="socialInsurance != null" >
+        social_insurance = #{socialInsurance,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        other_fee = #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="countTotal != null" >
+        count_total = #{countTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.niule.marketing.controller.controller.dal.model.UserCommissionCount" >
+    update user_commission_count
+    set user_id = #{userId,jdbcType=INTEGER},
+      real_name = #{realName,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      year = #{year,jdbcType=VARCHAR},
+      month = #{month,jdbcType=VARCHAR},
+      base_salary = #{baseSalary,jdbcType=DOUBLE},
+      commission = #{commission,jdbcType=DOUBLE},
+      personal_tax = #{personalTax,jdbcType=DOUBLE},
+      social_insurance = #{socialInsurance,jdbcType=DOUBLE},
+      other_fee = #{otherFee,jdbcType=DOUBLE},
+      count_total = #{countTotal,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="fetchUserCommissionInfo" resultMap="BaseResultMap" resultType="com.niule.marketing.controller.controller.dal.model.UserCommissionCount">
+    select * from user_commission_count
+    <where>
+      1 = 1
+      <if test="realName != null">
+        and  real_name like concat('%',#{realName},'%')
+      </if>
+      <if test="city != null">
+        and  city like concat('%',#{city},'%')
+      </if>
+      <if test="time != null">
+        and  date_format(create_time,"%Y%m") = #{time,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    order by create_time desc
+  </select>
+</mapper>

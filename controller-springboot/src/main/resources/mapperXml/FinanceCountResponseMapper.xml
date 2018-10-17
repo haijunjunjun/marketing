@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.define.FinanceCountResponseMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.define.FinanceCountResponse">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cust_name" property="custName" jdbcType="VARCHAR"/>
+        <result column="cust_phone" property="custPhone" jdbcType="VARCHAR"/>
+        <result column="real_name" property="userRealName" jdbcType="VARCHAR"/>
+        <result column="return_msg" property="returnMsg" jdbcType="VARCHAR"/>
+        <result column="pay_result" property="payResult" jdbcType="VARCHAR"/>
+        <result column="price" property="amount" jdbcType="DOUBLE"/>
+        <result column="create_time" property="payTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="searchFinanceCount" resultMap="BaseResultMap"
+            resultType="com.niule.marketing.controller.controller.dal.model.define.FinanceCountResponse">
+        select ci.id,ci.cust_name,ci.cust_phone,ci.price,ui.real_name,prf.create_time,prf.pay_result,prf.return_msg from customer_info ci
+        LEFT JOIN user_info ui on ci.user_id = ui.id
+        LEFT JOIN pay_record_final prf on ci.id = prf.cust_id
+        <where>
+            <if test="custName != null">
+                and  ci.cust_name like concat('%',#{custName},'%')
+            </if>
+            <if test="startTime != null">
+                and  date_format(prf.create_time,"%Y%m%d") &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and  date_format(prf.create_time,"%Y%m%d") &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY prf.create_time DESC
+    </select>
+</mapper>

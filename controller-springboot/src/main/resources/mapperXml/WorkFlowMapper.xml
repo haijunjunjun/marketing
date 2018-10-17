@@ -99,20 +99,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.niule.marketing.controller.controller.dal.model.WorkFlow" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into work_flow (flow_id, flow_name, flow_content
-      )
-    values (#{flowId,jdbcType=VARCHAR}, #{flowName,jdbcType=VARCHAR}, #{flowContent,jdbcType=VARCHAR}
-      )
+    insert into work_flow (id, flow_id, flow_name, 
+      flow_content)
+    values (#{id,jdbcType=INTEGER}, #{flowId,jdbcType=VARCHAR}, #{flowName,jdbcType=VARCHAR}, 
+      #{flowContent,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.niule.marketing.controller.controller.dal.model.WorkFlow" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into work_flow
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
       <if test="flowId != null" >
         flow_id,
       </if>
@@ -124,6 +121,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
       <if test="flowId != null" >
         #{flowId,jdbcType=VARCHAR},
       </if>

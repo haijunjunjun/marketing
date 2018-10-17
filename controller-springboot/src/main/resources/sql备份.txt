@@ -1,0 +1,36 @@
+这是我们开启了bin-log, 我们就必须指定我们的函数是否是
+1 DETERMINISTIC 不确定的
+2 NO SQL 没有SQl语句，当然也不会修改数据
+3 READS SQL DATA 只是读取数据，当然也不会修改数据
+4 MODIFIES SQL DATA 要修改数据
+5 CONTAINS SQL 包含了SQL语句
+set global log_bin_trust_function_creators=TRUE;
+
+delimiter //
+CREATE FUNCTION `getParLst`(rootId INT)
+RETURNS varchar(1000)
+
+BEGIN
+	DECLARE sTemp VARCHAR(1000);
+	DECLARE sTempPar VARCHAR(1000);
+	SET sTemp = '';
+	SET sTempPar =rootId;
+
+	#循环递归
+	WHILE sTempPar is not null DO
+		#判断是否是第一个，不加的话第一个会为空
+		IF sTemp != '' THEN
+			SET sTemp = concat(sTemp,',',sTempPar);
+		ELSE
+			SET sTemp = sTempPar;
+		END IF;
+
+		SET sTemp = concat(sTemp,',',sTempPar);
+		SELECT group_concat(manage_id) INTO sTempPar FROM user_info where manage_id<>id and FIND_IN_SET(id,sTempPar)>0;
+	END WHILE;
+
+RETURN sTemp;
+END
+//
+
+eg: select * from user_info WHERE FIND_IN_SET(id,getParLst(1))

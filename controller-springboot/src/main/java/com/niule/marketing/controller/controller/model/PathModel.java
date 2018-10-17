@@ -11,5 +11,6 @@ import java.io.Serializable;
 @Data
 public class PathModel implements Serializable {
     private static final long serialVersionUID = -5946718072436576250L;
-    private String path;
+    private String startTime;
+    private String endTime;
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.define.CustomerResponseMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.define.CustomerResponse">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cust_name" property="custName" jdbcType="VARCHAR"/>
+        <result column="cust_phone" property="custPhone" jdbcType="VARCHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="company_type" property="companyType" jdbcType="VARCHAR"/>
+        <result column="real_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="phone" property="userPhone" jdbcType="VARCHAR"/>
+        <result column="repo_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="last_modify_time" property="lastModifyTime" jdbcType="TIMESTAMP"/>
+        <result column="is_phone" property="isPhone" jdbcType="INTEGER"/>
+        <result column="is_visit" property="isVisit" jdbcType="INTEGER"/>
+        <result column="is_gold_beans" property="isGoldBeans" jdbcType="INTEGER"/>
+        <result column="is_compact" property="isCompact" jdbcType="INTEGER"/>
+        <result column="is_compact_check" property="isCompactCheck" jdbcType="INTEGER"/>
+        <result column="is_money" property="isMoney" jdbcType="INTEGER"/>
+        <result column="is_interest_cust" property="isInterestCust" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="searchCustInfo" resultMap="BaseResultMap"
+            resultType="com.niule.marketing.controller.controller.dal.model.define.CustomerResponse">
+        select *
+        from customer_info c left join user_info u on c.user_id = u.id
+        <where>
+            1=1
+            <if test="custName != null">
+                and  c.cust_name like concat('%',#{custName},'%')
+            </if>
+            <if test="custPhone != null">
+                and  c.cust_phone like concat('%',#{custPhone},'%')
+            </if>
+            <if test="userRealName != null">
+                and  u.real_name like concat('%',#{userRealName},'%')
+            </if>
+            <if test="userPhone != null">
+                and  u.phone like concat('%',#{userPhone},'%')
+            </if>
+            <if test="status != null">
+                and  c.status = #{status,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by modify_time desc , last_modify_time desc
+    </select>
+</mapper>

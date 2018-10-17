@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.define.UserPerformanceResponseMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.define.UserPerformanceResponse">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="cid" property="custId" jdbcType="INTEGER"/>
+        <result column="cust_name" property="custName" jdbcType="VARCHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="company_type" property="companyType" jdbcType="VARCHAR"/>
+        <result column="cust_phone" property="custPhone" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="performance" property="performance" jdbcType="DOUBLE"/>
+    </resultMap>
+    <select id="searchUserActionInfo" resultMap="BaseResultMap"
+            resultType="com.niule.marketing.controller.controller.dal.model.define.UserPerformanceResponse">
+        SELECT  up.id,
+                 ui.real_name,
+                 ci.id cid,
+                 ci.cust_name,
+                 ci.company_name,
+                 ci.company_type,
+                 ci.cust_phone,
+                 up.create_time,
+                 up.performance from user_performance up
+        LEFT JOIN user_info ui on up.user_id = ui.id
+        LEFT JOIN customer_info ci on up.cust_id = ci.id
+        <where>
+            1=1
+            <if test="startTime != null">
+                and  date_format(up.create_time,"%Y%m%d") &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and  date_format(up.create_time,"%Y%m%d") &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            and up.user_id = #{userId}
+        </where>
+        order by up.create_time desc
+    </select>
+</mapper>

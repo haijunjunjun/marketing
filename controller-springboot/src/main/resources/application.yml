@@ -1,12 +1,30 @@
 server:
   port: 8080
+#  port: 8081
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/marketing?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=UTF-8
     username:
     password:
+#    url: jdbc:mysql://106.15.37.191:3356/marketing?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true
+#    username: root
+#    password: 123456
+  application:
+    cloud-marketing-controller
+  jackson:
+      serialization:
+        write-dates-as-timestamps: true
 mybatis:
   type-aliases-package: com.niule.marketing.controller.controller.dal.model
   mapper-locations: classpath*:mapperXml/*.xml
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://106.15.37.191:8761/eureka/
+#      default-zone: http://localhost:8761/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    ip-address: 106.15.37.191
   

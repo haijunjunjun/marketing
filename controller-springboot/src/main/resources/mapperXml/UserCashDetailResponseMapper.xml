@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.define.UserCashDetailResponseMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.define.UserCashDetailResponse">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="real_name" property="userRealName" jdbcType="VARCHAR"/>
+        <result column="phone" property="userPhone" jdbcType="VARCHAR"/>
+        <result column="cash" property="cash" jdbcType="DOUBLE"/>
+        <result column="account_bank_name" property="cashAccountBankName" jdbcType="VARCHAR"/>
+        <result column="account_holder" property="accountHolder" jdbcType="VARCHAR"/>
+        <result column="bank_no" property="cashAccountBankNo" jdbcType="VARCHAR"/>
+        <result column="modify_time" property="cashModifyTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="cashCreateTime" jdbcType="TIMESTAMP"/>
+        <result column="check_status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="searchUserCashDetail" resultMap="BaseResultMap"
+            resultType="com.niule.marketing.controller.controller.dal.model.define.UserCashDetailResponse">
+        select cd.id,ui.real_name,ui.phone,cd.cash,ab.account_bank_name,ab.bank_no,cd.modify_time,cd.create_time,cd.check_status,ab.account_holder
+        from cash_detail cd
+        LEFT JOIN user_info ui on cd.user_id = ui.id
+        LEFT JOIN account_bank ab on cd.user_id = ab.user_id
+        <where>
+            <if test="userRealName != null">
+                and  ui.real_name like concat('%',#{userRealName},'%')
+            </if>
+            <if test="userPhone != null">
+                and  ui.phone like concat('%',#{userPhone},'%')
+            </if>
+            <if test="status != null">
+                and  cd.check_status =#{status}
+            </if>
+            <if test="startTime != null">
+                and  date_format(cd.create_time,"%Y%m%d") &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and  date_format(cd.create_time,"%Y%m%d") &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by cd.create_time desc
+    </select>
+    <select id="userCashCheckEditInfo" resultMap="BaseResultMap"
+            resultType="com.niule.marketing.controller.controller.dal.model.define.UserCashDetailResponse">
+        select cd.id,ui.real_name,ui.phone,cd.cash,ab.account_bank_name,ab.bank_no,cd.modify_time,cd.create_time,cd.check_status
+        from cash_detail cd
+        LEFT JOIN user_info ui on cd.user_id = ui.id
+        LEFT JOIN account_bank ab on cd.user_id = ab.user_id
+        where cd.id = #{id}
+        order by cd.create_time desc
+    </select>
+</mapper>

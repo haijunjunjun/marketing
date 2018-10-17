@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.define.UserResponseMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.define.UserResponse">
+        <id column="id" property="userId" jdbcType="INTEGER"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
+        <result column="role_id" property="role" jdbcType="INTEGER"/>
+        <result column="level" property="marketLevel" jdbcType="VARCHAR"/>
+        <result column="manage_level" property="manageLevel" jdbcType="VARCHAR"/>
+        <result column="area" property="area" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="performance" property="performance" jdbcType="DOUBLE"/>
+        <result column="create_time" property="entryTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="searchUserInfo" resultMap="BaseResultMap"
+            resultType="com.niule.marketing.controller.controller.dal.model.define.UserResponse">
+        select DISTINCT(u.id),u.real_name,u.phone,u.sex,u.role_id,u.level,u.manage_level,u.area,u.city,u.create_time,u.status
+        from user_info u left join user_performance p on u.id = p.user_id
+        <where>
+            1=1
+            <if test="userRealName != null">
+                and  u.real_name like concat('%',#{userRealName},'%')
+            </if>
+            <if test="userPhone != null">
+                and  u.phone like concat('%',#{userPhone},'%')
+            </if>
+            <if test="roleName != null">
+                and  u.role_id = #{roleName,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+</mapper>

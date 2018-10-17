@@ -38,10 +38,22 @@
         </javaClientGenerator>
         <!-- tableName:用于自动生成代码的数据库表；domainObjectName:对应于数据库表的javaBean类名 -->
         <!--<table tableName="%">-->
-        <!--<generatedKey column="epa_id" sqlStatement="Mysql" identity="true"/>-->
+            <!--<generatedKey column="epa_id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="work_flow">
+        <!--<table tableName="area">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="area_city">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="background_user_role_info">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <table tableName="customer_info">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
+        <!--<table tableName="market_level">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>

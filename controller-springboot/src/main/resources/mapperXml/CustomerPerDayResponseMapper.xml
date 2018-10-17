@@ -1,40 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.CustomerInfoMapper" >
-    <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.CustomerInfo" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="user_id" property="userId" jdbcType="INTEGER" />
+<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.define.CustomerPerDayResponseMapper" >
+    <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.define.CustomerPerDayResponse" >
+        <result column="real_name" property="userRealName" jdbcType="VARCHAR" />
         <result column="company_name" property="companyName" jdbcType="VARCHAR" />
         <result column="company_type" property="companyType" jdbcType="VARCHAR" />
-        <result column="company_type_desc" property="companyTypeDesc" jdbcType="VARCHAR" />
-        <result column="status" property="status" jdbcType="INTEGER" />
         <result column="cust_name" property="custName" jdbcType="VARCHAR" />
         <result column="cust_phone" property="custPhone" jdbcType="VARCHAR" />
-        <result column="company_addr" property="companyAddr" jdbcType="VARCHAR" />
+        <result column="company_addr" property="custAddr" jdbcType="VARCHAR" />
         <result column="repo_time" property="repoTime" jdbcType="TIMESTAMP" />
-        <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
-        <result column="compact_time" property="compactTime" jdbcType="TIMESTAMP" />
-        <result column="abandon_time" property="abandonTime" jdbcType="TIMESTAMP" />
-        <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
-        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
-        <result column="is_phone" property="isPhone" jdbcType="INTEGER" />
-        <result column="is_visit" property="isVisit" jdbcType="INTEGER" />
-        <result column="is_gold_beans" property="isGoldBeans" jdbcType="INTEGER" />
-        <result column="is_compact" property="isCompact" jdbcType="INTEGER" />
-        <result column="is_compact_check" property="isCompactCheck" jdbcType="INTEGER" />
-        <result column="is_money" property="isMoney" jdbcType="INTEGER" />
-        <result column="is_interest_cust" property="isInterestCust" jdbcType="INTEGER" />
-        <result column="compact_img" property="compactImg" jdbcType="VARCHAR" />
-        <result column="compact_no" property="compactNo" jdbcType="VARCHAR" />
         <result column="mark" property="mark" jdbcType="VARCHAR" />
-        <result column="price" property="price" jdbcType="DOUBLE" />
-        <result column="abandon_reason" property="abandonReason" jdbcType="VARCHAR" />
-        <result column="delete_reason" property="deleteReason" jdbcType="VARCHAR" />
-        <result column="check_refuse_reason" property="checkRefuseReason" jdbcType="VARCHAR" />
-        <result column="donate_gold_beans" property="donateGoldBeans" jdbcType="INTEGER" />
-        <result column="relative_id" property="relativeId" jdbcType="INTEGER" />
-        <result column="last_modify_time" property="lastModifyTime" jdbcType="TIMESTAMP" />
     </resultMap>
-
+    <select id="getPerDayCustomerInfo" resultMap="BaseResultMap" resultType="java.util.List">
+        select u.real_name,c.company_name,c.company_type,c.cust_name,c.cust_phone,c.company_addr,c.repo_time,c.mark
+        from customer_info c
+        LEFT JOIN user_info u on c.user_id = u.id
+        <where>
+            is_gold_beans = 1 and (c.status &lt;&gt; 3 or c.status &lt;&gt; 4)
+            <if test="startTime != null">
+                AND DATE_FORMAT(c.repo_time,'%Y-%m-%d') &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                AND DATE_FORMAT(c.repo_time,'%Y-%m-%d') &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by c.repo_time desc
+  </select>
 
 </mapper>

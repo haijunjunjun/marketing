@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niule.marketing.controller.controller.dal.mapper.define.UserActionResponseMapper">
+    <resultMap id="BaseResultMap" type="com.niule.marketing.controller.controller.dal.model.define.UserActionResponse">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="real_name" property="userRealName" jdbcType="VARCHAR"/>
+        <result column="cust_name" property="custName" jdbcType="VARCHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="company_type" property="companyType" jdbcType="VARCHAR"/>
+        <result column="cust_phone" property="custPhone" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="action" property="action" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="searchUserActionInfo" resultMap="BaseResultMap"
+            resultType="com.niule.marketing.controller.controller.dal.model.define.UserActionResponse">
+        SELECT ua.id,ui.real_name,ci.cust_name,ci.company_name,ci.company_type,ci.cust_phone,ua.create_time,ua.action from user_action ua
+        left JOIN user_info ui on ua.user_id = ui.id
+        left JOIN customer_info ci on ua.cust_id = ci.id
+        <where>
+            <foreach collection="actions" item="item" open="AND (" close=")" separator="OR">
+                action = #{item}
+            </foreach>
+            <if test="custName != null">
+                and  ci.cust_name like concat('%',#{custName},'%')
+            </if>
+            <if test="startTime != null">
+                and  date_format(ua.create_time,"%Y%m%d") &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and  date_format(ua.create_time,"%Y%m%d") &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            and ua.user_id = #{userId}
+        </where>
+        order by ua.create_time desc
+    </select>
+</mapper>

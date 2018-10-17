@@ -1,4 +1,4 @@
-package com.niule.yunjiagong.yunjiagong.config.cloud;
+package com.niule.marketing.controller.controller.config.cloud;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

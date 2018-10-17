@@ -10,7 +10,7 @@ import java.util.List;
  * @create 2018 - 10 - 11 - 17:41
  */
 @Data
-public class ExcelDataModel implements Serializable {
+public class ExcelData implements Serializable {
     private static final long serialVersionUID = 8370014586538378782L;
     private List<String> titles;
     private List<List<Object>> rows;
